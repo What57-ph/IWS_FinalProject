@@ -1,0 +1,9 @@
+@tailwind base;
+
+@layer base {
+  body {
+  }
+  /* h4 {
+    @apply ;
+  } */
+}

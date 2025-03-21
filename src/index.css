@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Paypal Sans";
+  src: local("PayPalSansBig-Regular-Klim"),
+    url("/fonts/PayPalSansBig-Regular-Klim.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Paypal Sans";
+  src: local("PayPalSansBig-Light-Klim"),
+    url("/fonts/PayPalSansBig-Light-Klim.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Paypal Sans";
+  src: local("PayPalSansSmall-Medium-Klim"),
+    url("/fonts/PayPalSansSmall-Medium.woff-Klim") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Paypal Sans";
+  src: local("PayPalSansSmall-Regular-Klim"),
+    url("/fonts/PayPalSansSmall-Regular-Klim.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Paypal Sans";
+}
