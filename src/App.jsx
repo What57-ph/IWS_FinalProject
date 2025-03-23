@@ -1,16 +1,59 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import DashboardPage from "./pages/admin/dashboard";
+import UserPage from "./pages/admin/user";
+import EventPage from "./pages/admin/event";
+import OrderPage from "./pages/admin/order";
+import AdminLayout from "./components/admin/layout.admin";
+import HomePage from "./pages/client/home";
+import EventDetailPage from "./pages/client/event";
+import ClientLayout from "./components/client/layout.client";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const router = createBrowserRouter([
+    {
+      path: "/admin",
+      element: <AdminLayout />,
+      children: [
+        {
+          index: true,
+          element: <DashboardPage />
+        },
+        {
+          path: 'user',
+          element: <UserPage />
+        },
+        {
+          path: 'event',
+          element: <EventPage />
+        },
+        {
+          path: 'order',
+          element: <OrderPage />
+        }
+      ]
+    },
+    {
+      path: "/",
+      element: <ClientLayout />,
+      children: [
+        {
+          index: true,
+          element: <HomePage />
+        },
+        {
+          path: 'event',
+          element: <EventDetailPage />
+        }
+      ]
+    }
+
+  ])
 
   return (
-    <div className="bg-bgColor">
-      <p className="uppercase text-green-400 font-bold"> Hello World</p>
-      <p className="text-opacity-100 text">Hello world</p>
-    </div>
+    <>
+      <RouterProvider router={router} />
+    </>
   );
 }
 
