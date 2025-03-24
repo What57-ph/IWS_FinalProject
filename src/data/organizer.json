@@ -1,0 +1,23 @@
+[
+  {
+    "id": 10,
+    "name": "Công ty Sự kiện Việt Nam",
+    "email": "contact@vietnamevents.com",
+    "phone": "0901234567",
+    "description": "Công ty tổ chức sự kiện hàng đầu Việt Nam, chuyên tổ chức các lễ hội âm nhạc, hội thảo và triển lãm lớn."
+  },
+  {
+    "id": 11,
+    "name": "TechExpo Vietnam",
+    "email": "info@techexpo.vn",
+    "phone": "0912345678",
+    "description": "TechExpo là đơn vị tổ chức triển lãm công nghệ uy tín, kết nối các doanh nghiệp và chuyên gia trong lĩnh vực công nghệ."
+  },
+  {
+    "id": 12,
+    "name": "Nhà hát Lớn TP.HCM",
+    "email": "support@nhahatlonhcm.vn",
+    "phone": "0987654321",
+    "description": "Nhà hát Lớn TP.HCM chuyên tổ chức các buổi hòa nhạc, vở kịch và sự kiện văn hóa nghệ thuật."
+  }
+]

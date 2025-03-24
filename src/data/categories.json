@@ -1,0 +1,28 @@
+[
+    {
+      "id": 101,
+      "name": "Âm nhạc",
+      "description": "Các sự kiện âm nhạc như hòa nhạc, lễ hội âm nhạc, liveshow của các ca sĩ nổi tiếng."
+    },
+    {
+      "id": 102,
+      "name": "Công nghệ",
+      "description": "Các hội chợ, triển lãm và hội thảo liên quan đến công nghệ, phần mềm, AI, và khởi nghiệp."
+    },
+    {
+      "id": 103,
+      "name": "Nghệ thuật",
+      "description": "Bao gồm triển lãm tranh, điêu khắc, nghệ thuật sắp đặt và các sự kiện văn hóa sáng tạo."
+    },
+    {
+      "id": 104,
+      "name": "Thể thao",
+      "description": "Các giải đấu thể thao, giao lưu thể thao, marathon, và các sự kiện thể chất."
+    },
+    {
+      "id": 105,
+      "name": "Giáo dục",
+      "description": "Hội thảo, khóa học, chương trình đào tạo và sự kiện liên quan đến giáo dục và phát triển kỹ năng."
+    }
+  ]
+  

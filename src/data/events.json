@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Lễ hội Âm nhạc Mùa Hè",
+    "category_id": 101,
+    "status_event_id": 1,
+    "date": "2025-06-15",
+    "time": "18:00:00",
+    "location": "Sân vận động Quốc gia Mỹ Đình, Hà Nội",
+    "min_price": 500000,
+    "max_price": 2000000,
+    "organizer_id": 10,
+    "map": "https://maps.example.com/event1",
+    "information": "Lễ hội âm nhạc lớn nhất năm với sự góp mặt của nhiều nghệ sĩ hàng đầu."
+  },
+  {
+    "id": 2,
+    "name": "Hội chợ Công nghệ 2025",
+    "category_id": 102,
+    "status_event_id": 2,
+    "date": "2025-09-20",
+    "time": "09:00:00",
+    "location": "Trung tâm Hội nghị Quốc gia, Hà Nội",
+    "min_price": 0,
+    "max_price": 1000000,
+    "organizer_id": 11,
+    "map": "https://maps.example.com/event2",
+    "information": "Triển lãm công nghệ hàng đầu khu vực, giới thiệu các sản phẩm và xu hướng mới nhất."
+  },
+  {
+    "id": 3,
+    "name": "Đêm Nhạc Trịnh",
+    "category_id": 103,
+    "status_event_id": 1,
+    "date": "2025-12-10",
+    "time": "20:00:00",
+    "location": "Nhà hát Lớn, TP. Hồ Chí Minh",
+    "min_price": 300000,
+    "max_price": 1500000,
+    "organizer_id": 12,
+    "map": "https://maps.example.com/event3",
+    "information": "Đêm nhạc đặc biệt tưởng nhớ nhạc sĩ Trịnh Công Sơn."
+  }
+]
