@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Lễ hội Âm nhạc Mùa Hè",
+    "name": "ROAD TO 8WONDER VŨ YÊN - THE NEXT ICON",
     "category_id": 101,
     "status_event_id": 1,
     "date": "2025-06-15",
@@ -10,12 +10,12 @@
     "min_price": 500000,
     "max_price": 2000000,
     "organizer_id": 10,
-    "map": "https://maps.example.com/event1",
-    "information": "Lễ hội âm nhạc lớn nhất năm với sự góp mặt của nhiều nghệ sĩ hàng đầu."
+    "map": "./asset/img/map/1.png",
+    "information": "./asset/img/information/1.png"
   },
   {
     "id": 2,
-    "name": "Hội chợ Công nghệ 2025",
+    "name": "LOVE IN THE BAY X GIAO LỘ THỜI GIAN 2025",
     "category_id": 102,
     "status_event_id": 2,
     "date": "2025-09-20",
@@ -24,12 +24,12 @@
     "min_price": 0,
     "max_price": 1000000,
     "organizer_id": 11,
-    "map": "https://maps.example.com/event2",
-    "information": "Triển lãm công nghệ hàng đầu khu vực, giới thiệu các sản phẩm và xu hướng mới nhất."
+    "map": "./asset/img/map/2.png",
+    "information": "./asset/img/information/2.png"
   },
   {
     "id": 3,
-    "name": "Đêm Nhạc Trịnh",
+    "name": "LÀN SÓNG XANH MUSIC AWARDS 2024",
     "category_id": 103,
     "status_event_id": 1,
     "date": "2025-12-10",
@@ -38,7 +38,7 @@
     "min_price": 300000,
     "max_price": 1500000,
     "organizer_id": 12,
-    "map": "https://maps.example.com/event3",
-    "information": "Đêm nhạc đặc biệt tưởng nhớ nhạc sĩ Trịnh Công Sơn."
+    "map": "./asset/img/map/3.png",
+    "information": "./asset/img/information/3.png"
   }
 ]
