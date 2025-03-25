@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "name": "Sắp diễn ra",
+      "description": "Sự kiện đã được lên lịch và sắp diễn ra trong thời gian tới."
+    },
+    {
+      "id": 2,
+      "name": "Đang diễn ra",
+      "description": "Sự kiện đang được tổ chức và diễn ra theo kế hoạch."
+    },
+    {
+      "id": 3,
+      "name": "Đã kết thúc",
+      "description": "Sự kiện đã diễn ra thành công và đã kết thúc."
+    },
+    {
+      "id": 4,
+      "name": "Bị hủy",
+      "description": "Sự kiện đã bị hủy do lý do bất khả kháng hoặc theo quyết định của ban tổ chức."
+    },
+    {
+      "id": 5,
+      "name": "Hoãn lại",
+      "description": "Sự kiện bị dời sang một ngày"
+    }
+]  

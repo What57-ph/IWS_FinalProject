@@ -1,0 +1,45 @@
+[
+    {
+      "id": 1,
+      "name": "Nguyễn Văn A",
+      "email": "nguyenvana@example.com",
+      "password": "hashed_password_1",
+      "refreshToken": "random_refresh_token_1",
+      "role_id": 2,
+      "phone": "0987654321",
+      "dob": "1990-01-01",
+      "province": "Hà Nội",
+      "district": "Ba Đình",
+      "ward": "Điện Biên",
+      "house_number": "123 đường ABC"
+    },
+    {
+      "id": 2,
+      "name": "Trần Thị B",
+      "email": "tranthib@example.com",
+      "password": "hashed_password_2",
+      "refreshToken": "random_refresh_token_2",
+      "role_id": 1,
+      "phone": "0976543210",
+      "dob": "1995-05-10",
+      "province": "TP. Hồ Chí Minh",
+      "district": "Quận 1",
+      "ward": "Bến Nghé",
+      "house_number": "456 đường XYZ"
+    },
+    {
+      "id": 3,
+      "name": "Lê Văn C",
+      "email": "levanc@example.com",
+      "password": "hashed_password_3",
+      "refreshToken": "random_refresh_token_3",
+      "role_id": 3,
+      "phone": "0912345678",
+      "dob": "1988-09-15",
+      "province": "Đà Nẵng",
+      "district": "Hải Châu",
+      "ward": "Hòa Thuận",
+      "house_number": "789 đường DEF"
+    }
+  ]
+  

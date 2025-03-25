@@ -1,0 +1,28 @@
+[
+    {
+      "id": 1,
+      "name": "Chờ thanh toán",
+      "description": "Đơn hàng đã được tạo nhưng chưa hoàn tất thanh toán."
+    },
+    {
+      "id": 2,
+      "name": "Đã thanh toán",
+      "description": "Đơn hàng đã được thanh toán thành công."
+    },
+    {
+      "id": 3,
+      "name": "Đã xác nhận",
+      "description": "Đơn hàng đã được xác nhận bởi hệ thống hoặc ban tổ chức."
+    },
+    {
+      "id": 4,
+      "name": "Đã hủy",
+      "description": "Đơn hàng đã bị hủy theo yêu cầu của khách hàng hoặc do lỗi thanh toán."
+    },
+    {
+      "id": 5,
+      "name": "Hoàn tiền",
+      "description": "Khách hàng đã yêu cầu hoàn tiền và hệ thống đang xử lý."
+    }
+]
+  

@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "event_id": 1,
+      "type": "VIP",
+      "price": 2000000,
+      "quantity": 100
+    },
+    {
+      "id": 2,
+      "event_id": 1,
+      "type": "Thường",
+      "price": 500000,
+      "quantity": 500
+    },
+    {
+      "id": 3,
+      "event_id": 2,
+      "type": "Vé tiêu chuẩn",
+      "price": 1000000,
+      "quantity": 300
+    },
+    {
+      "id": 4,
+      "event_id": 3,
+      "type": "Ghế hạng A",
+      "price": 1500000,
+      "quantity": 200
+    },
+    {
+      "id": 5,
+      "event_id": 3,
+      "type": "Ghế hạng B",
+      "price": 300000,
+      "quantity": 400
+    }
+  ]
+  
