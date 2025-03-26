@@ -1,0 +1,121 @@
+import { useState } from 'react';
+import data from 'dvhcvn';
+import { Col, Form, Input, Row, Select } from 'antd';
+
+
+const HandleLocation = ({ form }) => {
+
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+
+  console.log(data);
+
+  // Lấy danh sách tỉnh/thành phố từ level1s
+  const provinces = data.level1s.map(province => ({
+    value: province.name,
+    label: province.name,
+    code: province.id
+  }));
+
+  const handleProvinceChange = (value, option) => {
+    // Tìm province được chọn từ level1s
+    const selectedProvince = data.level1s.find(p => p.id === option.code);
+    if (selectedProvince) {
+      setDistricts(
+        selectedProvince.children.map(district => ({
+          value: district.name,
+          label: district.name,
+          code: district.id,
+          parentCode: selectedProvince.id
+        }))
+      );
+    }
+    setWards([]);
+    // form.setFieldsValue({ district: undefined, ward: undefined });
+  };
+
+  const handleDistrictChange = (value, option) => {
+    // Tìm province từ level1s
+    const selectedProvince = data.level1s.find(p => p.id === option.parentCode);
+    if (selectedProvince) {
+      // Tìm district từ children của province
+      const selectedDistrict = selectedProvince.children.find(
+        d => d.id === option.code
+      );
+      if (selectedDistrict) {
+        setWards(
+          selectedDistrict.children.map(ward => ({
+            value: ward.name,
+            label: ward.name,
+            code: ward.id
+          }))
+        );
+      }
+    }
+    // form.setFieldsValue({ ward: undefined });
+  };
+
+
+  return (
+    <div className='flex flex-col gap-3'>
+      <h1>Event address</h1>
+      <Row gutter={12}>
+        <Col span={12}>
+          <Form.Item
+            name="province"
+            rules={[{ required: true, message: 'Chọn tỉnh/thành' }]}
+          >
+            <Select
+              placeholder="Tỉnh/Thành"
+              options={provinces}
+              onChange={handleProvinceChange}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="district"
+            rules={[{ required: true, message: 'Chọn quận/huyện' }]}
+          >
+            <Select
+              placeholder="Quận/Huyện"
+              options={districts}
+              onChange={handleDistrictChange}
+              disabled={!districts.length}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="ward"
+            rules={[{ required: true, message: 'Chọn phường/xã' }]}
+          >
+            <Select
+              placeholder="Phường/Xã"
+              options={wards}
+              disabled={!wards.length}
+              showSearch
+              optionFilterProp="label"
+            />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="street"
+            rules={[{ required: true, message: 'Nhập số nhà/đường' }]}
+          >
+            <Input placeholder="Số nhà, tên đường" />
+          </Form.Item>
+        </Col>
+      </Row>
+    </div>
+  )
+}
+export default HandleLocation
