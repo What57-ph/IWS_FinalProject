@@ -68,7 +68,7 @@ const AdminLayout = () => {
             collapsed={collapsed}
             onCollapse={setCollapsed}
           >
-            <div className="logo h-12 m-4 text-center text-[20px]">
+            <div className="logo h-12 m-4 text-center text-[18px]">
               <BugOutlined /> Admin
             </div>
             <Menu
@@ -76,6 +76,7 @@ const AdminLayout = () => {
               mode="inline"
               items={full}
               onClick={(e) => setActiveMenu(e.key)}
+              className="text-[12px] md:text-[15px]"
             />
           </Sider>)
           : (
@@ -89,12 +90,11 @@ const AdminLayout = () => {
       }
       <Layout>
         {!isMobile && (
-          <Header className="admin-header" style={{
+          <Header className="admin-header bg-slate-100/15" style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: '0 20px',
-            background: '#fff'
           }}>
             <Button
               type="text"
