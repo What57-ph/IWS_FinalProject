@@ -56,8 +56,8 @@ const Footer = () => {
         </div>
       </section>
 
-      <div className="lg:mx-36 mx-10 max-w-7xl my-10">
-        <div className="flex justify-between">
+      <div className="md:mx-36 mx-4 max-w-7xl my-10">
+        <div className="flex justify-between md:flex-row flex-col gap-y-7">
           <div>
             <p className="text-xl font-[700]">BEFINANCIAL LIMITED COMPANY</p>
             <ul className="mt-2 space-y-1 text-xs">
@@ -74,7 +74,7 @@ const Footer = () => {
               <li>Hotline: 1900 636 686 | Email: chat@cticket.vn</li>
             </ul>
           </div>
-          <div className="flex justify-center md:justify-end">
+          <div className="flex justify-start md:justify-end">
             <FooterImage />
           </div>
         </div>

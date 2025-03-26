@@ -41,7 +41,7 @@ const LanguageButton = ({ language }) => {
           height="20"
           fill="none"
         >
-          <g clip-path="url(#vn-circle-icon_svg__a)">
+          <g clipPath="url(#vn-circle-icon_svg__a)">
             <path
               fill="#D80027"
               d="M10 20c5.523 0 10-4.477 10-10S15.523 0 10 0 0 4.477 0 10s4.477 10 10 10"

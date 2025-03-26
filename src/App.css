@@ -7,7 +7,10 @@
     @apply h-10 px-4 hover:bg-gray-300 rounded-lg hover:shadow-sm;
   }
   .langOption {
-    @apply ml-2 flex items-center gap-2;
+    @apply ml-2 items-center gap-2;
+  }
+  .langItem {
+    @apply flex gap-2 items-center hover:bg-gray-300 p-2 rounded-sm;
   }
   .menu li {
     @apply flex gap-2 items-center cursor-pointer hover:bg-gray-300 p-2 rounded-xl mt-1;
