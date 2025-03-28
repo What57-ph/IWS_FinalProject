@@ -6,23 +6,26 @@ import EventModal from "../../components/admin/event/EventModal";
 
 const EventPage = () => {
   const [form] = Form.useForm();
-  const { RangePicker } = DatePicker;
   const [openModal, setOpenModal] = useState(false);
 
   const [companies, setCompanies] = useState([
     {
       id: 1,
-      name: 'Công ty A',
+      name: 'Event A',
       address: 'Hà Nội, Việt Nam',
       logo: 'https://picsum.photos/200/100?random=1',
+      date: '2025-01-05',
+      organizer: "Ntpmm",
       createdAt: '2023-01-01',
       updatedAt: '2023-01-02'
     },
     {
       id: 2,
-      name: 'Công ty B',
+      name: 'Event B',
       address: 'TP.HCM, Việt Nam',
       logo: 'https://picsum.photos/200/100?random=2',
+      date: '2025-01-05',
+      organizer: "Những thành phố mơ màng",
       createdAt: '2023-02-01',
       updatedAt: '2023-02-02'
     }
@@ -34,23 +37,29 @@ const EventPage = () => {
       title: 'STT',
       render: (text, record, index) => index + 1,
       width: 70,
-      responsive: ['md'] // Chỉ hiển thị trên màn hình medium trở lên
+      responsive: ['md']
     },
     {
-      title: 'Tên công ty',
+      title: 'Name Event',
       dataIndex: 'name',
       key: 'name',
-      responsive: ['xs'] // Luôn hiển thị dù màn hình nhỏ
+      responsive: ['md']
     },
     {
-      title: 'Địa chỉ',
+      title: 'Address',
       dataIndex: 'address',
       key: 'address',
       responsive: ['md']
     },
     {
-      title: 'Ngày tạo',
-      dataIndex: 'createdAt',
+      title: 'Organizer',
+      dataIndex: 'organizer',
+      key: 'organizer',
+      responsive: ['md']
+    },
+    {
+      title: 'Day start',
+      dataIndex: 'date',
       render: (text) => dayjs(text).format('DD/MM/YYYY'),
       responsive: ['lg']
     },

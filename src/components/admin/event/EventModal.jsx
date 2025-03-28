@@ -1,7 +1,6 @@
 import { LeftOutlined, RightOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, Modal, Select, Steps, Upload } from "antd";
 import React, { useEffect, useState } from 'react';
-import HandleLocation from "./handleLocation";
 import HandleTicketType from "./handleTicketType";
 import HandleBasicInfo from "./handleBasicInfo";
 
@@ -69,8 +68,19 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
   };
 
   const onFinish = (values) => {
+    const basicInfoValues = form.getFieldsValue([
+      'eventName',
+      'category',
+      'eventDate',
+      'province',
+      'district',
+      'ward',
+      'street'
+    ]);
+    // console.log("Basic info values:", basicInfoValues);
+
     const formData = {
-      ...values,
+      ...basicInfoValues,
       squareLogo: squareLogoFile[0]?.originFileObj,
       banner: bannerFile[0]?.originFileObj,
       organizerLogo: organizerLogoFile[0]?.originFileObj,
@@ -135,10 +145,6 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
       </Steps>
 
       <Form form={form} onFinish={onFinish} layout="vertical" className="font-bold">
-        <Form.Item name="id" hidden>
-          <Input />
-        </Form.Item>
-
         {renderStepContent()}
       </Form>
     </Modal>
