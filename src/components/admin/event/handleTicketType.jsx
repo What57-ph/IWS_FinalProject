@@ -1,30 +1,48 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Modal, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const OrderPage = () => {
-  const [form] = Form.useForm();
+const HandleTicketType = ({ form }) => {
+  const [localForm] = Form.useForm();
   const [tickets, setTickets] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  // Sync với form chính khi component mount
+  useEffect(() => {
+    const existingTickets = form.getFieldValue('tickets') || [];
+    setTickets(existingTickets);
+  }, []);
+
+  // Cập nhật tickets vào form chính khi tickets thay đổi
+  useEffect(() => {
+    form.setFieldsValue({ tickets });
+  }, [tickets, form]);
+
   const handleAddTicket = (values) => {
-    setTickets([...tickets, values]);
-    form.resetFields();
+    const newTickets = [...tickets, values];
+    setTickets(newTickets);
+    localForm.resetFields();
     setIsModalVisible(false);
   };
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
-      {/* Danh sách các vé đã thêm */}
+      <Form.Item name="tickets" hidden>
+        <Input />
+      </Form.Item>
+
       <div className="mb-6 grid gap-4">
         {tickets.map((ticket, index) => (
           <Card
             key={index}
-            title={`Ticket #${index + 1}`}
+            title={`Ticket Type #${index + 1}`}
             className="shadow-md"
             actions={[
               <MinusCircleOutlined
-                onClick={() => setTickets(tickets.filter((_, i) => i !== index))}
+                onClick={() => {
+                  const newTickets = tickets.filter((_, i) => i !== index);
+                  setTickets(newTickets);
+                }}
                 className="text-red-500"
               />
             ]}
@@ -39,7 +57,6 @@ const OrderPage = () => {
         ))}
       </div>
 
-      {/* Nút thêm vé mới */}
       <Button
         type="dashed"
         onClick={() => setIsModalVisible(true)}
@@ -50,19 +67,18 @@ const OrderPage = () => {
         Add Ticket Type
       </Button>
 
-      {/* Form thêm vé trong Modal */}
       <Modal
         title="Add New Ticket"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={() => {
-          form.resetFields();
+          localForm.resetFields();
           setIsModalVisible(false);
         }}
-        onOk={() => form.submit()}
+        onOk={() => localForm.submit()}
         destroyOnClose
       >
         <Form
-          form={form}
+          form={localForm}
           onFinish={handleAddTicket}
           layout="vertical"
           className="mt-4"
@@ -103,21 +119,8 @@ const OrderPage = () => {
           </Form.Item>
         </Form>
       </Modal>
-
-      {/* Nút submit cuối cùng */}
-      {tickets.length > 0 && (
-        <div className="text-right">
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => console.log('Final submit:', tickets)}
-          >
-            Confirm Order ({tickets.length} tickets)
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
 
-export default OrderPage;
+export default HandleTicketType;
