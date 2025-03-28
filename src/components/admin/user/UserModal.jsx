@@ -1,4 +1,5 @@
 import { Modal, Form, Input, DatePicker, Cascader, Select } from "antd";
+import dayjs from 'dayjs';
 import HandleLocation from "../event/handleLocation";
 
 const UserModal = ({ form, open, handleSubmit, handleCancel }) => {
@@ -35,19 +36,19 @@ const UserModal = ({ form, open, handleSubmit, handleCancel }) => {
         </Form.Item>
 
         <div className="flex flex-row w-full gap-5">
-          <Form.Item label="Select" className="flex-1">
+          <Form.Item label="Select" className="flex-1" name="role" >
             <Select>
               <Select.Option value="USER">USER</Select.Option>
               <Select.Option value="ADMIN">ADMIN</Select.Option>
             </Select>
           </Form.Item>
 
-          <Form.Item label="DatePicker" className="flex-1">
+          <Form.Item label="DatePicker" className="flex-1" name="dob" getValueProps={(value) => ({ value: value ? dayjs(value) : null })}>
             <DatePicker />
           </Form.Item>
         </div>
 
-        <HandleLocation />
+        <HandleLocation form={form} />
 
       </Form>
     </Modal>

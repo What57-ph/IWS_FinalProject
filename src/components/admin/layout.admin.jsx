@@ -1,127 +1,79 @@
-import { AppstoreOutlined, BankOutlined, BugOutlined, CalendarOutlined, DollarCircleOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined }
-  from "@ant-design/icons";
-import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd"
-import { Content, Header } from "antd/es/layout/layout"
+import { AppstoreOutlined, BugOutlined, CalendarOutlined, DollarCircleOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd";
+import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
-  const isMobile = false;
   const [collapsed, setCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState('/admin');
 
   const itemsDropdown = [
-    {
-      label: <Link to="/">Trang chủ</Link>,
-      key: 'home',
-    },
-    {
-      label: (
-        <span
-          role="button"
-          tabIndex={0}
-          className="logout-btn"
-        >
-          Đăng xuất
-        </span>
-      ),
-      key: 'logout',
-    },
+    { label: <Link to="/">Trang chủ</Link>, key: 'home' },
+    { label: <span role="button">Đăng xuất</span>, key: 'logout' }
   ];
 
-  const viewCompany = true;
-  const viewUser = true;
-  const viewOrder = false;
-  const ACL_ENABLE = 'false';
-
-  const createMenuItem = (path, label, icon, condition) => {
-    if (condition || ACL_ENABLE === 'false') {
-      return {
-        label: <Link to={path}>{label}</Link>,
-        key: path,
-        icon: icon,
-      };
-    }
-    return null;
-  };
-
-  const full = [
-    {
-      label: <Link to="/admin">Dashboard</Link>,
-      key: '/admin',
-      icon: <AppstoreOutlined />,
-    },
-    createMenuItem('/admin/user', 'User', <UserOutlined />, viewCompany),
-    createMenuItem('/admin/event', 'Event', <CalendarOutlined />, viewUser),
-    createMenuItem('/admin/order', 'Order', <DollarCircleOutlined />, viewOrder),
-  ].filter(Boolean);
-
-
-
+  const menuItems = [
+    { label: <Link to="/admin">Dashboard</Link>, key: '/admin', icon: <AppstoreOutlined /> },
+    { label: <Link to="/admin/user">User</Link>, key: '/admin/user', icon: <UserOutlined /> },
+    { label: <Link to="/admin/event">Event</Link>, key: '/admin/event', icon: <CalendarOutlined /> },
+    { label: <Link to="/admin/order">Order</Link>, key: '/admin/order', icon: <DollarCircleOutlined /> },
+  ];
 
   return (
-    <Layout className="layout-admin min-h-screen">
-      {
-        !isMobile ? (
-          <Sider theme="light"
-            collapsible
-            collapsed={collapsed}
-            onCollapse={setCollapsed}
-          >
-            <div className="logo h-12 m-4 text-center text-[18px]">
-              <BugOutlined /> Admin
-            </div>
-            <Menu
-              selectedKeys={[activeMenu]}
-              mode="inline"
-              items={full}
-              onClick={(e) => setActiveMenu(e.key)}
-              className="text-[12px] md:text-[15px]"
-            />
-          </Sider>)
-          : (
-            <Menu
-              selectedKeys={[activeMenu]}
-              mode="inline"
-              items={full}
-              onClick={(e) => setActiveMenu(e.key)}
-            />
-          )
-      }
-      <Layout>
-        {!isMobile && (
-          <Header className="admin-header bg-slate-100/15" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '0 20px',
-          }}>
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: '16px',
-                width: 64,
-                height: 64,
-              }}
-            />
+    <Layout className="min-h-screen">
+      <Sider
+        theme="light"
+        collapsible
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        width={250}
+        collapsedWidth={80}
+        className="fixed h-screen z-50"
+      >
+        <div className="h-12 m-4 text-center text-lg flex items-center justify-center">
+          {collapsed ? <BugOutlined /> : (
+            <>
+              <BugOutlined className="mr-2" />
+              <span>Admin</span>
+            </>
+          )}
+        </div>
 
-            <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
-              <Space style={{ cursor: 'pointer' }}>
-                Welcome ducsieunhan
-                <Avatar>DU</Avatar>
-              </Space>
-            </Dropdown>
-          </Header>
-        )}
+        <Menu
+          selectedKeys={[activeMenu]}
+          mode="inline"
+          items={menuItems}
+          onClick={(e) => setActiveMenu(e.key)}
+          className="text-base"
+          inlineCollapsed={collapsed}
+        />
+      </Sider>
 
-        <Content className="p-8">
+      <Layout className={`transition-all duration-200 ${collapsed ? 'pl-[80px]' : 'pl-[250px]'}`}>
+        <Header className="bg-white shadow-sm flex items-center justify-between px-6">
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            className="!w-16 !h-16 -ml-2"
+          />
+
+          <Dropdown menu={{ items: itemsDropdown }} trigger={['click']} >
+            <Space className="cursor-pointer hover:bg-gray-100 px-3 py-1 rounded-lg">
+              <span className={collapsed ? 'hidden' : 'text-[20px]'}>Welcome ducsieunhan</span>
+              <Avatar className="bg-blue-500">DU</Avatar>
+            </Space>
+          </Dropdown>
+        </Header>
+
+        <Content className="p-6 bg-gray-50 min-h-[calc(100vh-64px)]">
           <Outlet />
         </Content>
       </Layout>
     </Layout>
-  )
-}
-export default AdminLayout
+  );
+};
+
+export default AdminLayout;

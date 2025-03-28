@@ -41,7 +41,7 @@ const UserPage = () => {
     },
     {
       title: 'Role',
-      dataIndex: 'role_id',
+      dataIndex: 'role',
       key: 'role',
       responsive: ['md']
     },
@@ -75,6 +75,7 @@ const UserPage = () => {
   };
 
   const handleSubmit = (values) => {
+    console.log('All form values:', values);
     message.success('Lưu thành công!');
     setOpenModal(false);
   };
@@ -96,7 +97,7 @@ const UserPage = () => {
         </div>
         <div>
           <div className="text-sm font-medium ">Role</div>
-          <div className="text-base">{record.role_id}</div>
+          <div className="text-base">{record.role}</div>
         </div>
         <div className="flex justify-end mt-2"> {/* Bỏ col-span-2 */}
           <Space>

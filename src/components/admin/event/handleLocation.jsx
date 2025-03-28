@@ -10,7 +10,6 @@ const HandleLocation = ({ form }) => {
 
   console.log(data);
 
-  // Lấy danh sách tỉnh/thành phố từ level1s
   const provinces = data.level1s.map(province => ({
     value: province.name,
     label: province.name,
@@ -18,7 +17,6 @@ const HandleLocation = ({ form }) => {
   }));
 
   const handleProvinceChange = (value, option) => {
-    // Tìm province được chọn từ level1s
     const selectedProvince = data.level1s.find(p => p.id === option.code);
     if (selectedProvince) {
       setDistricts(
@@ -31,14 +29,11 @@ const HandleLocation = ({ form }) => {
       );
     }
     setWards([]);
-    // form.setFieldsValue({ district: undefined, ward: undefined });
   };
 
   const handleDistrictChange = (value, option) => {
-    // Tìm province từ level1s
     const selectedProvince = data.level1s.find(p => p.id === option.parentCode);
     if (selectedProvince) {
-      // Tìm district từ children của province
       const selectedDistrict = selectedProvince.children.find(
         d => d.id === option.code
       );
@@ -52,7 +47,6 @@ const HandleLocation = ({ form }) => {
         );
       }
     }
-    // form.setFieldsValue({ ward: undefined });
   };
 
 
