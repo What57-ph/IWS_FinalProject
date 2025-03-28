@@ -123,21 +123,12 @@ const Header = () => {
             </button>
           </div>
 
-          <label className="relative">
-            <button
-              type="button"
-              className={`langOption relative lg:m-0 mt-2 ${
-                showToggleMenu ? "hidden" : "block"
-              }`}
-              onClick={() => setShowLangList(!showLangList)}
-            >
-              <LanguageOption
-                language={language}
-                className={`langOption ${showToggleMenu ? "" : "flex"}`}
-              />
-            </button>
-            {showLangList && <LanguageList />}
-          </label>
+          <LanguageOption
+            language={language}
+            showLangList={showLangList}
+            showToggleMenu={showToggleMenu}
+            setShowLangList={setShowLangList}
+          />
         </div>
       )}
     </header>

@@ -15,6 +15,11 @@ import SearchResultPage from "./pages/client/Search/SearchResultPage";
 import NotFoundError from "./pages/errors/404page";
 import AboutUs from "./pages/client/About/AboutUs";
 import BuyPage from "./pages/client/Buy/BuyPage";
+import LoginPage from "./pages/auth/LoginPage";
+import AuthLayout from "./components/auth/AuthLayout";
+import RegisterPage from "./pages/auth/RegisterPage";
+import ForgotPageOne from "./pages/auth/ForgotPageOne";
+import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 
 function App() {
   const router = createBrowserRouter([
@@ -41,6 +46,34 @@ function App() {
       ],
     },
     {
+      path: "/auth",
+      element: <AuthLayout />,
+      children: [
+        {
+          path: "login",
+          element: <LoginPage />,
+        },
+        {
+          path: "register",
+          element: <RegisterPage />,
+        },
+        {
+          path: "forgot-password",
+          children: [
+            {
+              path: "step1",
+              index: true,
+              element: <ForgotPageOne />,
+            },
+            {
+              path: "step2",
+              element: <ForgotPageTwo />,
+            },
+          ],
+        },
+      ],
+    },
+    {
       path: "/",
       element: <ClientLayout />,
       children: [
@@ -48,6 +81,7 @@ function App() {
           index: true,
           element: <HomePage />,
         },
+
         {
           path: "event",
           element: <EventDetailPage />,
