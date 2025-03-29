@@ -1,37 +1,19 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Image, Input, message, Modal, Popconfirm, Select, Space, Table, Upload } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import EventModal from "../../components/admin/event/EventModal";
+import EventDetailModal from "../../components/admin/event/EventDetailModal";
+import sampleData from "../../data/sampleData";
 
 const EventPage = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
+  const [openDetail, setOpenDetail] = useState(false);
 
-  const [companies, setCompanies] = useState([
-    {
-      id: 1,
-      name: 'Event A',
-      address: 'Hà Nội, Việt Nam',
-      logo: 'https://picsum.photos/200/100?random=1',
-      date: '2025-01-05',
-      organizer: "Ntpmm",
-      createdAt: '2023-01-01',
-      updatedAt: '2023-01-02'
-    },
-    {
-      id: 2,
-      name: 'Event B',
-      address: 'TP.HCM, Việt Nam',
-      logo: 'https://picsum.photos/200/100?random=2',
-      date: '2025-01-05',
-      organizer: "Những thành phố mơ màng",
-      createdAt: '2023-02-01',
-      updatedAt: '2023-02-02'
-    }
-  ]);
 
-  // Columns cho bảng
+  const events = sampleData.events;
+  console.log(events);
   const columns = [
     {
       title: 'STT',
@@ -77,6 +59,12 @@ const EventPage = () => {
             danger
             size="small"
           />
+          <Button
+            icon={<InfoCircleOutlined />}
+            onClick={() => handleGetInfo(record)}
+            type="primary"
+            size="small"
+          />
         </Space>
       ),
       fixed: 'right',
@@ -95,6 +83,17 @@ const EventPage = () => {
     setOpenModal(false);
   };
 
+  // handle for detail
+  const handleGetInfo = (order) => {
+    console.log(order);
+
+    form.setFieldsValue(order);
+    setOpenDetail(true);
+  };
+  const handleClose = () => {
+    setOpenDetail(false);
+  }
+
   return (
     <div className="p-4 max-w-full overflow-auto">
       <div className="flex justify-between mb-4 flex-wrap gap-2">
@@ -105,10 +104,16 @@ const EventPage = () => {
         </Button>
       </div>
 
-      <Table dataSource={companies} columns={columns} rowKey="id"
+      <Table dataSource={events} columns={columns} rowKey="id"
         bordered scroll={{ x: true }} size="middle" />
 
       <EventModal form={form} openModal={openModal} setOpenModal={setOpenModal} handleSubmit={handleSubmit} initialValues={form.getFieldValue()} />
+
+      <EventDetailModal
+        open={openDetail}
+        handleCancel={handleClose}
+        form={form}
+      />
     </div>
   )
 }

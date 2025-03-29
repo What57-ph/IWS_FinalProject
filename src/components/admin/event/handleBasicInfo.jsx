@@ -5,6 +5,35 @@ import { UploadOutlined } from "@ant-design/icons";
 const HandleBasicInfo = ({ form, squareLogoFile, setSquareLogoFile, bannerFile, setBannerFile, organizerLogoFile, setOrganizerLogoFile }) => {
   const { RangePicker } = DatePicker;
 
+  const renderUploadButton = (text, ratio, isSquare = true) => (
+    <div className={`w-full ${isSquare ? 'aspect-square' : 'aspect-video'} flex flex-col 
+    items-center justify-center bg-gray-50 hover:bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg
+    
+    `}>
+      <UploadOutlined className="text-2xl mb-2 text-gray-500" />
+      <span className="block font-medium">{text}</span>
+      <span className="text-xs text-gray-500">({ratio} ratio)</span>
+    </div>
+  );
+
+  const renderPreview = (fileList) => {
+    if (fileList.length > 0) {
+      const file = fileList[0];
+      return (
+        <div className="relative w-full h-full">
+          <img
+            src={file.thumbUrl || URL.createObjectURL(file.originFileObj)}
+            alt="preview"
+            className="w-full h-full object-cover rounded-lg"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300" />
+        </div>
+      );
+    }
+    return null;
+  };
+
+
   return (
     <>
       {/* <Form form={form} onFinish={onFinish} layout="vertical" className="font-bold"> */}
@@ -51,42 +80,42 @@ const HandleBasicInfo = ({ form, squareLogoFile, setSquareLogoFile, bannerFile, 
             className="flex-1"
           >
             <Upload
-              listType="picture"
+              listType="picture-card"
               fileList={squareLogoFile}
               beforeUpload={() => false}
-              onChange={({ fileList }) => setSquareLogoFile(fileList)}
+              onChange={({ fileList }) => setSquareLogoFile(fileList.slice(-1))} // only 1 file 
               accept="image/*"
               maxCount={1}
+              showUploadList={false}
+              className="custom-upload-event-info"
+
             >
-              <Button
-                icon={<UploadOutlined />}
-                className="w-full aspect-square h-[300px] flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100"
-              >
-                <span className="block font-medium">Event info</span>
-                <span className="text-xs text-gray-500">(1:1 ratio)</span>
-              </Button>
+              {squareLogoFile.length > 0 ? (
+                renderPreview(squareLogoFile)
+              ) : (
+                renderUploadButton("Event info", "1:1")
+              )}
             </Upload>
           </Form.Item>
 
           <Form.Item
             name="banner"
-            className="flex-2"
+            className="flex-1"
           >
             <Upload
-              listType="picture"
+              listType="picture-card"
               fileList={bannerFile}
               beforeUpload={() => false}
-              onChange={({ fileList }) => setBannerFile(fileList)}
+              onChange={({ fileList }) => setBannerFile(fileList.slice(-1))}
               accept="image/*"
               maxCount={1}
+              showUploadList={false}
             >
-              <Button
-                icon={<UploadOutlined />}
-                className="w-full aspect-video h-[300px] flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100"
-              >
-                <span className="block font-medium">Event Banner</span>
-                <span className="text-xs text-gray-500">(16:9 ratio)</span>
-              </Button>
+              {bannerFile.length > 0 ? (
+                renderPreview(bannerFile)
+              ) : (
+                renderUploadButton("Event Banner", "16:9", false)
+              )}
             </Upload>
           </Form.Item>
         </div>
@@ -100,19 +129,22 @@ const HandleBasicInfo = ({ form, squareLogoFile, setSquareLogoFile, bannerFile, 
             className="w-full md:w-1/4"
           >
             <Upload
-              listType="picture"
+              listType="picture-card"
               fileList={organizerLogoFile}
               beforeUpload={() => false}
-              onChange={({ fileList }) => setOrganizerLogoFile(fileList)}
+              onChange={({ fileList }) => setOrganizerLogoFile(fileList.slice(-1))}
               accept="image/*"
               maxCount={1}
+              showUploadList={false}
             >
-              <Button
-                icon={<UploadOutlined />}
-                className="w-full aspect-square h-[200px] flex items-center justify-center bg-gray-50 hover:bg-gray-100"
-              >
-                <span className="text-center">Organizer Logo</span>
-              </Button>
+              {organizerLogoFile.length > 0 ? (
+                renderPreview(organizerLogoFile)
+              ) : (
+                <div className="w-full aspect-square flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg">
+                  <UploadOutlined className="text-xl mr-2" />
+                  <span>Organizer Logo</span>
+                </div>
+              )}
             </Upload>
           </Form.Item>
 
