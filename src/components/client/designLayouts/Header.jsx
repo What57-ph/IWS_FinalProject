@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import Logo from "./Logo";
-import LanguageButton from "./buttons/LanguageButton";
 import LanguageOption from "./LanguageOption";
-import { BiSearch, BiSearchAlt } from "react-icons/bi";
-import LanguageList from "./LanguageList";
+import data from 'dvhcvn';
 
 const Header = () => {
   const [isDropdown, setIsDropdown] = useState(false);
@@ -14,6 +12,16 @@ const Header = () => {
   const [placeholder, setPlacehoder] = useState("");
   const [showToggleContent, setShowToggleContent] = useState(false);
   let screenWidth = window.screen.width;
+
+  const provinces = data.level1s.map(province => ({
+    value: province.name,
+    label: province.name,
+    code: province.id
+  }));
+
+  console.log(provinces);
+
+
   useEffect(() => {
     if (screenWidth >= 1024) {
       setShowLangList(false);
@@ -78,19 +86,11 @@ const Header = () => {
                   <li className="px-1 cursor-auto focus:outline-none">
                     <input className="border-2 rounded-md w-full h-8" />
                   </li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
-                  <li>Ha Noi</li>
+                  {
+                    provinces.map(province => (
+                      <li>{province.value}</li>
+                    ))
+                  }
                 </ul>
               </div>
             )}
@@ -109,9 +109,8 @@ const Header = () => {
       </div>
       {showToggleContent && (
         <div
-          className={`absolute end-0 top-20 lg:relative lg:top-0 lg:bg-none lg:w-auto w-[350px] bg-white lg:shadow-none shadow-md lg:p-0 px-5 py-3 border-zinc-500 ${
-            showToggleMenu ? "block" : "hidden"
-          } lg:flex lg:w-auto flex-row items-center`}
+          className={`absolute end-0 top-20 lg:relative lg:top-0 lg:bg-none lg:w-auto w-[350px] bg-white lg:shadow-none shadow-md lg:p-0 px-5 py-3 border-zinc-500 ${showToggleMenu ? "block" : "hidden"
+            } lg:flex lg:w-auto flex-row items-center`}
           id="navbar-default"
         >
           <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
