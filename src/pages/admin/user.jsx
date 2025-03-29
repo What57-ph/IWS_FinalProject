@@ -1,14 +1,17 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, message, Space, Table } from "antd";
 import { useState } from "react";
 import sampleData from "../../data/sampleData";
 import { Grid } from 'antd';
 import UserModal from "../../components/admin/user/UserModal";
+import UserDetail from "../../components/admin/user/UserDetail";
 
 
 const UserPage = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
+  const [openDetail, setOpenDetail] = useState(false);
+
 
   const [users, setUsers] = useState(sampleData.user);
   // console.log(users);
@@ -59,6 +62,12 @@ const UserPage = () => {
             danger
             size="small"
           />
+          <Button
+            icon={<InfoCircleOutlined />}
+            onClick={() => handleGetInfo(record)}
+            type="primary"
+            size="small"
+          />
         </Space>
       ),
       fixed: 'right',
@@ -83,6 +92,17 @@ const UserPage = () => {
   const handleCancel = () => {
     setOpenModal(false);
   };
+
+  // get detail order
+  const handleGetInfo = (order) => {
+    console.log(order);
+
+    form.setFieldsValue(order);
+    setOpenDetail(true);
+  };
+  const handleClose = () => {
+    setOpenDetail(false);
+  }
 
   const mobileRowRender = (record) => (
     <div className="p-4 mb-4 border rounded-lg shadow-sm bg-blue-600 text-white">
@@ -140,6 +160,12 @@ const UserPage = () => {
         open={openModal}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        form={form}
+      />
+
+      <UserDetail
+        open={openDetail}
+        handleCancel={handleClose}
         form={form}
       />
     </div>

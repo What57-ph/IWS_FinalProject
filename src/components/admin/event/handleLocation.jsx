@@ -54,6 +54,14 @@ const HandleLocation = ({ form }) => {
     <div className='flex flex-col gap-3'>
       <h1>Event address</h1>
       <Row gutter={12}>
+        <Col span={24}>
+          <Form.Item
+            name="location"
+          >
+            <Input placeholder="Event address" />
+          </Form.Item>
+        </Col>
+
         <Col span={12}>
           <Form.Item
             name="province"
@@ -102,7 +110,7 @@ const HandleLocation = ({ form }) => {
 
         <Col span={12}>
           <Form.Item
-            name="street"
+            name="house_number"
             rules={[{ required: true, message: 'Nhập số nhà/đường' }]}
           >
             <Input placeholder="Số nhà, tên đường" />

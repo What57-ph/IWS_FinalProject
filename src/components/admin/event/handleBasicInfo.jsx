@@ -14,7 +14,7 @@ const HandleBasicInfo = ({ form, squareLogoFile, setSquareLogoFile, bannerFile, 
 
       <Form.Item
         label="Event name"
-        name="eventName"
+        name="name"
       >
         <Input placeholder="Example: Event ABC" />
       </Form.Item>
@@ -119,7 +119,7 @@ const HandleBasicInfo = ({ form, squareLogoFile, setSquareLogoFile, bannerFile, 
           <div className="flex flex-col gap-2 w-full md:w-3/4">
             <Form.Item
               label="Organizer Name"
-              name="organizerName"
+              name="organizer"
               rules={[{ required: true, message: "Please input organizer name" }]}
             >
               <Input placeholder="Example: ABC Company" />

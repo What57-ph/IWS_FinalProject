@@ -43,10 +43,9 @@ const AdminLayout = () => {
 
         <Menu
           selectedKeys={[activeMenu]}
-          mode="inline"
           items={menuItems}
           onClick={(e) => setActiveMenu(e.key)}
-          className="text-base"
+          className="text-start "
           inlineCollapsed={collapsed}
         />
       </Sider>

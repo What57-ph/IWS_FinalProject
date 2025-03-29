@@ -7,13 +7,11 @@ const HandleTicketType = ({ form }) => {
   const [tickets, setTickets] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Sync với form chính khi component mount
   useEffect(() => {
     const existingTickets = form.getFieldValue('tickets') || [];
     setTickets(existingTickets);
   }, []);
 
-  // Cập nhật tickets vào form chính khi tickets thay đổi
   useEffect(() => {
     form.setFieldsValue({ tickets });
   }, [tickets, form]);
