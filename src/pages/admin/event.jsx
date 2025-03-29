@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Form, Image, Input, message, Modal, Popconfirm, Select, Space, Table, Upload } from "antd";
+import { Button, DatePicker, Form, Grid, Image, Input, message, Modal, Popconfirm, Select, Space, Table, Upload } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import EventModal from "../../components/admin/event/EventModal";
@@ -14,6 +14,12 @@ const EventPage = () => {
 
   const events = sampleData.events;
   console.log(events);
+
+
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
+
   const columns = [
     {
       title: 'STT',
@@ -29,8 +35,8 @@ const EventPage = () => {
     },
     {
       title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'location',
+      key: 'location',
       responsive: ['md']
     },
     {
@@ -94,6 +100,37 @@ const EventPage = () => {
     setOpenDetail(false);
   }
 
+
+  const mobileRowRender = (record) => (
+    <div className="p-4 mb-4 border rounded-lg shadow-sm bg-blue-600 text-white">
+      <div className="grid grid-cols-1 gap-3"> {/* Đổi thành 1 cột */}
+        <div>
+          <div className="text-sm font-medium break-words whitespace-normal">Name event: </div>
+          <div className="text-base break-all">{record.name}</div>
+        </div>
+        <div>
+          <div className="text-sm font-medium ">Address: </div>
+          <div className="text-base">{record.location}</div>
+        </div>
+        <div>
+          <div className="text-sm font-medium ">Organizer: </div>
+          <div className="text-base">{record.organizer}</div>
+        </div>
+        <div>
+          <div className="text-sm font-medium ">Day start: </div>
+          <div className="text-base">{record.date}</div>
+        </div>
+        <div className="flex justify-end mt-2"> {/* Bỏ col-span-2 */}
+          <Space>
+            <Button icon={<EditOutlined />} size="small" />
+            <Button icon={<DeleteOutlined />} danger size="small" />
+          </Space>
+        </div>
+      </div>
+    </div>
+  );
+
+
   return (
     <div className="p-4 max-w-full overflow-auto">
       <div className="flex justify-between mb-4 flex-wrap gap-2">
@@ -104,9 +141,19 @@ const EventPage = () => {
         </Button>
       </div>
 
-      <Table dataSource={events} columns={columns} rowKey="id"
-        bordered scroll={{ x: true }} size="middle" />
+      {isMobile ? (
+        <div className="space-y-3">
+          {events.map((user) => (
+            <div key={user.id}>{mobileRowRender(user)}</div>
+          ))}
+        </div>
+      ) : (
 
+        <Table dataSource={events} columns={columns} rowKey="id"
+          bordered scroll={{ x: true }} size="middle" />
+
+      )
+      }
       <EventModal form={form} openModal={openModal} setOpenModal={setOpenModal} handleSubmit={handleSubmit} initialValues={form.getFieldValue()} />
 
       <EventDetailModal

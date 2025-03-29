@@ -108,8 +108,8 @@ const UserPage = () => {
     <div className="p-4 mb-4 border rounded-lg shadow-sm bg-blue-600 text-white">
       <div className="grid grid-cols-1 gap-3"> {/* Đổi thành 1 cột */}
         <div>
-          <div className="text-sm font-medium ">Email</div>
-          <div className="text-base">{record.email}</div>
+          <div className="text-sm font-medium break-words whitespace-normal">Email</div>
+          <div className="text-base break-all">{record.email}</div>
         </div>
         <div>
           <div className="text-sm font-medium ">Phone</div>
