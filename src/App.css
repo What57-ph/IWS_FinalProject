@@ -3,7 +3,39 @@
 @layer base {
   body {
   }
-  /* h4 {
-    @apply ;
-  } */
+  .authButton {
+    @apply h-10 px-4 hover:bg-gray-300 rounded-lg hover:shadow-sm;
+  }
+  .langOption {
+    @apply ml-2 items-center gap-2;
+  }
+  .langItem {
+    @apply flex gap-2 items-center hover:bg-gray-300 p-2 rounded-sm;
+  }
+  .menu li {
+    @apply flex gap-2 items-center cursor-pointer hover:bg-gray-300 p-2 rounded-xl mt-1;
+  }
+  .footer li {
+    @apply flex gap-2 items-center cursor-pointer p-1 mt-1;
+  }
+  .footerInfo ul li {
+    @apply text-sm;
+  }
+  h2 {
+    @apply text-3xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
+  .formInput {
+    @apply h-[48px] bg-gray-100 focus:outline-none focus:ring-2 text-lg ps-14 relative border-0;
+  }
+  .sideOr {
+    @apply flex items-center justify-center gap-4 text-gray-500 text-base;
+  }
+
+  .sideOr::before,
+  .sideOr::after {
+    @apply content-[''] flex-grow h-[1px] bg-gray-300 flex-1 w-[200px];
+  }
 }
