@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.0.0",
     "@tailwindcss/vite": "^4.0.15",
     "antd": "^5.24.5",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "dvhcvn": "^1.2.20250301",
     "react": "^19.0.0",
+    "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-icon": "^1.0.0",
     "react-icons": "^5.5.0",
