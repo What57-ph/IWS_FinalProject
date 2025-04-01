@@ -3,7 +3,7 @@ export default function CategoryList({ data }) {
   return (
     <div id="category-list" className="grid grid-cols-4 gap-4 gap-y-14">
         {data.map((item, index) => (
-          <div className="p-2 rounded-md hover:shadow-md">  
+          <div key={index} className="p-2 rounded-md hover:shadow-md">  
       <a href="/event/love-in-the-bay-x-giao-lo-thoi-gian-2025-liveshow-01-minh-tuyet-thanh-duy" >
         <div className="border-none">
           <div className="relative">
