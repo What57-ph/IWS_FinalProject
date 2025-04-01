@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Logo = () => {
   return (
     <>
       <div className="w-max col-start-1">
-        <a href="/en">
+        <Link to="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="157"
@@ -40,7 +41,7 @@ const Logo = () => {
               </clipPath>
             </defs>
           </svg>
-        </a>
+        </Link>
       </div>
     </>
   );
