@@ -10,8 +10,8 @@
     "min_price": 500000,
     "max_price": 2000000,
     "organizer_id": 10,
-    "map": "./asset/img/map/1.png",
-    "information": "./asset/img/information/1.png"
+    "map": "/img/map/1.png",
+    "information": "/img/information/1.png"
   },
   {
     "id": 2,
@@ -24,8 +24,8 @@
     "min_price": 0,
     "max_price": 1000000,
     "organizer_id": 11,
-    "map": "./asset/img/map/2.png",
-    "information": "./asset/img/information/2.png"
+    "map": "/img/map/2.png",
+    "information": "/img/information/2.png"
   },
   {
     "id": 3,
@@ -38,7 +38,7 @@
     "min_price": 300000,
     "max_price": 1500000,
     "organizer_id": 12,
-    "map": "./asset/img/map/3.png",
-    "information": "./asset/img/information/3.png"
+    "map": "/img/map/3.png",
+    "information": "/img/information/3.png"
   }
 ]
