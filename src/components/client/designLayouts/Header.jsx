@@ -3,6 +3,7 @@ import { FaChevronDown, FaSearch } from "react-icons/fa";
 import Logo from "./Logo";
 import LanguageOption from "./LanguageOption";
 import data from 'dvhcvn';
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isDropdown, setIsDropdown] = useState(false);
@@ -20,6 +21,8 @@ const Header = () => {
   }));
 
   console.log(provinces);
+
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -114,10 +117,10 @@ const Header = () => {
           id="navbar-default"
         >
           <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
-            <button type="button" className="authButton">
+            <button type="button" className="authButton" onClick={() => navigate('/auth/login')}>
               Login
             </button>
-            <button type="button" className="authButton">
+            <button type="button" className="authButton" onClick={() => navigate('/auth/register')}>
               Register
             </button>
           </div>
