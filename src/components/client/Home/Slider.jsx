@@ -56,7 +56,7 @@ export default function Slider() {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="w-full md:w-1/2 border-x-4 border-white aspect-[5/3] box-border rounded-[12px] flex-shrink-0 bg-cover bg-center rounded-md"
+              className="w-full md:w-1/2 border-x-4 border-white aspect-[5/3] box-border rounded-[12px] flex-shrink-0 bg-cover bg-center"
               style={{ backgroundImage: `url(${slide})` }}
             ></div>
           ))}
