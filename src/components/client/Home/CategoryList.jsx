@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import getCategoryColor from "../../../utils/getCatColor";
 
 export default function CategoryList({ data }) {
   const [limitLength, setLimitLength] = useState(12);
@@ -23,7 +24,8 @@ export default function CategoryList({ data }) {
           id="category-list"
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-10"
         >
-          {list.map((item, index) => (
+          {list.map((item, index) =>{
+          return (
             <div key={index} className="p-2 rounded-md hover:shadow-md">
               <a href="#">
                 <div className="border-none">
@@ -40,7 +42,7 @@ export default function CategoryList({ data }) {
                     />
                   </div>
                   <div className="card-body flex flex-col gap-2 mt-4 p-0">
-                    <div className="w-fit px-3 py-[3px] text-sm h-auto rounded-2xl border-none bg-blue-900 text-white">
+                    <div className={`w-fit px-3 py-[3px] text-sm h-auto rounded-2xl border-none ${getCategoryColor(item.category)}`}>
                       {item.category}
                     </div>
                     <div className="flex flex-col gap-2">
@@ -55,7 +57,7 @@ export default function CategoryList({ data }) {
                 </div>
               </a>
             </div>
-          ))}
+          )})}
         </div>
         <div className="flex justify-center">
           {data.length > limitLength ? (
