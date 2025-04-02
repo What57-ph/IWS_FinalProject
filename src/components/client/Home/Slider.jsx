@@ -37,7 +37,7 @@ export default function Slider() {
   
   return (
     <div
-      className="relative w-full max-w-full mx-auto"
+      className="relative w-full max-w-full mx-auto my-12"
       onMouseEnter={() => setAutoPlay(false)} // ⏸ Dừng khi hover vào
       onMouseLeave={() => setAutoPlay(true)} // ▶ Tiếp tục khi rời chuột
     >
@@ -75,7 +75,7 @@ export default function Slider() {
           <button
             key={index}
             onClick={() => setSlideIndex(index)}
-            className={`size-3 rounded-full ${
+            className={`size-2 lg:size-3 rounded-full ${
               slideIndex === index ? "bg-blue-700" : "bg-gray-600"
             }`}
           ></button>

@@ -62,10 +62,10 @@ export default function CategoryList({ data }) {
         <div className="flex justify-center">
           {data.length > limitLength ? (
             <button
-              className="btn max-md:w-full md:px-20 mt-12 py-3 px-5 bg-gray-200"
+              className="btn max-md:w-full md:px-20 mt-12 py-3 px-5 hover:bg-gray-200 bg-gray-100 rounded-xl"
               onClick={expand}
             >
-              <p class="text-base">Xem thêm</p>
+              <p class="text-[18px] ">Xem thêm</p>
             </button>
           ) : (
             ""
