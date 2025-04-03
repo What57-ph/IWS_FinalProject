@@ -20,6 +20,7 @@ import AuthLayout from "./components/auth/AuthLayout";
 import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
+import ProtectedRoute from "./components/share/protected-route";
 
 function App() {
   const router = createBrowserRouter([
@@ -29,19 +30,39 @@ function App() {
       children: [
         {
           index: true,
-          element: <DashboardPage />,
+          element:
+            (
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            )
         },
         {
           path: "user",
-          element: <UserPage />,
+          element:
+            (
+              <ProtectedRoute>
+                <UserPage />
+              </ProtectedRoute>
+            )
         },
         {
           path: "event",
-          element: <EventPage />,
+          element:
+            (
+              <ProtectedRoute>
+                <EventPage />
+              </ProtectedRoute>
+            ),
         },
         {
           path: "order",
-          element: <OrderPage />,
+          element:
+            (
+              <ProtectedRoute>
+                <OrderPage />
+              </ProtectedRoute>
+            ),
         },
       ],
     },

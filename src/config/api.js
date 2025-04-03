@@ -26,7 +26,7 @@ export const callLogout = () => {
 }
 
 export const callAccount = () => {
-  return instance.get('/api/v1/auth/logout')
+  return instance.get('/api/v1/auth/account')
     .then(response => response.data);
 }
 

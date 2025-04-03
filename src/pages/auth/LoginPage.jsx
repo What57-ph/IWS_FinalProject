@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 import { callLogin } from "../../config/api";
+import { useAuth } from "../../context/AuthContext";
 
 const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [checked, setChecked] = useState(true);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+
+  const { login } = useAuth()
 
   let params = new URLSearchParams(location.search);
   const callback = params?.get("callback");
@@ -30,12 +33,19 @@ const LoginPage = () => {
   const onFinish = async (values) => {
     try {
       const { username, password } = values;
-      // console.log("Login Info:", values);
       const res = await callLogin(username, password);
-      console.log(res);
+      // console.log(res);
       if (res?.data) {
-        localStorage.setItem('access_token', res.data.accessToken);
-        localStorage.setItem('user', res.data.user);
+
+        if (!res.data.user || typeof res.data.user !== 'object') {
+          throw new Error('Invalid user data from server');
+        }
+
+        login(res.data.user, res.data.accessToken);
+
+        // console.log('User after login:', res.data.user);
+
+
         message.success('Đăng nhập tài khoản thành công!');
         window.location.href = callback ? callback : '/';
       }
