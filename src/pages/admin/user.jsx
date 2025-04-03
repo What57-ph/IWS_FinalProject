@@ -1,66 +1,91 @@
-import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, message, Space, Table } from "antd";
-import { useState } from "react";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import { Button, Form, message, notification, Space, Table } from "antd";
+import { useEffect, useState } from "react";
 import sampleData from "../../data/sampleData";
-import { Grid } from 'antd';
+import { Grid } from "antd";
 import UserModal from "../../components/admin/user/UserModal";
 import UserDetail from "../../components/admin/user/UserDetail";
-
+import {
+  createNewUser,
+  deleteUser,
+  getUserList,
+  updateUser,
+} from "../../config/api";
+import dayjs from "dayjs";
+import { toast } from "react-toastify";
 
 const UserPage = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
-
-
+  const [requestType, setRequestType] = useState("post");
   const [users, setUsers] = useState(sampleData.user);
+  const [isUpdatedUser, setIsUpdatedUser] = useState(false);
+  const [errorMessage, setErrorMessage] = useState({
+    email: [],
+    name: [],
+    password: [],
+    phone: [],
+  });
   // console.log(users);
 
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
   const isMobile = !screens.md;
-
+  useEffect(() => {
+    const getUserListData = async () => {
+      const data = await getUserList();
+      setUsers(data);
+    };
+    getUserListData();
+  }, [isUpdatedUser]);
 
   // Columns cho bảng
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: "ID",
+      dataIndex: "id",
       width: 70,
-      responsive: ['md']
+      responsive: ["md"],
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'name',
-      responsive: ['md'],
-      width: 500
+      title: "Email",
+      dataIndex: "email",
+      key: "name",
+      responsive: ["md"],
+      width: 500,
     },
     {
-      title: 'Phone',
-      dataIndex: 'phone',
-      key: 'address',
-      responsive: ['md']
+      title: "Phone",
+      dataIndex: "phone",
+      key: "address",
+      responsive: ["md"],
     },
     {
-      title: 'Role',
-      dataIndex: 'role',
-      key: 'role',
-      responsive: ['md']
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+      responsive: ["md"],
     },
     {
-      title: 'Thao tác',
+      title: "Thao tác",
       render: (_, record) => (
         <Space>
           <Button
             icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}   // pass current value
+            onClick={() => handleEdit(record)} // pass current value
             size="small"
           />
           <Button
             icon={<DeleteOutlined />}
             danger
             size="small"
+            onClick={() => handleDelete(record.id)}
           />
           <Button
             icon={<InfoCircleOutlined />}
@@ -70,23 +95,54 @@ const UserPage = () => {
           />
         </Space>
       ),
-      fixed: 'right',
-      width: 100
-    }
+      fixed: "right",
+      width: 100,
+    },
   ];
 
-  // handle function 
+  // handle function
   const handleEdit = (user) => {
     console.log(user);
-
+    setRequestType("put");
     form.setFieldsValue(user);
     setOpenModal(true);
   };
+  const handleDelete = async (id) => {
+    const res = await deleteUser(id);
+    setUsers((prev) => prev.filter((item) => item.id != id));
+  };
+  const handleSubmit = async (values) => {
+    try {
+      // Transform data for backend
+      const backendData = {
+        ...values,
+        role: Number(values.role),
+        dob: dayjs(values.dob).format("YYYY-MM-DD"),
+      };
 
-  const handleSubmit = (values) => {
-    console.log('All form values:', values);
-    message.success('Lưu thành công!');
-    setOpenModal(false);
+      let response;
+      if (requestType === "post") {
+        response = await createNewUser(backendData);
+        setUsers((prev) => [...prev, response]);
+        toast.success("Create user successfully");
+      } else if (requestType === "put") {
+        backendData.id = values.id;
+        response = await updateUser(backendData);
+        setUsers((prev) =>
+          prev.map((u) => (u.id === backendData.id ? response : u))
+        );
+        toast.success("Update user successfully");
+        setIsUpdatedUser(!isUpdatedUser);
+      }
+
+      message.success("Operation successful!");
+
+      setOpenModal(false);
+    } catch (error) {
+      message.error("Operation failed!");
+
+      error.map((err) => toast.error(err));
+    }
   };
 
   const handleCancel = () => {
@@ -102,13 +158,17 @@ const UserPage = () => {
   };
   const handleClose = () => {
     setOpenDetail(false);
-  }
+  };
 
   const mobileRowRender = (record) => (
     <div className="p-4 mb-4 border rounded-lg shadow-sm bg-blue-600 text-white">
-      <div className="grid grid-cols-1 gap-3"> {/* Đổi thành 1 cột */}
+      <div className="grid grid-cols-1 gap-3">
+        {" "}
+        {/* Đổi thành 1 cột */}
         <div>
-          <div className="text-sm font-medium break-words whitespace-normal">Email</div>
+          <div className="text-sm font-medium break-words whitespace-normal">
+            Email
+          </div>
           <div className="text-base break-all">{record.email}</div>
         </div>
         <div>
@@ -119,7 +179,9 @@ const UserPage = () => {
           <div className="text-sm font-medium ">Role</div>
           <div className="text-base">{record.role}</div>
         </div>
-        <div className="flex justify-end mt-2"> {/* Bỏ col-span-2 */}
+        <div className="flex justify-end mt-2">
+          {" "}
+          {/* Bỏ col-span-2 */}
           <Space>
             <Button icon={<EditOutlined />} size="small" />
             <Button icon={<DeleteOutlined />} danger size="small" />
@@ -133,8 +195,15 @@ const UserPage = () => {
     <div className="p-4 max-w-full overflow-auto">
       <div className="flex justify-between mb-4 flex-wrap gap-2">
         <h2 className="text-[25px] font-bold">List of events</h2>
-        <Button icon={<PlusOutlined />} type="primary"
-          onClick={() => { form.resetFields(); setOpenModal(true) }}>
+        <Button
+          icon={<PlusOutlined />}
+          type="primary"
+          onClick={() => {
+            form.resetFields();
+            setOpenModal(true);
+            setRequestType("post");
+          }}
+        >
           Add
         </Button>
       </div>
@@ -163,12 +232,8 @@ const UserPage = () => {
         form={form}
       />
 
-      <UserDetail
-        open={openDetail}
-        handleCancel={handleClose}
-        form={form}
-      />
+      <UserDetail open={openDetail} handleCancel={handleClose} form={form} />
     </div>
-  )
-}
-export default UserPage
+  );
+};
+export default UserPage;

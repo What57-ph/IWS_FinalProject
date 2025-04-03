@@ -1,13 +1,20 @@
-import { Modal, Form, Input, DatePicker, Cascader, Select, InputNumber, Card, Button } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Cascader,
+  Select,
+  InputNumber,
+  Card,
+  Button,
+} from "antd";
 import dayjs from "dayjs";
 
 const UserDetail = ({ form, open, handleCancel }) => {
-
-  console.log(form.getFieldValue());
   // const orderId = form.getFieldValue('id');
   // const orderDetail = sampleData.orderDetails.filter(o => o.order_id === orderId);
   // console.log(orderDetail);
-
 
   return (
     <Modal
@@ -20,8 +27,8 @@ const UserDetail = ({ form, open, handleCancel }) => {
         body: {
           maxHeight: "50vh",
           overflowY: "auto",
-          padding: "16px"
-        }
+          padding: "16px",
+        },
       }}
     >
       <Form
@@ -103,7 +110,7 @@ const UserDetail = ({ form, open, handleCancel }) => {
 
         <Form.Item
           label="Street/House Number"
-          name="house_number"
+          name="houseNumber"
           className="font-semibold"
           labelCol={{ span: 24 }}
         >
