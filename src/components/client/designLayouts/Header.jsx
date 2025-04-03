@@ -17,12 +17,14 @@ const Header = () => {
   const [showToggleMenu, setShowToggleMenu] = useState(false);
   const [placeholder, setPlacehoder] = useState("");
   const [showToggleContent, setShowToggleContent] = useState(false);
-  const navigate = useNavigate();
+  let params = new URLSearchParams(location.search);
+  const callback = params?.get("callback");
+
   let screenWidth = window.screen.width;
 
   // If user has login 
-  const { user, logout } = useAuth();
-  console.log(user);
+  const { user, logout, isAuthenticated } = useAuth();
+  console.log(isAuthenticated);
 
 
   const provinces = data.level1s.map((province) => ({
@@ -45,11 +47,11 @@ const Header = () => {
 
   const handleLogout = async () => {
     const res = await callLogout();
-    alert("lgout");
+    // alert("lgout");
     if (res && res && +res.statusCode === 200) {
       logout();
       message.success('Đăng xuất thành công');
-      navigate('/auth/login')
+      window.location.href = callback ? callback : '/';
     }
   }
 
@@ -66,7 +68,7 @@ const Header = () => {
       label: <label
         style={{ cursor: 'pointer' }}
         onClick={() => handleLogout()}
-      >Đăng xuất</label>,
+      >Log out</label>,
       key: 'logout',
     },
   ];
@@ -148,7 +150,7 @@ const Header = () => {
           id="navbar-default"
         >
           {
-            user !== null ?
+            isAuthenticated === true ?
 
               <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                 <div className="flex items-center space-x-3 max-lg:hidden cursor-pointer ">
