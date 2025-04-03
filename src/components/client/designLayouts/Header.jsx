@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import Logo from "./Logo";
 import LanguageOption from "./LanguageOption";
-import data from 'dvhcvn';
-import { useNavigate } from "react-router-dom";
+
+import data from "dvhcvn";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isDropdown, setIsDropdown] = useState(false);
@@ -14,17 +15,11 @@ const Header = () => {
   const [showToggleContent, setShowToggleContent] = useState(false);
   let screenWidth = window.screen.width;
 
-  const provinces = data.level1s.map(province => ({
+  const provinces = data.level1s.map((province) => ({
     value: province.name,
     label: province.name,
-    code: province.id
+    code: province.id,
   }));
-
-  console.log(provinces);
-
-  const navigate = useNavigate();
-
-
   useEffect(() => {
     if (screenWidth >= 1024) {
       setShowLangList(false);
@@ -89,11 +84,9 @@ const Header = () => {
                   <li className="px-1 cursor-auto focus:outline-none">
                     <input className="border-2 rounded-md w-full h-8" />
                   </li>
-                  {
-                    provinces.map(province => (
-                      <li>{province.value}</li>
-                    ))
-                  }
+                  {provinces.map((province) => (
+                    <li>{province.value}</li>
+                  ))}
                 </ul>
               </div>
             )}
@@ -117,12 +110,12 @@ const Header = () => {
           id="navbar-default"
         >
           <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
-            <button type="button" className="authButton" onClick={() => navigate('/auth/login')}>
+            <Link to="/auth/login" className="authButton flex items-center">
               Login
-            </button>
-            <button type="button" className="authButton" onClick={() => navigate('/auth/register')}>
+            </Link>
+            <Link to="/auth/register" className="authButton flex items-center">
               Register
-            </button>
+            </Link>
           </div>
 
           <LanguageOption
