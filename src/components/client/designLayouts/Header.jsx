@@ -4,11 +4,9 @@ import Logo from "./Logo";
 import LanguageOption from "./LanguageOption";
 
 import data from "dvhcvn";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
-import { ContactsOutlined, LogoutOutlined } from "@ant-design/icons";
-import { Dropdown, message } from "antd";
-import { callLogout } from "../../../config/api";
+import AccountFunc from "./AccountFunc";
 
 const Header = () => {
   const [isDropdown, setIsDropdown] = useState(false);
@@ -17,13 +15,11 @@ const Header = () => {
   const [showToggleMenu, setShowToggleMenu] = useState(false);
   const [placeholder, setPlacehoder] = useState("");
   const [showToggleContent, setShowToggleContent] = useState(false);
-  let params = new URLSearchParams(location.search);
-  const callback = params?.get("callback");
 
   let screenWidth = window.screen.width;
 
   // If user has login 
-  const { user, logout, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   console.log(isAuthenticated);
 
 
@@ -44,34 +40,6 @@ const Header = () => {
     }
     setPlacehoder(screenWidth > 400 ? "..." : "");
   }, [screenWidth]);
-
-  const handleLogout = async () => {
-    const res = await callLogout();
-    // alert("lgout");
-    if (res && res && +res.statusCode === 200) {
-      logout();
-      message.success('Đăng xuất thành công');
-      window.location.href = callback ? callback : '/';
-    }
-  }
-
-  const itemsDropdown = [
-    {
-      label: <label>Ticket History</label>,
-      key: 'ticket_history',
-    },
-    {
-      label: <label>My Profile</label>,
-      key: 'my_profile',
-    },
-    {
-      label: <label
-        style={{ cursor: 'pointer' }}
-        onClick={() => handleLogout()}
-      >Log out</label>,
-      key: 'logout',
-    },
-  ];
 
   return (
     <header className="lg:flex max-w-screen-xl mx-auto relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 lg:px-16 px-4 py-4 grid grid-cols-3 ">
@@ -152,40 +120,7 @@ const Header = () => {
           {
             isAuthenticated === true ?
 
-              <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
-                <div className="flex items-center space-x-3 max-lg:hidden cursor-pointer px-2 py-2 rounded-3xl bg-slate-100/80">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-8 w-8 rounded-full object-cover"
-                      src="https://lh3.googleusercontent.com/a/ACg8ocI_YpbHVIYyaKKlL3Hxri54jM7hboP-qpvrTBol2n19pHxH7798=s96-c"
-                      alt="User avatar"
-                      width={40}
-                      height={40}
-                      loading="lazy"
-                    />
-                  </div>
-
-                  <div className="min-w-0 w-[170px]">
-                    <p className="truncate font-medium text-gray-900 text-center">{user.email}</p>
-                  </div>
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    fill="none"
-                    className="flex-shrink-0 text-gray-500"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 12h18M3 6h18M3 18h18"
-                    />
-                  </svg>
-                </div>
-              </Dropdown>
+              <AccountFunc />
               :
               <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
                 <Link to="/auth/login" className="authButton flex items-center">
