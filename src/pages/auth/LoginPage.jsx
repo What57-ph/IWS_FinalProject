@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, message, notification } from "antd";
 import { Link } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
+import { callLogin } from "../../config/api";
+import { useAuth } from "../../context/AuthContext";
 
 const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [checked, setChecked] = useState(true);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+
+  const { login } = useAuth()
+
+  let params = new URLSearchParams(location.search);
+  const callback = params?.get("callback");
 
   useEffect(() => {
     setIsButtonHovered(!!(formValues.email && formValues.password));
@@ -23,14 +30,43 @@ const LoginPage = () => {
     setChecked(e.target.checked);
   };
 
-  const onFinish = (values) => {
-    console.log("Login Info:", values);
+  const onFinish = async (values) => {
+    try {
+      const { username, password } = values;
+      const res = await callLogin(username, password);
+      // console.log(res);
+      if (res?.data) {
+
+        if (!res.data.user || typeof res.data.user !== 'object') {
+          throw new Error('Invalid user data from server');
+        }
+
+        login(res.data.user, res.data.accessToken);
+
+        // console.log('User after login:', res.data.user);
+
+
+        message.success('Đăng nhập tài khoản thành công!');
+        window.location.href = callback ? callback : '/';
+      }
+
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Login failed!';
+      console.log({ errorMessage });
+      alert(errorMessage);
+      notification.error({
+        message: "Lỗi!!!",
+        description: errorMessage,
+        duration: 5
+      });
+    }
+
   };
 
   return (
     <Form className="w-full text-start" onFinish={onFinish}>
       <Form.Item
-        name="email"
+        name="username"
         rules={[{ required: true, message: "This field cannot be empty" }]}
       >
         <div className="relative">
@@ -76,9 +112,8 @@ const LoginPage = () => {
 
       <button
         type="submit"
-        className={`hover:bg-pink-500 hover:text-opacity-100 text-white text-opacity-90 font-semibold border-0 w-full h-[48px] text-xl rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 ${
-          isButtonHovered ? "bg-pink-500" : "bg-pink-200"
-        }`}
+        className={`hover:bg-pink-500 hover:text-opacity-100 text-white text-opacity-90 font-semibold border-0 w-full h-[48px] text-xl rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 ${isButtonHovered ? "bg-pink-500" : "bg-pink-200"
+          }`}
       >
         Log in
       </button>

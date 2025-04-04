@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import AuthButton from "../../components/auth/AuthButton";
 import PasswordForm from "../../components/auth/PasswordForm";
 import VerifyForm from "../../components/auth/VerifyForm";
+import { callRegister } from "../../config/api";
 
 const RegisterPage = () => {
   const [checked, setChecked] = useState(true);
@@ -13,6 +14,11 @@ const RegisterPage = () => {
     confirmPassword: "",
   });
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+
+  let params = new URLSearchParams(location.search);
+  const callback = params?.get("callback");
+
+
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -33,11 +39,24 @@ const RegisterPage = () => {
   const onChange = (e) => {
     setChecked(e.target.checked);
   };
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     if (values.password !== values.confirmPassword) {
       console.error("Passwords do not match!");
     } else {
       console.log("Register Info:", values);
+    }
+
+    try {
+      const { username, password } = values;
+      console.log({ username, password });
+
+      const res = await callRegister(username, password);
+      console.log(res);
+      window.location.href = callback ? callback : '/auth/login';
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Register failed!';
+      console.log({ errorMessage });
+      alert(errorMessage);
     }
   };
 

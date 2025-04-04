@@ -12,13 +12,13 @@ const VerifyForm = ({
     <>
       <Form.Item
         className="mt-5"
-        name="email"
+        name="username"
         validateTrigger={["onFinish"]}
         rules={[{ required: true, message: "This field cannot be empty" }]}
       >
         <div>
           <Input
-            name="email"
+            name="username"
             className="formInput"
             placeholder="Enter email address"
             onChange={handleInputChange}
@@ -38,11 +38,10 @@ const VerifyForm = ({
             onChange={handleInputChange}
           />
           <button
-            className={`${
-              validateEmail(formValues.email)
+            className={`${validateEmail(formValues.email)
                 ? "text-blue-600"
                 : "cursor-not-allowed text-blue-300"
-            } absolute top-[8px] end-4 hover:text-blue-300 font-bold text-lg border-l-2 border-gray-300 p-1 ps-5 flex items-center`}
+              } absolute top-[8px] end-4 hover:text-blue-300 font-bold text-lg border-l-2 border-gray-300 p-1 ps-5 flex items-center`}
           >
             Send code
           </button>
