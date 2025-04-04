@@ -136,12 +136,14 @@ const UserPage = () => {
       }
 
       message.success("Operation successful!");
-
       setOpenModal(false);
     } catch (error) {
       message.error("Operation failed!");
-
-      error.map((err) => toast.error(err));
+      if (error?.status === 500) {
+        toast.error(error.message);
+        return;
+      }
+      error?.message?.map((err) => toast.error(err));
     }
   };
 

@@ -16,7 +16,7 @@ instance.interceptors.response.use(
     return response && response.data ? response.data : response;
   },
   function (error) {
-    return Promise.reject(error?.response?.data?.message);
+    return Promise.reject(error?.response?.data);
   }
 );
 export default instance;

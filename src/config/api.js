@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import axios from "./axiosCustimize";
 export const getUserList = async () => {
   const URL = `api/v1/users`;
@@ -7,6 +8,10 @@ export const getUserList = async () => {
 export const createNewUser = async (userData) => {
   const URL = `api/v1/users`;
   const res = await axios.post(URL, userData);
+  if (res.status === 500) {
+    console.log(res);
+    toast.error("errorrrr");
+  }
   return (await res).data;
 };
 export const updateUser = async (userData) => {
