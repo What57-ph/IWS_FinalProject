@@ -37,3 +37,15 @@
 body {
   font-family: "Paypal Sans";
 }
+
+/* Ẩn thanh cuộn trên WebKit (Chrome, Safari) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ẩn thanh cuộn trên Firefox */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
