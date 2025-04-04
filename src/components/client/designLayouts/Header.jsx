@@ -74,7 +74,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="lg:flex relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 border-b-2 lg:px-16 px-4 py-4 grid grid-cols-3 ">
+    <header className="lg:flex max-w-screen-xl mx-auto relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 lg:px-16 px-4 py-4 grid grid-cols-3 ">
       <Logo />
       <button
         data-collapse-toggle="navbar-default"
@@ -153,7 +153,7 @@ const Header = () => {
             isAuthenticated === true ?
 
               <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
-                <div className="flex items-center space-x-3 max-lg:hidden cursor-pointer ">
+                <div className="flex items-center space-x-3 max-lg:hidden cursor-pointer px-2 py-2 rounded-3xl bg-slate-100/80">
                   <div className="flex-shrink-0">
                     <img
                       className="h-8 w-8 rounded-full object-cover"

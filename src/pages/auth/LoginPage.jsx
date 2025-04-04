@@ -43,7 +43,7 @@ const LoginPage = () => {
 
         login(res.data.user, res.data.accessToken);
 
-        console.log('User after login:', res.data.user);
+        // console.log('User after login:', res.data.user);
 
 
         message.success('Đăng nhập tài khoản thành công!');
