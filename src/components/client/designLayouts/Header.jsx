@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import Logo from "./Logo";
 import LanguageOption from "./LanguageOption";
-import data from 'dvhcvn';
+
+import data from "dvhcvn";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
+import AccountFunc from "./AccountFunc";
 
 const Header = () => {
   const [isDropdown, setIsDropdown] = useState(false);
@@ -11,17 +15,19 @@ const Header = () => {
   const [showToggleMenu, setShowToggleMenu] = useState(false);
   const [placeholder, setPlacehoder] = useState("");
   const [showToggleContent, setShowToggleContent] = useState(false);
+
   let screenWidth = window.screen.width;
 
-  const provinces = data.level1s.map(province => ({
+  // If user has login 
+  const { isAuthenticated } = useAuth();
+  console.log(isAuthenticated);
+
+
+  const provinces = data.level1s.map((province) => ({
     value: province.name,
     label: province.name,
-    code: province.id
+    code: province.id,
   }));
-
-  console.log(provinces);
-
-
   useEffect(() => {
     if (screenWidth >= 1024) {
       setShowLangList(false);
@@ -36,7 +42,7 @@ const Header = () => {
   }, [screenWidth]);
 
   return (
-    <header className="lg:flex relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 border-b-2 lg:px-16 px-4 py-4 grid grid-cols-3 ">
+    <header className="lg:flex max-w-screen-xl mx-auto relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 lg:px-16 px-4 py-4 grid grid-cols-3 ">
       <Logo />
       <button
         data-collapse-toggle="navbar-default"
@@ -86,11 +92,9 @@ const Header = () => {
                   <li className="px-1 cursor-auto focus:outline-none">
                     <input className="border-2 rounded-md w-full h-8" />
                   </li>
-                  {
-                    provinces.map(province => (
-                      <li>{province.value}</li>
-                    ))
-                  }
+                  {provinces.map((province) => (
+                    <li>{province.value}</li>
+                  ))}
                 </ul>
               </div>
             )}
@@ -113,14 +117,19 @@ const Header = () => {
             } lg:flex lg:w-auto flex-row items-center`}
           id="navbar-default"
         >
-          <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
-            <button type="button" className="authButton">
-              Login
-            </button>
-            <button type="button" className="authButton">
-              Register
-            </button>
-          </div>
+          {
+            isAuthenticated === true ?
+
+              <AccountFunc />
+              :
+              <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
+                <Link to="/auth/login" className="authButton flex items-center">
+                  Login
+                </Link>
+                <Link to="/auth/register" className="authButton flex items-center">
+                  Register
+                </Link>
+              </div>}
 
           <LanguageOption
             language={language}
