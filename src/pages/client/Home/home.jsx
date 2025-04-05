@@ -3,7 +3,7 @@ import FilterCategories from "../../../components/client/Home/FilterCategories";
 
 const HomePage = () => {
   return (
-    <div className="max-w-screen-2xl mx-auto">
+    <div className="max-w-screen-xl mx-[16px] lg:mx-[64px] xl:mx-auto">
       <Slider />
       <FilterCategories />
     </div>
