@@ -54,21 +54,24 @@ export default function Navbar() {
           onScroll={checkScroll}
           className="flex overflow-x-auto scrollbar-hide space-x-4  "
         >
-          <button
+          <a
             className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md  border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
+            href="#map" 
           >
             Lịch sự kiện
-          </button>
-          <button
+          </a>
+          <a
             className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md  border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
+            href="#about" 
           >
             Về sự kiện
-          </button>
-          <button
+          </a>
+          <a
             className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md  border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
+            href="#organizer" 
           >
             Nhà tổ chức
-          </button>
+          </a>
         </div>
 
         {/* Mũi tên phải */}

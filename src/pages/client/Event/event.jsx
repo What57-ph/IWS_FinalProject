@@ -2,7 +2,7 @@ import React from "react";
 import EventDetail from "../../../components/client/Event/EventDetail";
 
 const EventDetailPage = () => {
-  return <div >
+  return <div>
     <EventDetail />
   </div>;
 };
