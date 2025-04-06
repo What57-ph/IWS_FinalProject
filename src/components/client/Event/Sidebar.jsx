@@ -1,4 +1,7 @@
+import { useAuth } from "../../../context/AuthContext";
+
 export default function Sidebar({className}) {
+    const { isAuthenticated } = useAuth();
     return(
         <div className={`flex flex-col lg:w-96 h-fit gap-8 p-8 bg-base-100 rounded-lg border border-b-2  ${className}`}>
           <div className="flex flex-col gap-4">
@@ -107,9 +110,15 @@ export default function Sidebar({className}) {
 
           {/* Nút mua vé */}
           <div className="flex flex-col max-lg:hidden">
-            <button className="h-[60px] text-[1.125rem] btn btn-primary w-full">
+            {isAuthenticated
+              ? <a href="" className="bg-pink-300 h-[60px] rounded-lg text-[1.125rem] justify-center flex items-center w-full">
+                  Mua vé ngay
+                </a>
+              :<a href="/auth/login" className="bg-pink-300 h-[60px] rounded-lg text-[1.125rem] justify-center flex items-center w-full">
               Đăng nhập để mua vé
-            </button>
+            </a>
+            }
+            
           </div>
 
           {/* Chia sẻ */}
