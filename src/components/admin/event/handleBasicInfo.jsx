@@ -14,6 +14,22 @@ const HandleBasicInfo = ({
   setOrganizerLogoFile,
 }) => {
   const { RangePicker } = DatePicker;
+
+  const onChange = (dates) => {
+    if (dates) {
+      const formattedStartDate = dates[0].format("YYYY-MM-DDTHH:mm:ss");
+      const formattedEndDate = dates[1].format("YYYY-MM-DDTHH:mm:ss");
+      form.setFieldsValue({
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      });
+    } else {
+      form.setFieldsValue({
+        startDate: null,
+        endDate: null,
+      });
+    }
+  };
   //handle upload file
   const beforeUpload = (file) => {
     const isJpgOrPng =
@@ -151,7 +167,11 @@ const HandleBasicInfo = ({
           label="Event date"
           name="eventDate"
         >
-          <RangePicker showTime className="w-full" />
+          <RangePicker
+            showTime
+            format="YYYY/MM/DD HH:mm:ss"
+            onChange={onChange}
+          />
         </Form.Item>
       </div>
 
