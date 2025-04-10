@@ -5,6 +5,7 @@ import { Grid } from 'antd';
 import OrderModal from "../../components/admin/order/OrderModal";
 import OrderDetailModal from "../../components/admin/order/OrderDetailModal";
 import { callCreateOrder, callDeleteOrder, callOrders } from "../../config/api";
+import { toast } from "react-toastify";
 
 
 const OrderPage = () => {
@@ -170,12 +171,19 @@ const OrderPage = () => {
       if (res?.data) {
         resetAll();
         setOpenModal(false);
-        // alert("Successfully create new order!!");
+
+        toast.success("Create event successfully !", {
+          position: "top-right",
+        });
+
         refreshTable();
       }
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Create failed!';
-      console.log({ errorMessage });
+      toast.error({ errorMessage }, {
+        position: "top-right",
+      });
+      // console.log({ errorMessage });
     } finally {
       setIsSubmitting(false);
     }
@@ -191,12 +199,18 @@ const OrderPage = () => {
       if (res?.data) {
         resetAll();
         setOpenModal(false);
-        // alert("Successfully update order!!");
+        toast.success("Update event successfully !", {
+          position: "top-right",
+        });
         refreshTable();
       }
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Update failed!';
-      console.log({ errorMessage });
+      toast.error({ errorMessage }, {
+        position: "top-right",
+      });
+
+      // console.log({ errorMessage });
     } finally {
       setIsSubmitting(false);
     }
@@ -207,10 +221,17 @@ const OrderPage = () => {
     try {
       const res = await callDeleteOrder(orderId);
       console.log("Call delete order: ", res.message);
+      toast.success("Delete event successfully !", {
+        position: "top-right",
+      });
       refreshTable();
 
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Create failed!';
+      toast.error({ errorMessage }, {
+        position: "top-right",
+      });
+      refreshTable();
       console.log({ errorMessage });
     }
   }
