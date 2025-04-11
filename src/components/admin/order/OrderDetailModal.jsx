@@ -3,7 +3,7 @@ import { Modal, Form, Input, DatePicker, Cascader, Select, InputNumber } from "a
 const OrderDetailModal = ({ form, open, handleSubmit, handleCancel }) => {
 
   const orderDetail = form.getFieldValue('items');
-  console.log("from order detail modal", [orderDetail]);
+  // console.log("from order detail modal", [orderDetail]);
 
 
   return (

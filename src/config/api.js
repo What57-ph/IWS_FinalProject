@@ -66,7 +66,7 @@ export const callRefresh = () => {
 
 /**
  * 
-Module User
+Module Oder
  */
 
 export const callCreateOrder = (order) => {
@@ -83,5 +83,15 @@ export const callDeleteOrder = (orderId) => {
 
 export const callUpdateOrder = (order) => {
   return instance.put('/api/v1/orders', order)
+}
+
+/**
+ * 
+Module Oder
+ */
+
+
+export const callEvents = () => {
+  return instance.get('/api/v1/events')
 }
 

@@ -148,7 +148,7 @@ const OrderPage = () => {
     setIsLoading(true);
     try {
       const res = await callOrders();
-      console.log(res.data.result);
+      // console.log(res.data.result);
 
       if (res && res.data) {
         setOrders(res.data.result);
@@ -166,18 +166,20 @@ const OrderPage = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await callCreateOrder(values);
-      console.log("Call create order value: ", res);
-      if (res?.data) {
-        resetAll();
-        setOpenModal(false);
+      // const res = await callCreateOrder(values);
+      // console.log("Call create order value: ", res);
+      // if (res?.data) {
+      //   resetAll();
+      //   setOpenModal(false);
 
-        toast.success("Create event successfully !", {
-          position: "top-right",
-        });
+      //   toast.success("Create event successfully !", {
+      //     position: "top-right",
+      //   });
 
-        refreshTable();
-      }
+      //   refreshTable();
+      // }
+      resetAll();
+      setOpenModal(false)
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Create failed!';
       toast.error({ errorMessage }, {
