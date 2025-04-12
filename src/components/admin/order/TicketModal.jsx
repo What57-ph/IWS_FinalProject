@@ -6,6 +6,18 @@ import { formatVND } from "../../share/function/formatterCurrency";
 
 const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
 
+  console.log("Get items detail form ticket modal", items);
+
+  // data
+
+  const { events } = useAuth();
+  // console.log("Test get data events : ", events);
+
+
+
+  // console.log("Ticket name: ", tickets);
+  // console.log("Events name: ", events);
+
   // get data for field ticket 
 
   const [localForm] = Form.useForm();
@@ -17,6 +29,11 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
   const [quantity, setQuantity] = useState(0);
   const [subTotalPrice, setSubtotalPrice] = useState(0);
 
+  const event = events.find(e => e.id === eventId);
+  const tickets = event?.tickets || [];
+
+  // calculate sub price 
+
   useEffect(() => {
     const calculatedSubTotal = selectedTicketPrice * quantity;
     setSubtotalPrice(parseInt(calculatedSubTotal));
@@ -25,12 +42,24 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
     localForm.setFieldsValue({ subTotal: calculatedSubTotal });
   }, [quantity, selectedTicketPrice]);
 
+  const handleTicketTypeChange = (value) => {
+    const selectedTicket = tickets.find(ticket => ticket.id === value);
+    console.log("Selected ticket: ", selectedTicket);
+    if (selectedTicket) {
+      console.log("Get price", selectedTicket.price);
+      const price = parseFloat(selectedTicket.price);
+      setSelectedTicketPrice(price);
+    }
+  };
 
-  // useEffect(() => {
-  //   console.log(subTotalPrice);
-  // }, [subTotalPrice])
+  const handleQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value) || 0;
+    setQuantity(newQuantity);
+  };
 
+  // calculate end 
 
+  // Add new items or update existing items 
   useEffect(() => {
     const existingTickets = form.getFieldValue('items') || [];
     setItems(existingTickets);
@@ -49,44 +78,25 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
     setIsModalVisible(false);
   };
 
+  // end 
 
-
-  // data
-
-  const { events } = useAuth();
-  // console.log("Test get data events : ", events);
-
-  const event = events.find(e => e.id === eventId);
-  const tickets = event?.tickets || [];
-
-  // console.log("Ticket name: ", tickets);
-
-  // const getTicketName = (ticketId) => {
-  //   const foundTicket = ticketName.find(ticket => ticket.id === ticketId);
-  //   return foundTicket ? foundTicket.type : "Unknown Ticket";
-  // };
-
+  // Get name for event and ticket 
 
   const getEventName = (eventId) => {
     const foundEvent = events.find(event => event.id === eventId);
     return foundEvent ? foundEvent.name : "Unknown Event";
   };
 
+  const getTicketName = (ticketId) => {
+    const foundTicket = events.find(event => event.tickets.some(ticket => ticket.id === ticketId))
+    console.log(foundTicket);
+    const ticketName = foundTicket.tickets.find(ticket => ticket.id === ticketId);
+    return ticketName ? ticketName.type : "null";
+  }
 
-  const handleTicketTypeChange = (value) => {
-    const selectedTicket = tickets.find(ticket => ticket.type === value);
-    if (selectedTicket) {
-      const price = parseFloat(selectedTicket.price);
-      setSelectedTicketPrice(price);
-    }
-  };
+  // end 
 
-  const handleQuantityChange = (e) => {
-    const newQuantity = parseInt(e.target.value) || 0;
-    setQuantity(newQuantity);
-  };
-
-
+  // handle edit items 
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
@@ -95,25 +105,29 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
       </Form.Item>
 
       {/* Hiển thị lỗi */}
-      <Form.Item shouldUpdate>
-        {({ getFieldError }) => (
-          <div style={{ color: 'red' }}>
-            {getFieldError('items')?.join(', ')}
-          </div>
-        )}
-      </Form.Item>
+      {!form.getFieldValue('orderId') &&
+        <>
+          <Form.Item shouldUpdate>
+            {({ getFieldError }) => (
+              <div style={{ color: 'red' }}>
+                {getFieldError('items')?.join(', ')}
+              </div>
+            )}
+          </Form.Item>
 
-      <Button
-        type="dashed"
-        onClick={() => setIsModalVisible(true)}
-        icon={<PlusOutlined />}
-        block
-        className="mb-6"
-      >
-        Add Ticket Type
-      </Button>
+          <Button
+            type="dashed"
+            onClick={() => setIsModalVisible(true)}
+            icon={<PlusOutlined />}
+            block
+            className="mb-6"
+          >
+            Add Ticket Type
+          </Button>
+        </>
+      }
 
-      <div className="mb-6 grid gap-4">
+      <div className="mb-3 grid gap-4">
         {items.map((item, index) => (
           <Card
             key={index}
@@ -121,10 +135,7 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
             className="shadow-md"
             actions={[
               form.getFieldValue('orderId') ?
-                <EditOutlined
-                  style={{ fontSize: '20px' }}
-                // onClick={}
-                />
+                <></>
                 :
                 <MinusCircleOutlined
                   style={{ fontSize: '20px', color: 'lightCoral' }}
@@ -135,9 +146,9 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
                 />
             ]}
           >
-            <div className="space-y-2 text-[13px] md:text-[17px]">
-              <p><strong>Event:</strong> {getEventName(item.event)}</p>
-              <p><strong>Ticket:</strong> {item.ticketType}</p>
+            <div className="space-y-1 text-[13px] md:text-[17px]">
+              <p><strong>Event:</strong> {form.getFieldValue('orderId') ? item?.ticket?.event : getEventName(eventId)}</p>
+              <p><strong>Ticket:</strong> {form.getFieldValue('orderId') ? item?.ticket?.name : getTicketName(item.ticketId)}</p>
               <p><strong>Price:</strong> {formatVND(item.subTotal)}</p>
               <p><strong>Quantity:</strong> {item.quantity}</p>
               {item.description && <p><strong>Description:</strong> {item.description}</p>}
@@ -145,8 +156,6 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
           </Card>
         ))}
       </div>
-
-
 
       <Modal
         title="Add New Ticket"
@@ -182,7 +191,7 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
               </Select>
             </Form.Item>
             <Form.Item
-              name="ticketType"
+              name="ticketId"
               label="Ticket"
               className="flex-1"
               rules={[{ required: true, message: 'Please choose ticket!' }]}
@@ -190,7 +199,7 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
               <Select onChange={handleTicketTypeChange}>
                 {
                   tickets.map(ticket => (
-                    <Select.Option key={ticket.type} value={ticket.type} >{ticket.type}</Select.Option>
+                    <Select.Option key={ticket.id} value={ticket.id} >{ticket.type}</Select.Option>
                   ))
                 }
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Grid } from 'antd';
 import OrderModal from "../../components/admin/order/OrderModal";
 import OrderDetailModal from "../../components/admin/order/OrderDetailModal";
-import { callCreateOrder, callDeleteOrder, callOrders } from "../../config/api";
+import { callCreateOrder, callDeleteOrder, callOrders, callUpdateOrder } from "../../config/api";
 import { toast } from "react-toastify";
 
 
@@ -166,20 +166,18 @@ const OrderPage = () => {
     setIsSubmitting(true);
 
     try {
-      // const res = await callCreateOrder(values);
-      // console.log("Call create order value: ", res);
-      // if (res?.data) {
-      //   resetAll();
-      //   setOpenModal(false);
+      const res = await callCreateOrder(values);
+      console.log("Call create order value: ", res);
+      if (res?.data) {
+        resetAll();
+        setOpenModal(false);
 
-      //   toast.success("Create event successfully !", {
-      //     position: "top-right",
-      //   });
+        toast.success("Create event successfully !", {
+          position: "top-right",
+        });
 
-      //   refreshTable();
-      // }
-      resetAll();
-      setOpenModal(false)
+        refreshTable();
+      }
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Create failed!';
       toast.error({ errorMessage }, {
@@ -196,7 +194,7 @@ const OrderPage = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await callCreateOrder(values);
+      const res = await callUpdateOrder(values);
       console.log("Call update order value: ", res);
       if (res?.data) {
         resetAll();
@@ -207,10 +205,8 @@ const OrderPage = () => {
         refreshTable();
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Update failed!';
-      toast.error({ errorMessage }, {
-        position: "top-right",
-      });
+      const errorMessage = error?.message || 'Update failed!';
+      alert(errorMessage);
 
       // console.log({ errorMessage });
     } finally {
@@ -332,6 +328,7 @@ const OrderPage = () => {
         open={openModal}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handleUpdate={handleUpdate}
         items={items} setItems={setItems}
         form={form}
         isSubmitting={isSubmitting}

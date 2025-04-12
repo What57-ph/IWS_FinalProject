@@ -35,11 +35,11 @@ const OrderDetailModal = ({ form, open, handleSubmit, handleCancel }) => {
           </div>
           <div className="space-y-2">
             <div className="flex items-start">
-              <span className="text-black font-medium min-w-[120px]">Email:</span>
+              <span className="text-black font-medium min-w-[120px]">Receiver email:</span>
               <span className="text-black break-all">{form.getFieldValue('receiverEmail') || 'N/A'}</span>
             </div>
             <div className="flex items-start">
-              <span className="text-black font-medium min-w-[120px]">Phone:</span>
+              <span className="text-black font-medium min-w-[120px]">Receiver phone:</span>
               <span className="text-black">{form.getFieldValue('receiverPhone') || 'N/A'}</span>
             </div>
           </div>
@@ -53,7 +53,7 @@ const OrderDetailModal = ({ form, open, handleSubmit, handleCancel }) => {
 
           <div className="grid grid-cols-2 gap-2">
             <div>Order detail id: {o.id}</div>
-            <div>Ticket id: {o.ticket?.id}</div>
+            <div>Ticket id: {o.ticket?.ticketId}</div>
             <div>Ticket name: {o.ticket?.name}</div>
             <div>Event date: {o.ticket?.eventDate ? new Date(o.ticket.eventDate).toLocaleDateString() : 'N/A'}</div>
             <div>Price: {o.price?.toLocaleString('vi-VN')} đ</div>
