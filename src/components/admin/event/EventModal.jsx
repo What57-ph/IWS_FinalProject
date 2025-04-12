@@ -106,9 +106,9 @@ const EventModal = ({
       ...basicInfoValues,
       // organizerName: values.organizerName,
       // organizerInfo: values.organizerInfo,
-      imgEventInfo: squareLogoFile[0],
-      banner: bannerFile[0],
-      logo: organizerLogoFile[0],
+      imgEventInfo: squareLogoFile[0]?.url,
+      banner: bannerFile[0]?.url,
+      logo: organizerLogoFile[0]?.url,
       // tickets: values.tickets || [],
     };
 

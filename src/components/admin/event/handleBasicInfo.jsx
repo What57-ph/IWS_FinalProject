@@ -51,19 +51,30 @@ const HandleBasicInfo = ({
     try {
       const res = await uploadSingleFile(file, "info");
       if (res && res.fileName) {
-        onSuccess({
-          name: res.fileName,
-          status: "done",
-          url: `${import.meta.env.VITE_BACKEND_URL}/storage/info/${
-            res.fileName
-          }`,
-        });
-        setSquareLogoFile([res.fileName]);
+        // onSuccess({
+        //   name: res.fileName,
+        //   status: "done",
+        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/info/${
+        //     res.fileName
+        //   }`,
+        // });
+
+        setSquareLogoFile([
+          {
+            ...file,
+            uid: file.uid,
+            name: res.fileName,
+            status: "done",
+            url: URL.createObjectURL(file), // tao moi local url de truyen sang blob data => tao duong dan anh bang localhost fe
+          },
+        ]);
+        console.log("Img info file:", squareLogoFile);
       } else {
-        throw new Error("Upload failed");
+        toast.error("Upload failed");
       }
     } catch (error) {
-      onError(error);
+      // onError(error);
+      console.log("error", error);
       toast.error("Oops! It happens some error when upload file.");
     }
   };
@@ -71,19 +82,26 @@ const HandleBasicInfo = ({
     try {
       const res = await uploadSingleFile(file, "banner");
       if (res && res.fileName) {
-        onSuccess({
-          name: res.fileName,
-          status: "done",
-          url: `${import.meta.env.VITE_BACKEND_URL}/storage/banner/${
-            res.fileName
-          }`,
-        });
-        setBannerFile([res.fileName]);
+        // onSuccess({
+        //   name: res.fileName,
+        //   status: "done",
+        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/banner/${
+        //     res.fileName
+        //   }`,
+        // });
+        setBannerFile([
+          {
+            uid: file.uid,
+            name: file.name,
+            status: "done",
+            url: URL.createObjectURL(file),
+          },
+        ]);
       } else {
         throw new Error("Upload failed");
       }
     } catch (error) {
-      onError(error);
+      // onError(error);
       toast.error("Oops! It happens some error when upload file.");
     }
   };
@@ -91,19 +109,26 @@ const HandleBasicInfo = ({
     try {
       const res = await uploadSingleFile(file, "logo");
       if (res && res.fileName) {
-        onSuccess({
-          name: res.fileName,
-          status: "done",
-          url: `${import.meta.env.VITE_BACKEND_URL}/storage/logo/${
-            res.fileName
-          }`,
-        });
-        setOrganizerLogoFile([res.fileName]);
+        // onSuccess({
+        //   name: res.fileName,
+        //   status: "done",
+        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/logo/${
+        //     res.fileName
+        //   }`,
+        // });
+        setOrganizerLogoFile([
+          {
+            uid: file.uid,
+            name: file.name,
+            status: "done",
+            url: URL.createObjectURL(file),
+          },
+        ]);
       } else {
         throw new Error("Upload failed");
       }
     } catch (error) {
-      onError(error);
+      // onError(error);
       toast.error("Oops! It happens some error when upload file.");
     }
   };
@@ -125,13 +150,19 @@ const HandleBasicInfo = ({
   const renderPreview = (fileList) => {
     if (fileList.length > 0) {
       const file = fileList[0];
+      const previewUrl =
+        file.url ||
+        file.thumbUrl ||
+        (file.originFileObj ? URL.createObjectURL(file.originFileObj) : null);
+
+      if (!previewUrl) {
+        return <div className="text-red-500">Preview not available</div>;
+      }
+
       return (
         <div className="relative w-full h-full">
           <img
-            src={
-              file.thumbUrl ||
-              (file.originFileObj && URL.createObjectURL(file.originFileObj))
-            }
+            src={previewUrl}
             alt="preview"
             className="w-full h-full object-cover rounded-lg"
           />
@@ -192,7 +223,7 @@ const HandleBasicInfo = ({
               className="custom-upload-event-info"
               customRequest={handleUploadInfoFile}
               defaultFileList={
-                squareLogoFile && typeof squareLogoFile === "string"
+                typeof squareLogoFile === "string"
                   ? [
                       {
                         uid: uuidv4(),
