@@ -21,6 +21,8 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
+import CreditPayment from "./components/client/payment/CreditPayment";
+import NoHeaderFooterLayout from "./components/client/layout.noheader";
 
 function App() {
   const router = createBrowserRouter([
@@ -112,6 +114,10 @@ function App() {
           element: <BuyPage />,
         },
         {
+          path: "buy/credit",
+          element: <CreditPayment />,
+        },
+        {
           path: "history",
           element: <HistoryPage />,
         },
@@ -132,6 +138,19 @@ function App() {
           element: <NotFoundError />,
         },
       ],
+    },
+    {
+      path: "/",
+      children: [
+        {
+          path: "credit",
+          element: (
+            <NoHeaderFooterLayout>
+              <CreditPayment />
+            </NoHeaderFooterLayout>
+          )
+        }
+      ]
     },
   ]);
 
