@@ -21,8 +21,8 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
-import CreditPayment from "./components/client/payment/CreditPayment";
 import NoHeaderFooterLayout from "./components/client/layout.noheader";
+import CreditPayment from "./pages/client/Buy/CreditPayment";
 
 function App() {
   const router = createBrowserRouter([
