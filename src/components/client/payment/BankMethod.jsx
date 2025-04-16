@@ -11,7 +11,7 @@ const BankMethod = ({ createImg }) => {
   ]
 
   return (
-    <div className={`${openButton1 ? 'bg-gray-100/50' : 'bg-white'} px-2`}>
+    <div className={`${openButton1 ? 'bg-gray-100/50' : 'bg-white border border-slate-200 border-b-0'} px-2`}>
       <button className={`p-2  flex flex-1 w-full items-center justify-between transition-all `} onClick={() => setOpenButton1(!openButton1)}>
         <span className="pr-2">
           <FaBuildingColumns className="text-2x" />
@@ -21,7 +21,7 @@ const BankMethod = ({ createImg }) => {
           <span class="font-semibold text-base text-xen-black-400 text-left">Banking transfer</span>
           {
             !openButton1 &&
-            <div className="flex space-x-1">
+            <div className="flex space-x-1 ">
               {
                 Banks.map(bank => (
                   createImg(bank, "w-12", "h-8")
@@ -39,10 +39,8 @@ const BankMethod = ({ createImg }) => {
 
       </button>
 
-      {
-        openButton1
-        &&
-        <div className="grid grid-cols-3 m-11 gap-y-5 gap-x-3">
+      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openButton1 ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className="grid grid-cols-3 m-11 gap-y-5 gap-x-3 transform transition-all duration-500 origin-top animate-slideDown">
           {
             Banks.map(bank => (
               <div className="h-[100px] w-full bg-white py-5 border border-slate-200 hover:border hover:border-pink-500 cursor-pointer transform transition-all duration-200">
@@ -59,7 +57,8 @@ const BankMethod = ({ createImg }) => {
               <p className="text-[18px]">Other banks</p>
             </div>
           </div>
-        </div>}
+        </div>
+      </div>
 
     </div>
   )
