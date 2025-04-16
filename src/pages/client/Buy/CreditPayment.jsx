@@ -4,6 +4,7 @@ import BankMethod from "../../../components/client/payment/BankMethod";
 import CardMethod from "../../../components/client/payment/CardMethod";
 import Order from "../../../components/client/payment/Order";
 import { useState } from "react";
+import BankPayment from "../../../components/client/payment/BankPayment";
 
 
 const CreditPayment = () => {
@@ -28,6 +29,10 @@ const CreditPayment = () => {
   }
 
   const [openButton3, setOpenButton3] = useState(false);
+
+  const [openBank, setOpenBank] = useState(false);
+
+  const [source, setSource] = useState('');
 
   return (
 
@@ -79,19 +84,26 @@ const CreditPayment = () => {
             </select>
           </header>
 
-          <div className="flex flex-col items-center my-10">
-            <h3 className="">Payment before 21:42 13th 4, 2025 </h3>
-            <h2 className="text-pink-500 text-[2.5rem]">VND 5,500,000</h2>
-          </div>
+          {!openBank &&
+            <>
+              <div className="flex flex-col items-center my-10">
+                <h3 className="">Payment before 21:42 13th 4, 2025 </h3>
+                <h2 className="text-pink-500 text-[2.5rem]">VND 5,500,000</h2>
+              </div>
 
-          <div>Payment method</div>
-          <div className=" w-full h-[2px] my-5 mx-2 flex flex-col ">
+              <div>Payment method</div>
+              <div className=" w-full h-[2px] my-5 mx-2 flex flex-col ">
 
-            <BankMethod createImg={createImg} />
+                <BankMethod createImg={createImg} openBank={openBank} setOpenBank={setOpenBank} setSource={setSource} />
 
-            <CardMethod createImg={createImg} />
+                <CardMethod createImg={createImg} />
 
-          </div>
+              </div>
+            </>
+          }
+
+          <BankPayment openBank={openBank} setOpenBank={setOpenBank} src={source} />
+
         </div>
 
         <div className="col-span-1 pt-8 px-10 text-[18px] hidden lg:block bg-slate-100/50">

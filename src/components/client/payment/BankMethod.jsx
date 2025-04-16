@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaBuildingColumns } from "react-icons/fa6";
 
-const BankMethod = ({ createImg }) => {
+const BankMethod = ({ createImg, openBank, setOpenBank, setSource }) => {
   const [openButton1, setOpenButton1] = useState(false);
 
   const Banks = [
@@ -43,7 +43,10 @@ const BankMethod = ({ createImg }) => {
         <div className="grid grid-cols-3 m-11 gap-y-5 gap-x-3 transform transition-all duration-500 origin-top animate-slideDown">
           {
             Banks.map(bank => (
-              <div className="h-[100px] w-full bg-white py-5 border border-slate-200 hover:border hover:border-pink-500 cursor-pointer transform transition-all duration-200">
+              <div className="h-[100px] w-full bg-white py-5 border border-slate-200 hover:border hover:border-pink-500 cursor-pointer transform transition-all duration-200" onClick={() => {
+                setOpenBank(!openBank)
+                setSource(bank);
+              }}>
                 {createImg(bank, "w-13", "h-10 ")}
               </div>
             ))
