@@ -1,25 +1,38 @@
 import { LeftOutlined, RightOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Form, Input, Modal, Select, Steps, Upload } from "antd";
-import React, { useEffect, useState } from 'react';
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Steps,
+  Upload,
+} from "antd";
+import React, { useEffect, useState } from "react";
 import HandleTicketType from "./handleTicketType";
 import HandleBasicInfo from "./handleBasicInfo";
-
+import { createNewEvent } from "../../../config/api";
 
 const { Step } = Steps;
 
 const steps = [
   {
-    title: 'Event information',
-    content: 'basic-info',
+    title: "Event information",
+    content: "basic-info",
   },
   {
-    title: 'Ticket type',
-    content: 'ticket-type',
-  }
+    title: "Ticket type",
+    content: "ticket-type",
+  },
 ];
 
-
-const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) => {
+const EventModal = ({
+  openModal,
+  setOpenModal,
+  handleSubmit,
+  initialValues,
+}) => {
   const [form] = Form.useForm();
   const [squareLogoFile, setSquareLogoFile] = useState([]);
   const [bannerFile, setBannerFile] = useState([]);
@@ -39,7 +52,6 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
       }
     }
   }, [openModal, initialValues]);
-
   const nextStep = async () => {
     try {
       // Validate fields trước khi chuyển step
@@ -48,7 +60,7 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
       );
       setCurrentStep(currentStep + 1);
     } catch (errorInfo) {
-      console.log('Validation Failed:', errorInfo);
+      console.log("Validation Failed:", errorInfo);
     }
   };
 
@@ -58,10 +70,18 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
 
   const getStepFields = (stepContent) => {
     switch (stepContent) {
-      case 'basic-info':
-        return ['eventName', 'category', 'eventDate', 'province', 'district', 'ward', 'street'];
-      case 'ticket-type':
-        return ['tickets'];
+      case "basic-info":
+        return [
+          "name",
+          "category",
+          "startDate",
+          "province",
+          "district",
+          "ward",
+          "houseNumber",
+        ];
+      case "ticket-type":
+        return ["tickets"];
       default:
         return [];
     }
@@ -69,23 +89,29 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
 
   const onFinish = (values) => {
     const basicInfoValues = form.getFieldsValue([
-      'eventName',
-      'category',
-      'eventDate',
-      'province',
-      'district',
-      'ward',
-      'street'
+      "name",
+      "category",
+      "startDate",
+      "province",
+      "district",
+      "ward",
+      "houseNumber",
+      "organizerName",
+      "organizerInfo",
+      "tickets",
     ]);
-    // console.log("Basic info values:", basicInfoValues);
+    console.log("Basic info values:", basicInfoValues);
 
     const formData = {
       ...basicInfoValues,
-      squareLogo: squareLogoFile[0]?.originFileObj,
-      banner: bannerFile[0]?.originFileObj,
-      organizerLogo: organizerLogoFile[0]?.originFileObj,
-      tickets: values.tickets || []
+      // organizerName: values.organizerName,
+      // organizerInfo: values.organizerInfo,
+      imgEventInfo: squareLogoFile[0]?.url,
+      banner: bannerFile[0]?.url,
+      logo: organizerLogoFile[0]?.url,
+      // tickets: values.tickets || [],
     };
+
     console.log("Form submitted with:", formData);
     handleSubmit(formData);
     setOpenModal(false);
@@ -93,16 +119,22 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
 
   const renderStepContent = () => {
     switch (steps[currentStep].content) {
-      case 'basic-info':
+      case "basic-info":
         return (
-          <HandleBasicInfo form={form} onFinish={onFinish} squareLogoFile={squareLogoFile} setSquareLogoFile={setSquareLogoFile}
-            bannerFile={bannerFile} setBannerFile={setBannerFile} organizerLogoFile={organizerLogoFile} setOrganizerLogoFile={setOrganizerLogoFile} />
+          <HandleBasicInfo
+            form={form}
+            onFinish={onFinish}
+            squareLogoFile={squareLogoFile}
+            setSquareLogoFile={setSquareLogoFile}
+            bannerFile={bannerFile}
+            setBannerFile={setBannerFile}
+            organizerLogoFile={organizerLogoFile}
+            setOrganizerLogoFile={setOrganizerLogoFile}
+          />
         );
 
-      case 'ticket-type':
-        return (
-          <HandleTicketType form={form} />
-        );
+      case "ticket-type":
+        return <HandleTicketType form={form} />;
       default:
         return null;
     }
@@ -110,10 +142,12 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
 
   return (
     <Modal
-      title={form.getFieldValue('id') ? "Edit event" : "Add event"}
+      title={form.getFieldValue("id") ? "Edit event" : "Add event"}
       open={openModal}
       onCancel={() => setOpenModal(false)}
-      onOk={() => currentStep === steps.length - 1 ? form.submit() : nextStep()}
+      onOk={() =>
+        currentStep === steps.length - 1 ? form.submit() : nextStep()
+      }
       width={1000}
       footer={[
         currentStep > 0 && (
@@ -124,18 +158,20 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
         <Button
           key="next"
           type="primary"
-          onClick={() => currentStep === steps.length - 1 ? form.submit() : nextStep()}
+          onClick={() =>
+            currentStep === steps.length - 1 ? form.submit() : nextStep()
+          }
           icon={currentStep === steps.length - 1 ? null : <RightOutlined />}
         >
-          {currentStep === steps.length - 1 ? 'Submit' : 'Next'}
-        </Button>
+          {currentStep === steps.length - 1 ? "Submit" : "Next"}
+        </Button>,
       ]}
       styles={{
         body: {
           maxHeight: "60vh",
           overflowY: "auto",
-          padding: "16px"
-        }
+          padding: "16px",
+        },
       }}
     >
       <Steps current={currentStep} responsive className="mb-6">
@@ -144,11 +180,16 @@ const EventModal = ({ openModal, setOpenModal, handleSubmit, initialValues }) =>
         ))}
       </Steps>
 
-      <Form form={form} onFinish={onFinish} layout="vertical" className="font-bold">
+      <Form
+        form={form}
+        onFinish={onFinish}
+        layout="vertical"
+        className="font-bold"
+      >
         {renderStepContent()}
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 export default EventModal;
