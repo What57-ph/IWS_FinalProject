@@ -4,7 +4,7 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Button, Form, message, notification, Space, Table } from "antd";
+import { Button, Form, message, notification, Space, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import sampleData from "../../data/sampleData";
 import { Grid } from "antd";
@@ -59,6 +59,7 @@ const UserPage = () => {
       key: "name",
       responsive: ["md"],
       width: 500,
+      render: (name) => <span className="text-blue-500">{name}</span>
     },
     {
       title: "Phone",
@@ -71,6 +72,26 @@ const UserPage = () => {
       dataIndex: "role",
       key: "role",
       responsive: ["md"],
+      render: (status) => {
+        const color = status === 'admin' ? 'blue' : 'green';
+        return (
+          <Tag color={color} key={status}>
+            {status.toUpperCase()}
+          </Tag>
+        );
+      },
+      filters: [
+        {
+          text: 'ADMIN',
+          value: 'ADMIN',
+        },
+        {
+          text: 'USER',
+          value: 'USER',
+        },
+      ],
+      onFilter: (value, record) => record.role === value,
+      filterSearch: true,
     },
     {
       title: "Thao tác",
