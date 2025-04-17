@@ -79,6 +79,11 @@ export const uploadSingleFile = async (imgInfo, folder) => {
 export const fetchEventList = () => {
   return instance.get("/api/v1/events");
 };
+export const fetchEventById = async (id) => {
+  const URL = `/api/v1/event/${id}`;
+  const res = await instance.get(URL);
+  return (await res).data;
+};
 export const deleteEvent = async (id) => {
   const URL = `/api/v1/event/${id}`;
   const res = await instance.delete(URL);
@@ -93,7 +98,7 @@ export const createNewEvent = async (eventData) => {
   return (await res).data;
 };
 export const updateEvent = async (eventData, id) => {
-  const URL = `api/v1/users/event/${id}`;
+  const URL = `api/v1/event/${id}`;
   const res = await instance.put(URL, eventData);
   return (await res).data;
 };

@@ -21,6 +21,15 @@ export default {
       borderWidth: {
         1: "1px",
       },
+      keyframes: {
+        slide: {
+          '0%': { transform: 'translateX(110%)' },
+          '100%': { transform: 'translateX(-250%)' },
+        },
+      },
+      animation: {
+        slide: 'slide 30s linear infinite',
+      },
     },
   },
   plugins: [],

@@ -82,7 +82,7 @@ const EventPage = () => {
     {
       title: "Day start",
       dataIndex: "startDate",
-      render: (text) => dayjs(text).format("DD/MM/YYYY"),
+      render: (text) => dayjs(text).format("dddd, DD/MM/YYYY"),
       responsive: ["lg"],
     },
     {
@@ -126,8 +126,7 @@ const EventPage = () => {
     const res = await deleteEvent(id);
     setEvents((prev) => prev.filter((item) => item.id != id));
   };
-  const handleSubmit = async (values) => {
-    console.log("Data event form", values);
+  const handleSubmit = async (values, eventId) => {
     try {
       // Transform data for backend
       const backendData = {
@@ -135,19 +134,16 @@ const EventPage = () => {
         organizerName: values.organizerName,
         organizerInfo: values.organizerInfo,
       };
-
       let response;
       if (requestType === "post") {
         response = await createNewEvent(backendData);
         setEvents((prev) => [...prev, response]);
         toast.success("Create event successfully");
       } else if (requestType === "put") {
-        response = await updateEvent(backendData, values.id);
-        setEvents((prev) =>
-          prev.map((u) => (u.id === values.id ? response : u))
-        );
+        response = await updateEvent(backendData, eventId);
+        setEvents((prev) => prev.map((u) => (u.id === eventId ? response : u)));
         toast.success("Update event successfully");
-        setIsUpdatedUser(!isUpdatedEvent);
+        setIsUpdatedEvent(!isUpdatedEvent);
       }
 
       message.success("Operation successful!");

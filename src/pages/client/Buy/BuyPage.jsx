@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import ProcessOne from "./ProcessOne";
 import ProcessTwo from "./ProcessTwo";
 import ProcessThree from "./ProcessThree";
+import { useOrderContext } from "../../../context/OrderContext";
 
 const BuyPage = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +18,7 @@ const BuyPage = () => {
       return;
     }
     if (!step || !["1", "2", "3"].includes(step)) {
-      navigate(`/buy/?id=${id}&step=1`, { replace: true });
+      navigate(`/buy?id=${id}&step=1`, { replace: true });
     }
   }, [step, id, navigate]);
 

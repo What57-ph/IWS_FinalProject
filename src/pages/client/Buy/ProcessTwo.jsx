@@ -1,5 +1,6 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
+import OrderHead from "../../../components/client/Order/OrderHead";
 
 const ProcessTwo = () => {
   const [searchParams] = useSearchParams();
@@ -7,11 +8,14 @@ const ProcessTwo = () => {
   const step = searchParams.get("step");
 
   return (
-    <div>
-      <h1>Enter ticket receiver info</h1>
-      <p>ID: {id}</p>
-      <p>Step: {step}</p>
-    </div>
+    <>
+      <OrderHead />
+      <div className="max-w-screen-xl mx-[16px] lg:mx-[64px] xl:mx-auto">
+        <h1>Enter Information</h1>
+        <p>ID: {id}</p>
+        <p>Step: {step}</p>
+      </div>
+    </>
   );
 };
 
