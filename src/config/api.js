@@ -2,6 +2,12 @@
 import { toast } from "react-toastify";
 
 import instance from "./axios-customize";
+
+/**
+ * 
+Module User
+ */
+
 export const getUserList = async () => {
   const URL = `api/v1/users`;
   const response = await instance.get(URL);
@@ -58,4 +64,34 @@ export const callRefresh = () => {
   return instance.get('/api/v1/auth/refresh')
 }
 
+/**
+ * 
+Module Oder
+ */
+
+export const callCreateOrder = (order) => {
+  return instance.post('/api/v1/orders', order)
+}
+
+export const callOrders = () => {
+  return instance.get('/api/v1/orders')
+}
+
+export const callDeleteOrder = (orderId) => {
+  return instance.delete(`/api/v1/orders/${orderId}`)
+}
+
+export const callUpdateOrder = (order) => {
+  return instance.put('/api/v1/orders', order)
+}
+
+/**
+ * 
+Module Oder
+ */
+
+
+export const callEvents = () => {
+  return instance.get('/api/v1/events')
+}
 

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { callEvents } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -6,6 +7,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // for event
+  const [loadingEvents, setLoadingEvents] = useState(false);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const loadUser = () => {
@@ -42,8 +47,31 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  useEffect(() => {
+    fetchEvents();
+  }, [])
+
+
+  const fetchEvents = async () => {
+    setLoadingEvents(true);
+    try {
+      const res = await callEvents();
+      console.log("Fetching data for event: ", res.data);
+
+      if (res && res.data) {
+        setEvents(res.data);
+      }
+      setLoadingEvents(false);
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Fetch failed';
+      console.log({ errorMessage });
+      // alert(errorMessage);
+    }
+  }
+
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, events }}>
       {children}
     </AuthContext.Provider>
   );
