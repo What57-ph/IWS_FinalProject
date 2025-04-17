@@ -18,6 +18,7 @@ import {
   Select,
   Space,
   Table,
+  Tag,
   Upload,
 } from "antd";
 import dayjs from "dayjs";
@@ -81,18 +82,23 @@ const EventPage = () => {
     },
     {
       title: 'Day start',
-      dataIndex: 'date',
+      dataIndex: 'startDate',
       render: (text) => {
         const currentDate = dayjs();
         const eventDate = dayjs(text);
         const daysLeft = eventDate.diff(currentDate, 'day');
+        console.log({ daysLeft });
 
-        const textColor = daysLeft <= 5 ? 'text-red-500' : 'text-black';
+        const textColor = daysLeft > 5
+          ? '#FF7F50'
+          : daysLeft >= 0
+            ? 'green'
+            : 'red';
 
         return (
-          <span className={textColor}>
+          <Tag color={textColor} >
             {eventDate.format('DD/MM/YYYY')}
-          </span>
+          </Tag>
         );
       },
       responsive: ['lg'],
