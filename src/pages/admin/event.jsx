@@ -48,8 +48,21 @@ const EventPage = () => {
     {
       title: 'Day start',
       dataIndex: 'date',
-      render: (text) => dayjs(text).format('DD/MM/YYYY'),
-      responsive: ['lg']
+      render: (text) => {
+        const currentDate = dayjs();
+        const eventDate = dayjs(text);
+        const daysLeft = eventDate.diff(currentDate, 'day');
+
+        const textColor = daysLeft <= 5 ? 'text-red-500' : 'text-black';
+
+        return (
+          <span className={textColor}>
+            {eventDate.format('DD/MM/YYYY')}
+          </span>
+        );
+      },
+      responsive: ['lg'],
+      sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
     },
     {
       title: 'Thao tác',
