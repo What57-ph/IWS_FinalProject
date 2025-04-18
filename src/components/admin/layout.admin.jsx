@@ -7,12 +7,14 @@ import {
   MenuUnfoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Button, Drawer, Dropdown, Layout, Menu, Space } from "antd";
+import { Avatar, Breadcrumb, Button, Drawer, Dropdown, Layout, Menu, message, Space } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Bounce, ToastContainer } from "react-toastify";
+import { callLogout } from "../../config/api";
+import { useAuth } from "../../context/AuthContext";
 const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [activeMenu, setActiveMenu] = useState("/admin");
@@ -43,9 +45,22 @@ const AdminLayout = () => {
 
   }, [])
 
+  const { logout } = useAuth();
+  let params = new URLSearchParams(location.search);
+  const callback = params?.get("callback");
+
+  const handleLogout = async () => {
+    const res = await callLogout();
+    if (res && res && +res.statusCode === 200) {
+      logout();
+      message.success('Đăng xuất thành công');
+      window.location.href = callback ? callback : '/';
+    }
+  }
+
   const itemsDropdown = [
     { label: <Link to="/">Trang chủ</Link>, key: "home" },
-    { label: <span role="button">Đăng xuất</span>, key: "logout" },
+    { label: <span role="button" onClick={handleLogout}>Đăng xuất</span>, key: "logout" },
   ];
 
   const menuItems = [
@@ -171,7 +186,7 @@ const AdminLayout = () => {
             <Space className="cursor-pointer hover:bg-gray-100 px-3 py-1 rounded-lg">
               {
                 !isMobile &&
-                <span className={collapsed ? "hidden" : "text-[20px]"}>
+                <span className={"text-[20px]"}>
                   Welcome ducsieunhan
                 </span>}
               <Avatar className="bg-blue-500">DU</Avatar>

@@ -245,6 +245,7 @@ const UserPage = () => {
           bordered
           scroll={{ x: true }}
           size="middle"
+          pagination={{ pageSize: 7 }}
         />
       )}
 

@@ -259,6 +259,7 @@ const EventPage = () => {
           bordered
           scroll={{ x: true }}
           size="middle"
+          pagination={{ pageSize: 7 }}
         />
       )}
       <EventModal
