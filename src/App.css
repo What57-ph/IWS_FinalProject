@@ -42,6 +42,6 @@
     @apply flex overflow-hidden flex-col px-2 w-8 rounded border border-gray-200 shadow-sm items-center justify-center;
   }
   .eventForm {
-    @apply max-w-md mx-auto bg-white p-4 rounded-lg shadow-xl space-y-6 mt-5 border border-gray-300;
+    @apply xl:w-[540px] lg:w-[400px] w-[80vw] bg-white p-4 rounded-lg shadow-xl space-y-6 mt-5 border border-gray-300;
   }
 }

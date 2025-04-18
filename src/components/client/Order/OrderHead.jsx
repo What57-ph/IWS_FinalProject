@@ -25,7 +25,7 @@ const OrderHead = ({ id }) => {
       <div className=" flex justify-between items-center px-[16px] lg:px-[105px] xl:px-auto py-4">
         <OrderStep />
         <div className="w-fit flex items-center justify-center gap-2">
-          <p className="text-lg text-gray-500">
+          <p className="text-lg text-gray-500 xl:block hidden">
             Time remaining to book tickets
           </p>
           <div className="flex items-center justify-center text-3xl font-bold ms-3">
@@ -46,7 +46,7 @@ const OrderHead = ({ id }) => {
         </div>
       </div>
       <div className="flex justify-end w-full border-1 border-gray-900 shadow-2xl overflow-hidden" style={{ background: "linear-gradient(90deg,rgba(21, 22, 46, 1) 0%, rgba(72, 77, 89, 1) 41%, rgba(35, 54, 77, 1) 86%)" }}>
-        <p className="animate-slide text-lg font-bold text-white text-opacity-45 flex items-center py-4 w-fit">
+        <p className="animate-slide text-nowrap text-lg font-bold text-white text-opacity-45 flex items-center py-4 w-fit">
           {name} &nbsp;&nbsp; <FaCalendarAlt />&nbsp;{date} &nbsp;&nbsp; <FaLocationDot />&nbsp;{location}
         </p>
       </div>

@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import OrderHead from "../../../components/client/Order/OrderHead";
+import { useOrderContext } from "../../../context/OrderContext";
 
 const ProcessTwo = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const step = searchParams.get("step");
-
+  const { event, setEvent, order, setOrder, eventId, setEventId } =
+    useOrderContext();
+  useEffect(() => {
+    setEventId(id);
+  }, [id]);
+  const antStep = document.querySelectorAll(".ant-steps-item");
+  antStep.forEach((item, index) => {
+    item.className += " px-2 ms-4 ";
+  });
   return (
     <>
       <OrderHead />
