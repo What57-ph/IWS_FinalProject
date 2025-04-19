@@ -18,6 +18,7 @@ import {
   Select,
   Space,
   Table,
+  Tag,
   Upload,
 } from "antd";
 import dayjs from "dayjs";
@@ -80,10 +81,28 @@ const EventPage = () => {
       responsive: ["md"],
     },
     {
-      title: "Day start",
-      dataIndex: "startDate",
-      render: (text) => dayjs(text).format("DD/MM/YYYY"),
-      responsive: ["lg"],
+      title: 'Day start',
+      dataIndex: 'startDate',
+      render: (text) => {
+        const currentDate = dayjs();
+        const eventDate = dayjs(text);
+        const daysLeft = eventDate.diff(currentDate, 'day');
+        console.log({ daysLeft });
+
+        const textColor = daysLeft > 5
+          ? '#FF7F50'
+          : daysLeft >= 0
+            ? 'green'
+            : 'red';
+
+        return (
+          <Tag color={textColor} >
+            {eventDate.format('DD/MM/YYYY')}
+          </Tag>
+        );
+      },
+      responsive: ['lg'],
+      sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
     },
     {
       title: "Thao tác",
@@ -147,7 +166,7 @@ const EventPage = () => {
           prev.map((u) => (u.id === values.id ? response : u))
         );
         toast.success("Update event successfully");
-        setIsUpdatedUser(!isUpdatedEvent);
+        setIsUpdatedEvent(!isUpdatedEvent);
       }
 
       message.success("Operation successful!");
@@ -240,6 +259,7 @@ const EventPage = () => {
           bordered
           scroll={{ x: true }}
           size="middle"
+          pagination={{ pageSize: 7 }}
         />
       )}
       <EventModal

@@ -1,11 +1,12 @@
 import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, message, Popconfirm, Space, Table } from "antd";
+import { Button, Form, message, Popconfirm, Space, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { Grid } from 'antd';
 import OrderModal from "../../components/admin/order/OrderModal";
 import OrderDetailModal from "../../components/admin/order/OrderDetailModal";
 import { callCreateOrder, callDeleteOrder, callOrders, callUpdateOrder } from "../../config/api";
 import { toast } from "react-toastify";
+import EnumStatusOrder from "../../utils/EnumStatusOrder";
 
 
 const OrderPage = () => {
@@ -55,26 +56,39 @@ const OrderPage = () => {
     },
     {
       title: 'User',
-      render: (record) => record.user?.email,
+      render: (record) => <a className="text-blue-800">{record.user?.email}</a>,
       key: 'user',
       responsive: ['md'],
-      width: 500
+      width: 500,
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      responsive: ['md']
+      responsive: ['md'],
+      render: (status) => {
+        const color = status === 'CANCELED' ? 'volcano' : status === 'CONFIRMED' ? 'green' : 'orange';
+        return (
+          <Tag color={color} key={status}>
+            {status.toUpperCase()}
+          </Tag>
+        );
+      },
+      filters: EnumStatusOrder.map((status) => ({ text: status, value: status })),
+      onFilter: (value, record) => record.status === value,
+      filterSearch: true,
     },
     {
       title: 'Total price',
       dataIndex: 'totalPrice',
-      key: 'role',
+      key: 'totalPrice',
       responsive: ['md'],
       render: (price) => {
         const formattedPrice = new Intl.NumberFormat('vi-VN').format(price);
         return `${formattedPrice} đ`;
-      }
+      },
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => parseInt(a.totalPrice) - parseInt(b.totalPrice),
     },
     {
       title: 'Thao tác',

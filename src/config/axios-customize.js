@@ -34,9 +34,12 @@ instance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Thêm điều kiện kiểm tra
     if (error.response?.status === 401 &&
       !originalRequest.url.includes('/auth/login') &&
-      !originalRequest.headers[NO_RETRY_HEADER]
+      !originalRequest.headers[NO_RETRY_HEADER] &&
+      // Kiểm tra có refresh token trong cookie không
+      document.cookie.includes('refresh_token=')
     ) {
       originalRequest.headers[NO_RETRY_HEADER] = 'true';
       const newToken = await handleRefreshToken();
@@ -45,16 +48,18 @@ instance.interceptors.response.use(
         localStorage.setItem('access_token', newToken);
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return instance(originalRequest);
-      } else {
-        localStorage.removeItem('access_token');
-        window.location.href = '/auth/login';
-        return Promise.reject(new Error('Session timeout'));
       }
+
+      // Xóa token và redirect về login
+      localStorage.removeItem('access_token');
+      window.location.href = '/auth/login';
+      return Promise.reject(new Error('Session expired'));
     }
+
     if (error.response) {
       return Promise.reject(error.response.data);
     }
-    return Promise.reject(new Error('Lỗi kết nối!'));
+    return Promise.reject(new Error('Connection error'));
   }
 );
 
