@@ -1,20 +1,45 @@
 import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, message, Space, Table } from "antd";
-import { useState } from "react";
-import sampleData from "../../data/sampleData";
+import { Button, Form, message, Popconfirm, Space, Table, Tag } from "antd";
+import { useEffect, useState } from "react";
 import { Grid } from 'antd';
-import UserModal from "../../components/admin/user/UserModal";
 import OrderModal from "../../components/admin/order/OrderModal";
 import OrderDetailModal from "../../components/admin/order/OrderDetailModal";
+import { callCreateOrder, callDeleteOrder, callOrders, callUpdateOrder } from "../../config/api";
+import { toast } from "react-toastify";
+import EnumStatusOrder from "../../utils/EnumStatusOrder";
 
 
 const OrderPage = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [orders, setOrders] = useState(sampleData.orders);
-  console.log(orders);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // for modal handle get ticket order
+  const [items, setItems] = useState([]);
+
+
+  const [orders, setOrders] = useState([]);
+  // console.log(orders);
+
+  // Fetch orders on component mount and whenever the refresh trigger changes
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [refreshTrigger])
+
+  // reload table after fetch 
+
+  const refreshTable = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
+
+  // useEffect(() => {
+  //   console.log("Orders updated:", orders);
+  // }, [orders]);
 
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
@@ -25,32 +50,45 @@ const OrderPage = () => {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'orderId',
       width: 70,
       responsive: ['md']
     },
     {
       title: 'User',
-      dataIndex: 'user',
+      render: (record) => <a className="text-blue-800">{record.user?.email}</a>,
       key: 'user',
       responsive: ['md'],
-      width: 500
+      width: 500,
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      responsive: ['md']
+      responsive: ['md'],
+      render: (status) => {
+        const color = status === 'CANCELED' ? 'volcano' : status === 'CONFIRMED' ? 'green' : 'orange';
+        return (
+          <Tag color={color} key={status}>
+            {status.toUpperCase()}
+          </Tag>
+        );
+      },
+      filters: EnumStatusOrder.map((status) => ({ text: status, value: status })),
+      onFilter: (value, record) => record.status === value,
+      filterSearch: true,
     },
     {
       title: 'Total price',
-      dataIndex: 'total_price',
-      key: 'role',
+      dataIndex: 'totalPrice',
+      key: 'totalPrice',
       responsive: ['md'],
       render: (price) => {
         const formattedPrice = new Intl.NumberFormat('vi-VN').format(price);
         return `${formattedPrice} đ`;
-      }
+      },
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => parseInt(a.totalPrice) - parseInt(b.totalPrice),
     },
     {
       title: 'Thao tác',
@@ -61,11 +99,19 @@ const OrderPage = () => {
             onClick={() => handleEdit(record)}   // pass current value
             size="small"
           />
-          <Button
-            icon={<DeleteOutlined />}
-            danger
-            size="small"
-          />
+          <Popconfirm
+            title="Do you sure want to delete ?"
+            onConfirm={() => handleDelete(record.orderId)}
+            okText="Có"
+            cancelText="Không"
+            placement="left"
+          >
+            <Button
+              icon={<DeleteOutlined />}
+              danger
+              size="small"
+            />
+          </Popconfirm>
           <Button
             icon={<InfoCircleOutlined />}
             onClick={() => handleGetInfo(record)}
@@ -81,11 +127,21 @@ const OrderPage = () => {
 
   // handle function 
   const handleEdit = (order) => {
-    console.log(order);
+    console.log("Check record to edit", order);
+    // console.log(order.items[0].ticket.ticketId);
 
-    form.setFieldsValue(order);
+
+    form.setFieldsValue({
+      ...order,
+      items: order.items
+    });
+
+    // update items 
+    setItems(order.items || []);
+
     setOpenModal(true);
   };
+
 
   // get detail order
   const handleGetInfo = (order) => {
@@ -95,13 +151,108 @@ const OrderPage = () => {
     setOpenDetail(true);
   };
 
-  const handleSubmit = (values) => {
-    console.log('All form values:', values);
-    message.success('Lưu thành công!');
-    setOpenModal(false);
+  const resetAll = () => {
+    setItems([]);
+    form.resetFields();
   };
 
+
+  // CRUD
+
+  const fetchOrders = async () => {
+    setIsLoading(true);
+    try {
+      const res = await callOrders();
+      // console.log(res.data.result);
+
+      if (res && res.data) {
+        setOrders(res.data.result);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Fetch failed';
+      console.log({ errorMessage });
+      // alert(errorMessage);
+    }
+  }
+
+  const handleSubmit = async (values) => {
+    console.log('All form values to create:', values);
+    setIsSubmitting(true);
+
+    try {
+      const res = await callCreateOrder(values);
+      console.log("Call create order value: ", res);
+      if (res?.data) {
+        resetAll();
+        setOpenModal(false);
+
+        toast.success("Create event successfully !", {
+          position: "top-right",
+        });
+
+        refreshTable();
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Create failed!';
+      toast.error({ errorMessage }, {
+        position: "top-right",
+      });
+      // console.log({ errorMessage });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  const handleUpdate = async (values) => {
+    console.log('All form values to update:', values);
+    setIsSubmitting(true);
+
+    try {
+      const res = await callUpdateOrder(values);
+      console.log("Call update order value: ", res);
+      if (res?.data) {
+        resetAll();
+        setOpenModal(false);
+        toast.success("Update event successfully !", {
+          position: "top-right",
+        });
+        refreshTable();
+      }
+    } catch (error) {
+      const errorMessage = error?.message || 'Update failed!';
+      alert(errorMessage);
+
+      // console.log({ errorMessage });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  const handleDelete = async (orderId) => {
+    console.log('All form values:', orderId);
+    try {
+      const res = await callDeleteOrder(orderId);
+      console.log("Call delete order: ", res.message);
+      toast.success("Delete event successfully !", {
+        position: "top-right",
+      });
+      refreshTable();
+
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Create failed!';
+      toast.error({ errorMessage }, {
+        position: "top-right",
+      });
+      refreshTable();
+      console.log({ errorMessage });
+    }
+  }
+
+  // CRUD end 
+
   const handleCancel = () => {
+    resetAll();
     setOpenModal(false);
   };
 
@@ -136,14 +287,23 @@ const OrderPage = () => {
               onClick={() => handleEdit(record)}   // pass current value
               size="small"
             />
-            <Button
-              icon={<DeleteOutlined />}
-              danger
-              size="small"
-            />
+            <Popconfirm
+              title="Do you sure want to delete ?"
+              onConfirm={() => handleDelete(record.orderId)}
+              okText="Có"
+              cancelText="Không"
+              placement="left"
+            >
+              <Button
+                icon={<DeleteOutlined />}
+                danger
+                size="small"
+              />
+            </Popconfirm>
             <Button
               icon={<InfoCircleOutlined />}
               onClick={() => handleGetInfo(record)}
+              type="primary"
               size="small"
             />
           </Space>
@@ -164,7 +324,7 @@ const OrderPage = () => {
 
       {isMobile ? (
         <div className="space-y-3">
-          {orders.map((user) => (
+          {orders?.map((user) => (
             <div key={user.id}>{mobileRowRender(user)}</div>
           ))}
         </div>
@@ -172,10 +332,11 @@ const OrderPage = () => {
         <Table
           dataSource={orders}
           columns={columns}
-          rowKey="id"
+          rowKey="Order id"
           bordered
           scroll={{ x: true }}
           size="middle"
+          pagination={{ pageSize: 7 }}
         />
       )}
 
@@ -183,17 +344,23 @@ const OrderPage = () => {
         open={openModal}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handleUpdate={handleUpdate}
+        items={items} setItems={setItems}
         form={form}
+        isSubmitting={isSubmitting}
       />
 
       <OrderDetailModal
         open={openDetail}
         handleCancel={handleClose}
+        handleSubmit={handleClose}
         form={form}
       />
 
 
     </div>
+
+    // <div></div>
   )
 }
 export default OrderPage

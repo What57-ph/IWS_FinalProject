@@ -21,6 +21,7 @@
     "dvhcvn": "^1.2.20250301",
     "libphonenumber-js": "^1.12.7",
     "react": "^19.0.0",
+    "react-apexcharts": "^1.7.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.4.1",

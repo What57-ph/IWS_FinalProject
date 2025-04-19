@@ -18,6 +18,7 @@ import {
   Select,
   Space,
   Table,
+  Tag,
   Upload,
 } from "antd";
 import dayjs from "dayjs";
@@ -80,10 +81,28 @@ const EventPage = () => {
       responsive: ["md"],
     },
     {
-      title: "Day start",
-      dataIndex: "startDate",
-      render: (text) => dayjs(text).format("dddd, DD/MM/YYYY"),
-      responsive: ["lg"],
+      title: 'Day start',
+      dataIndex: 'startDate',
+      render: (text) => {
+        const currentDate = dayjs();
+        const eventDate = dayjs(text);
+        const daysLeft = eventDate.diff(currentDate, 'day');
+        console.log({ daysLeft });
+
+        const textColor = daysLeft > 5
+          ? '#FF7F50'
+          : daysLeft >= 0
+            ? 'green'
+            : 'red';
+
+        return (
+          <Tag color={textColor} >
+            {eventDate.format('DD/MM/YYYY')}
+          </Tag>
+        );
+      },
+      responsive: ['lg'],
+      sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
     },
     {
       title: "Thao tác",
@@ -97,12 +116,21 @@ const EventPage = () => {
             }}
             size="small"
           />
-          <Button
-            icon={<DeleteOutlined />}
-            danger
-            size="small"
-            onClick={() => handleDelete(record.id)}
-          />
+          <Popconfirm
+            title="Do you sure want to delete ?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Có"
+            cancelText="Không"
+            placement="left"
+          >
+            <Button
+              icon={<DeleteOutlined />}
+              danger
+              size="small"
+
+            />
+          </Popconfirm>
+
           <Button
             icon={<InfoCircleOutlined />}
             onClick={() => handleGetInfo(record)}
@@ -197,7 +225,16 @@ const EventPage = () => {
           {/* Bỏ col-span-2 */}
           <Space>
             <Button icon={<EditOutlined />} size="small" />
-            <Button icon={<DeleteOutlined />} danger size="small" />
+            <Popconfirm
+              title="Do you sure want to delete ?"
+              onConfirm={() => handleDelete(record.orderId)}
+              okText="Có"
+              cancelText="Không"
+              placement="left"
+            >
+              <Button icon={<DeleteOutlined />} danger size="small" />
+            </Popconfirm>
+
           </Space>
         </div>
       </div>
@@ -236,6 +273,7 @@ const EventPage = () => {
           bordered
           scroll={{ x: true }}
           size="middle"
+          pagination={{ pageSize: 7 }}
         />
       )}
       <EventModal
