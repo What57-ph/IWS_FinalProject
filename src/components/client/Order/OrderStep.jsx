@@ -6,13 +6,9 @@ import { useOrderContext } from "../../../context/OrderContext";
 const OrderStep = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { event, setEvent, order, setOrder, eventId, setEventId } =
-    useOrderContext();
-  const step = searchParams.get("step");
+  const { currentStep, setCurrentStep } = useOrderContext();
   const id = searchParams.get("id");
   const location = useLocation();
-
-  const [current, setCurrent] = useState(step);
   const [status, setStatus] = useState({
     status1: "process",
     status2: "wait",
@@ -20,21 +16,23 @@ const OrderStep = () => {
   });
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const title = ["Select Tickets", "Enter Information", "Payment"];
-  const antStep = document.querySelectorAll(".ant-steps-item");
-  antStep.forEach((item, index) => {
-    item.className += " px-2 ms-4 ";
-  });
+  const handlePreviousBtn = () => {
+    if (currentStep <= 0) {
+      navigate(-1);
+    }
+    setCurrentStep((prev) => prev - 1);
+  }
   useEffect(() => {
-    setCurrent(step);
+
     setStatus(
-      step === "1"
+      currentStep === 0
         ? { status1: "process", status2: "wait", status3: "wait" }
-        : step === "2"
+        : currentStep === 1
           ? { status1: "finish", status2: "process", status3: "wait" }
           : { status1: "finish", status2: "finish", status3: "process" }
     );
+  }, [currentStep]);
 
-  }, [location.pathname, step]);
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -46,17 +44,18 @@ const OrderStep = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   const onChange = (value) => {
-    navigate(`/buy?id=${eventId}&step=${value + 1}`);
-    setCurrent(value);
+    setCurrentStep(value);
   };
+
   const renderStepOrder = () => {
     return screenWidth > 1024 ? (
       <Steps
         type="navigation"
-        current={current}
+        current={currentStep}
         onChange={onChange}
-        className=" w-[720px] ms-4"
+        className="w-[720px] ms-4"
         items={[
           { status: status.status1, title: "Select Tickets" },
           { status: status.status2, title: "Enter Information" },
@@ -65,15 +64,16 @@ const OrderStep = () => {
       />
     ) : (
       <div>
-        <p>{title[current - 1]}</p>
+        <p>{title[currentStep]}</p>
       </div>
-    )
-  }
+    );
+  };
+
   return (
     <div className="flex items-center justify-evenly">
       <button
         className="p-2 rounded-full border border-gray-200 bg-opacity-90 backdrop-blur-sm"
-        onClick={() => navigate(-1)}
+        onClick={handlePreviousBtn}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -91,9 +91,7 @@ const OrderStep = () => {
         </svg>
       </button>
       {renderStepOrder()}
-
-
-    </div>
+    </div >
   );
 };
 

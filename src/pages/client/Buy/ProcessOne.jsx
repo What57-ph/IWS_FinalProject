@@ -8,7 +8,7 @@ import EventOrderOne from "../../../components/client/Order/step1/EventOrderOne"
 const ProcessOne = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
-  const step = searchParams.get("step");
+  // const step = searchParams.get("step");
   const { event, setEvent, order, setOrder, eventId, setEventId } =
     useOrderContext();
   useEffect(() => {
@@ -17,13 +17,8 @@ const ProcessOne = () => {
 
   return (
     <>
-      <OrderHead
 
-        id={id}
-      />
-      <div className="max-w-screen-xl mx-[16px] lg:mx-[64px] xl:mx-auto">
-        <EventOrderOne />
-      </div>
+      <EventOrderOne />
     </>
   );
 };

@@ -1,10 +1,16 @@
 import { toast } from "react-toastify";
 
 import instance from "./axios-customize";
+//Module user
 export const getUserList = async () => {
   const URL = `api/v1/users`;
   const response = await instance.get(URL);
   return response.data;
+};
+export const fetchUserByEmail = async (email) => {
+  const URL = `/api/v1/user?email=${email}`;
+  const res = await instance.get(URL);
+  return (await res).data;
 };
 export const createNewUser = async (userData) => {
   const URL = `api/v1/users`;

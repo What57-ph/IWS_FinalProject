@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { fetchUserByEmail } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -6,7 +7,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState();
+  useEffect(() => {
+    const fetchUserDataByEmail = async (email) => {
+      if (!email) return;
+      const data = await fetchUserByEmail(email);
+      setCurrentUser(data);
+    };
+    fetchUserDataByEmail(user?.email);
 
+  }, [user]);
   useEffect(() => {
     const loadUser = () => {
       const token = localStorage.getItem('access_token');
@@ -43,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, currentUser }}>
       {children}
     </AuthContext.Provider>
   );

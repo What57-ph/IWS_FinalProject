@@ -1,6 +1,6 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import DashboardPage from "./pages/admin/dashboard";
+import DashboardPage from "./pages/Admin/dashboard";
 import UserPage from "./pages/admin/user";
 import EventPage from "./pages/Admin/event";
 import OrderPage from "./pages/admin/order";

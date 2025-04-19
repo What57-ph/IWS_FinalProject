@@ -42,6 +42,12 @@
     @apply flex overflow-hidden flex-col px-2 w-8 rounded border border-gray-200 shadow-sm items-center justify-center;
   }
   .eventForm {
-    @apply xl:w-[540px] lg:w-[400px] w-[80vw] bg-white p-4 rounded-lg shadow-xl space-y-6 mt-5 border border-gray-300;
+    @apply xl:w-[600px] lg:w-[450px] w-[85vw] bg-white p-4 rounded-lg shadow-md space-y-6 mt-5 border border-gray-300;
+  }
+  .eventStep2Form {
+    @apply bg-white rounded-lg shadow-md mt-5 border border-gray-300;
+  }
+  .paymentInput {
+    @apply h-[44px] bg-gray-100 focus:bg-gray-100 focus:ring-2 text-base relative rounded-lg border-0 hover:bg-gray-100;
   }
 }
