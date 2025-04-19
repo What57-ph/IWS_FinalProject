@@ -5,11 +5,14 @@ import App from "./App.jsx";
 
 import "@fortawesome/fontawesome-free";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { OrderProvider } from "./context/OrderContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <App />
+      <OrderProvider>
+        <App />
+      </OrderProvider>
     </AuthProvider>
   </StrictMode>
 );

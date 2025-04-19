@@ -89,9 +89,11 @@ const EventModal = ({
 
   const onFinish = (values) => {
     const basicInfoValues = form.getFieldsValue([
+      "id",
       "name",
       "category",
       "startDate",
+      "endDate",
       "province",
       "district",
       "ward",
@@ -113,7 +115,7 @@ const EventModal = ({
     };
 
     console.log("Form submitted with:", formData);
-    handleSubmit(formData);
+    handleSubmit(formData, formData.id);
     setOpenModal(false);
   };
 

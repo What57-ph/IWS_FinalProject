@@ -4,6 +4,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { uploadSingleFile } from "../../../config/api";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
+import { useState } from "react";
 const HandleBasicInfo = ({
   form,
   squareLogoFile,
@@ -14,7 +15,7 @@ const HandleBasicInfo = ({
   setOrganizerLogoFile,
 }) => {
   const { RangePicker } = DatePicker;
-
+  const [dateList, setDateList] = useState([]);
   const onChange = (dates) => {
     if (dates) {
       const formattedStartDate = dates[0].format("YYYY-MM-DDTHH:mm:ss");
@@ -29,16 +30,17 @@ const HandleBasicInfo = ({
         endDate: null,
       });
     }
+
   };
   //handle upload file
   const beforeUpload = (file) => {
     const isJpgOrPng =
       file.type === "image/jpeg" ||
       file.type === "image/png" ||
-      file.type === "image/jpg";
+      file.type === "image/jpg" || file.type === "image/webp";;
     if (!isJpgOrPng) {
       // message.error("You can only upload JPG/PNG file!");
-      toast.error("The file must have extension of jpeg, png or jpg");
+      toast.error("The file must have extension of webp, jpeg, png or jpg");
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
@@ -65,7 +67,8 @@ const HandleBasicInfo = ({
             uid: file.uid,
             name: res.fileName,
             status: "done",
-            url: URL.createObjectURL(file), // tao moi local url de truyen sang blob data => tao duong dan anh bang localhost fe
+            url: `${import.meta.env.VITE_BACKEND_URL}/storage/info/${res.fileName
+              }`, // tao moi local url de truyen sang blob data => tao duong dan anh bang localhost fe
           },
         ]);
         console.log("Img info file:", squareLogoFile);
@@ -94,7 +97,9 @@ const HandleBasicInfo = ({
             uid: file.uid,
             name: file.name,
             status: "done",
-            url: URL.createObjectURL(file),
+            // url: URL.createObjectURL(file),
+            url: `${import.meta.env.VITE_BACKEND_URL}/storage/banner/${res.fileName
+              }`,
           },
         ]);
       } else {
@@ -121,7 +126,9 @@ const HandleBasicInfo = ({
             uid: file.uid,
             name: file.name,
             status: "done",
-            url: URL.createObjectURL(file),
+            // url: URL.createObjectURL(file),
+            url: `${import.meta.env.VITE_BACKEND_URL}/storage/logo/${res.fileName
+              }`,
           },
         ]);
       } else {
@@ -134,9 +141,8 @@ const HandleBasicInfo = ({
   };
   const renderUploadButton = (text, ratio, isSquare = true) => (
     <div
-      className={`w-full ${
-        isSquare ? "aspect-square" : "aspect-video"
-      } flex flex-col 
+      className={`w-full ${isSquare ? "aspect-square" : "aspect-video"
+        } flex flex-col 
     items-center justify-center bg-gray-50 hover:bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg
     
     `}
@@ -202,6 +208,11 @@ const HandleBasicInfo = ({
             showTime
             format="YYYY/MM/DD HH:mm:ss"
             onChange={onChange}
+            onCalendarChange={(dates) => {
+              setDateList(dates);
+
+            }}
+
           />
         </Form.Item>
       </div>
@@ -225,15 +236,14 @@ const HandleBasicInfo = ({
               defaultFileList={
                 typeof squareLogoFile === "string"
                   ? [
-                      {
-                        uid: uuidv4(),
-                        name: squareLogoFile,
-                        status: "done",
-                        url: `${
-                          import.meta.env.VITE_BACKEND_URL
+                    {
+                      uid: uuidv4(),
+                      name: squareLogoFile,
+                      status: "done",
+                      url: `${import.meta.env.VITE_BACKEND_URL
                         }/storage/info/${squareLogoFile}`,
-                      },
-                    ]
+                    },
+                  ]
                   : []
               }
             >
@@ -256,15 +266,14 @@ const HandleBasicInfo = ({
               defaultFileList={
                 bannerFile && typeof bannerFile === "string"
                   ? [
-                      {
-                        uid: uuidv4(),
-                        name: bannerFile,
-                        status: "done",
-                        url: `${
-                          import.meta.env.VITE_BACKEND_URL
+                    {
+                      uid: uuidv4(),
+                      name: bannerFile,
+                      status: "done",
+                      url: `${import.meta.env.VITE_BACKEND_URL
                         }/storage/info/${bannerFile}`,
-                      },
-                    ]
+                    },
+                  ]
                   : []
               }
             >
@@ -294,15 +303,14 @@ const HandleBasicInfo = ({
               defaultFileList={
                 organizerLogoFile && typeof organizerLogoFile === "string"
                   ? [
-                      {
-                        uid: uuidv4(),
-                        name: organizerLogoFile,
-                        status: "done",
-                        url: `${
-                          import.meta.env.VITE_BACKEND_URL
+                    {
+                      uid: uuidv4(),
+                      name: organizerLogoFile,
+                      status: "done",
+                      url: `${import.meta.env.VITE_BACKEND_URL
                         }/storage/info/${organizerLogoFile}`,
-                      },
-                    ]
+                    },
+                  ]
                   : []
               }
             >

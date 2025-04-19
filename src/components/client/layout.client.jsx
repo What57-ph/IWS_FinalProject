@@ -5,7 +5,7 @@ import Footer from "./designLayouts/Footer";
 const ClientLayout = () => {
   return (
     <>
-      <div className="m-auto min-h-screen ">
+      <div className="m-auto">
         <Header />
         <div className="border-1 border-b-slate-200"></div>
         <Outlet />
