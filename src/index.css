@@ -49,3 +49,7 @@ body {
   -ms-overflow-style: none;
 }
 
+.ant-popover-inner {
+  padding: 0 !important;
+}
+
