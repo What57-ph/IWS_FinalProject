@@ -1,24 +1,48 @@
-import { AppstoreOutlined, BugOutlined, CalendarOutlined, DollarCircleOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  BugOutlined,
+  CalendarOutlined,
+  DollarCircleOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Layout, Menu, Space } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [activeMenu, setActiveMenu] = useState('/admin');
+  const [activeMenu, setActiveMenu] = useState("/admin");
 
   const itemsDropdown = [
-    { label: <Link to="/">Trang chủ</Link>, key: 'home' },
-    { label: <span role="button">Đăng xuất</span>, key: 'logout' }
+    { label: <Link to="/">Trang chủ</Link>, key: "home" },
+    { label: <span role="button">Đăng xuất</span>, key: "logout" },
   ];
 
   const menuItems = [
-    { label: <Link to="/admin">Dashboard</Link>, key: '/admin', icon: <AppstoreOutlined /> },
-    { label: <Link to="/admin/user">User</Link>, key: '/admin/user', icon: <UserOutlined /> },
-    { label: <Link to="/admin/event">Event</Link>, key: '/admin/event', icon: <CalendarOutlined /> },
-    { label: <Link to="/admin/order">Order</Link>, key: '/admin/order', icon: <DollarCircleOutlined /> },
+    {
+      label: <Link to="/admin">Dashboard</Link>,
+      key: "/admin",
+      icon: <AppstoreOutlined />,
+    },
+    {
+      label: <Link to="/admin/user">User</Link>,
+      key: "/admin/user",
+      icon: <UserOutlined />,
+    },
+    {
+      label: <Link to="/admin/event">Event</Link>,
+      key: "/admin/event",
+      icon: <CalendarOutlined />,
+    },
+    {
+      label: <Link to="/admin/order">Order</Link>,
+      key: "/admin/order",
+      icon: <DollarCircleOutlined />,
+    },
   ];
 
   return (
@@ -33,7 +57,9 @@ const AdminLayout = () => {
         className="fixed h-screen z-50"
       >
         <div className="h-12 m-4 text-center text-lg flex items-center justify-center">
-          {collapsed ? <BugOutlined /> : (
+          {collapsed ? (
+            <BugOutlined />
+          ) : (
             <>
               <BugOutlined className="mr-2" />
               <span>Admin</span>
@@ -50,7 +76,11 @@ const AdminLayout = () => {
         />
       </Sider>
 
-      <Layout className={`transition-all duration-200 ${collapsed ? 'pl-[80px]' : 'pl-[250px]'}`}>
+      <Layout
+        className={`transition-all duration-200 ${
+          collapsed ? "pl-[80px]" : "pl-[250px]"
+        }`}
+      >
         <Header className="bg-white shadow-sm flex items-center justify-between px-6">
           <Button
             type="text"
@@ -59,9 +89,11 @@ const AdminLayout = () => {
             className="!w-16 !h-16 -ml-2"
           />
 
-          <Dropdown menu={{ items: itemsDropdown }} trigger={['click']} >
+          <Dropdown menu={{ items: itemsDropdown }} trigger={["click"]}>
             <Space className="cursor-pointer hover:bg-gray-100 px-3 py-1 rounded-lg">
-              <span className={collapsed ? 'hidden' : 'text-[20px]'}>Welcome ducsieunhan</span>
+              <span className={collapsed ? "hidden" : "text-[20px]"}>
+                Welcome ducsieunhan
+              </span>
               <Avatar className="bg-blue-500">DU</Avatar>
             </Space>
           </Dropdown>
@@ -71,6 +103,19 @@ const AdminLayout = () => {
           <Outlet />
         </Content>
       </Layout>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </Layout>
   );
 };
