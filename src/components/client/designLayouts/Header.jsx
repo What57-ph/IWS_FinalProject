@@ -18,10 +18,9 @@ const Header = () => {
 
   let screenWidth = window.screen.width;
 
-  // If user has login 
+  // If user has login
   const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated);
-
+  // console.log(isAuthenticated);
 
   const provinces = data.level1s.map((province) => ({
     value: province.name,
@@ -113,23 +112,26 @@ const Header = () => {
       </div>
       {showToggleContent && (
         <div
-          className={`absolute end-0 top-20 lg:relative lg:top-0 lg:bg-none lg:w-auto w-[350px] bg-white lg:shadow-none shadow-md lg:p-0 px-5 py-3 border-zinc-500 ${showToggleMenu ? "block" : "hidden"
-            } lg:flex lg:w-auto flex-row items-center`}
+          className={`absolute end-0 top-20 lg:relative lg:top-0 lg:bg-none lg:w-auto w-[350px] bg-white lg:shadow-none shadow-md lg:p-0 px-5 py-3 border-zinc-500 ${
+            showToggleMenu ? "block" : "hidden"
+          } lg:flex lg:w-auto flex-row items-center`}
           id="navbar-default"
         >
-          {
-            isAuthenticated === true ?
-
-              <AccountFunc />
-              :
-              <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
-                <Link to="/auth/login" className="authButton flex items-center">
-                  Login
-                </Link>
-                <Link to="/auth/register" className="authButton flex items-center">
-                  Register
-                </Link>
-              </div>}
+          {isAuthenticated === true ? (
+            <AccountFunc />
+          ) : (
+            <div className="flex lg:flex-row lg:border-r-2 lg:border-b-0 border-b-2 flex-col justify-center items-start lg:items-center py-1 ">
+              <Link to="/auth/login" className="authButton flex items-center">
+                Login
+              </Link>
+              <Link
+                to="/auth/register"
+                className="authButton flex items-center"
+              >
+                Register
+              </Link>
+            </div>
+          )}
 
           <LanguageOption
             language={language}
