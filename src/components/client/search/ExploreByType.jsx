@@ -1,11 +1,12 @@
 import { Image } from "antd";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const ExploreByType = () => {
+const ExploreByType = ({ setOpen }) => {
   const [searchType, setSearchType] = useState("Category");
   const categories = [
     {
-      "title": "Live Music",
+      "title": "Live music",
       "src": "https://salt.tkbcdn.com/ts/ds/59/eb/f6/11ee276c12b68af613dc1e57df9eb613.png"
     },
     {
@@ -13,7 +14,7 @@ const ExploreByType = () => {
       "src": "https://salt.tkbcdn.com/ts/ds/fe/03/6b/936edd943ce151b506eb635755ffa043.png"
     },
     {
-      "title": "Sports",
+      "title": "Sport",
       "src": "https://salt.tkbcdn.com/ts/ds/79/f8/17/cb00b342d8ddc5c6f26bd3f5a96c4cef.png"
     },
     {
@@ -41,25 +42,22 @@ const ExploreByType = () => {
     }
   ];
 
-  const createCategory = (title, src) => {
+  const createCategory = (title, src, type) => {
     return (
-      <div className="relative cursor-pointer">
-        <Image title="Live Music"
+      <Link className="relative cursor-pointer group" to={`${title === 'Others' ? '/search' : `/search?filter=${type === 'category' ? 'category.name' : 'province'}~'${title}'`}`} onClick={() => setOpen(false)}>
+        <Image
+          title="Live Music"
           width={180}
           height={100}
           preview={false}
           src={src}
+          className="group-hover:brightness-50 transition duration-300"
           placeholder={
-            <Image
-              preview={false}
-              src={src}
-              width={180}
-              height={100}
-            />
+            <Image preview={false} src={src} width={180} height={100} />
           }
         />
         <p className="absolute top-0 px-2 py-1 font-bold text-[16px]">{title}</p>
-      </div>
+      </Link>
     )
   }
 
@@ -80,10 +78,10 @@ const ExploreByType = () => {
 
       <div className="flex flex-row gap-4 my-3 overflow-x-auto flex-nowrap pb-2">
         {searchType === 'Category' && categories.map((cate) => {
-          return createCategory(cate.title, cate.src);
+          return createCategory(cate.title, cate.src, 'category');
         })}
         {searchType === 'City' && cities.map((cate) => {
-          return createCategory(cate.title, cate.src);
+          return createCategory(cate.title, cate.src, 'location');
         })}
       </div>
 

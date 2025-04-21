@@ -44,7 +44,7 @@ const EventPage = () => {
   useEffect(() => {
     const getEventListData = async () => {
       const data = await fetchEventList();
-      setEvents(data.data);
+      setEvents(data.data.result);
     };
     getEventListData();
   }, [isUpdatedEvent]);

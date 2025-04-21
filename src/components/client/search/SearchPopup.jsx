@@ -1,8 +1,9 @@
 import { FaArrowTrendUp, FaTurnUp } from "react-icons/fa6"
 import ExploreByType from "./ExploreByType"
 import EventInfo from "./EventInfo"
+import { Link } from "react-router-dom"
 
-const SearchPopup = () => {
+const SearchPopup = ({ setOpen }) => {
   return (
     <div className="absolute transform -translate-x-1/2 translate-y-14  
                 min-w-[300px] w-auto max-h-[70vh] h-auto rounded-xl 
@@ -11,22 +12,28 @@ const SearchPopup = () => {
                 flex flex-col text-white text-2xl py-4
                 overflow-y-auto">
       <div className="text-[18px]">
-        <div className="flex flex-row gap-2 py-1 px-5 items-center w-full hover:bg-gray-200/20 hover:font-bold cursor-pointer transition duration-200">
+        <Link to={"/search?filter=name ~ 'Autumn'"}
+          onClick={() => setOpen(false)}
+          className="flex flex-row gap-2 py-1 px-5 items-center w-full hover:bg-gray-200/20 hover:font-bold cursor-pointer transition duration-200">
           <FaArrowTrendUp className="text-pink-500" />
-          exid
-        </div>
-        <div className="flex flex-row gap-2 py-1 px-5 items-center w-full hover:bg-gray-200/20 hover:font-bold cursor-pointer transition duration-200">
+          Autumn
+        </Link>
+        <Link to={"/search?filter=name ~ 'International'"}
+          onClick={() => setOpen(false)}
+          className="flex flex-row gap-2 py-1 px-5 items-center w-full hover:bg-gray-200/20 hover:font-bold cursor-pointer transition duration-200">
           <FaArrowTrendUp className="text-pink-500" />
-          ntpmm
-        </div>
-        <div className="flex flex-row gap-2 py-1 px-5 items-center w-full hover:bg-gray-200/20 hover:font-bold cursor-pointer transition duration-200">
+          International
+        </Link>
+        <Link to={"/search?filter=name ~ 'Auto'"}
+          onClick={() => setOpen(false)}
+          className="flex flex-row gap-2 py-1 px-5 items-center w-full hover:bg-gray-200/20 hover:font-bold cursor-pointer transition duration-200">
           <FaArrowTrendUp className="text-pink-500" />
-          pbm
-        </div>
+          Auto
+        </Link>
       </div>
       <div className="px-5 text-[18px] mt-5">
-        <ExploreByType />
-        <EventInfo />
+        <ExploreByType setOpen={setOpen} />
+        <EventInfo setOpen={setOpen} />
       </div>
     </div>
   )

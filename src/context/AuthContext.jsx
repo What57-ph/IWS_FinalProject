@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
       console.log("Fetching data for event: ", res.data);
 
       if (res && res.data) {
-        setEvents(res.data);
+        setEvents(res.data.result);
       }
       setLoadingEvents(false);
     } catch (error) {

@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import LanguageOption from "./LanguageOption";
 
 import data from "dvhcvn";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import AccountFunc from "./AccountFunc";
 import { Popover } from "antd";
@@ -17,7 +17,11 @@ const Header = () => {
   const [showToggleMenu, setShowToggleMenu] = useState(false);
   const [placeholder, setPlacehoder] = useState("");
   const [showToggleContent, setShowToggleContent] = useState(false);
+  const location = useLocation()
+  const navigate = useNavigate();
 
+  const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   // for search 
 
   const content = (
@@ -52,14 +56,24 @@ const Header = () => {
     setPlacehoder(screenWidth > 400 ? "..." : "");
   }, [screenWidth]);
 
+  const handleOpenChange = () => {
+    setOpen(!open);
+  };
+
+  const handleSearch = () => {
+    navigate(`/search?filter=name ~ '${searchValue}'`)
+  }
+
+  console.log(location.pathname);
+
   return (
     <header className="lg:flex max-w-screen-xl mx-auto relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 lg:px-16 px-4 py-4 grid grid-cols-3 ">
       <Logo />
       <div className="relative col-start-3 justify-self-end flex flex-row justify-center items-center gap-3" > {/* Thêm items-center */}
 
-        <div className="lg:hidden flex items-center border border-slate-500 p-1 rounded-full">
+        <Link to={'/search'} className={`lg:hidden flex items-center border border-slate-500 p-1 rounded-full ${location.pathname === '/search' ? 'hidden' : ''}`}>
           <FaSearch className="text-gray-700" />
-        </div>
+        </Link>
 
         <button
           data-collapse-toggle="navbar-default"
@@ -93,16 +107,24 @@ const Header = () => {
 
 
       <Popover
-        content={<SearchPopup />}
+        content={<SearchPopup setOpen={setOpen} />}
+        onOpenChange={handleOpenChange}
+        open={open}
         trigger="click"
         className="w-full hidden lg:flex"
       >
         <div className="flex flex-row items-center justify-between bg-gray-100 rounded-full w-full relative">
-          <input
+          <input onChange={(e) => setSearchValue(e.target.value)}
             placeholder={`Search for events, artists, ${placeholder}`}
             className="bg-gray-100 focus:outline-none w-full px-4 py-2 rounded-full"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+                setOpen(false);
+              }
+            }}
           />
-          <div className="absolute right-4 text-xl">
+          <div className="absolute right-4 text-xl cursor-pointer" onClick={handleSearch}>
             <FaSearch />
           </div>
         </div>

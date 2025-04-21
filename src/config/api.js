@@ -94,6 +94,12 @@ export const callEvents = () => {
   return instance.get('/api/v1/events')
 }
 
+export const callFilterEvents = (filter) => {
+  const url = `/api/v1/events${filter}`;
+  console.log('URL gốc đang gọi:', url);
+  return instance.get(url);
+};
+
 //Module file
 export const fetchImage = async (imgName) => {
   const URL = `/storage/${imgName}`;
