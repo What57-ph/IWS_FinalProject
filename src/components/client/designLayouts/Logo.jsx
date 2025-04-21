@@ -12,6 +12,7 @@ const Logo = () => {
             height="32"
             fill="none"
             className="inline"
+
           >
             <g>
               <path
