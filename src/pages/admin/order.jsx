@@ -104,6 +104,7 @@ const OrderPage = () => {
             onConfirm={() => handleDelete(record.orderId)}
             okText="Có"
             cancelText="Không"
+            placement="left"
           >
             <Button
               icon={<DeleteOutlined />}
@@ -291,6 +292,7 @@ const OrderPage = () => {
               onConfirm={() => handleDelete(record.orderId)}
               okText="Có"
               cancelText="Không"
+              placement="left"
             >
               <Button
                 icon={<DeleteOutlined />}

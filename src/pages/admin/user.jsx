@@ -4,7 +4,7 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Button, Form, message, notification, Space, Table, Tag } from "antd";
+import { Button, Form, message, notification, Popconfirm, Space, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import sampleData from "../../data/sampleData";
 import { Grid } from "antd";
@@ -102,12 +102,20 @@ const UserPage = () => {
             onClick={() => handleEdit(record)} // pass current value
             size="small"
           />
-          <Button
-            icon={<DeleteOutlined />}
-            danger
-            size="small"
-            onClick={() => handleDelete(record.id)}
-          />
+          <Popconfirm
+            title="Do you sure want to delete ?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Có"
+            cancelText="Không"
+            placement="left"
+          >
+            <Button
+              icon={<DeleteOutlined />}
+              danger
+              size="small"
+            />
+          </Popconfirm>
+
           <Button
             icon={<InfoCircleOutlined />}
             onClick={() => handleGetInfo(record)}
@@ -207,7 +215,20 @@ const UserPage = () => {
           {/* Bỏ col-span-2 */}
           <Space>
             <Button icon={<EditOutlined />} size="small" />
-            <Button icon={<DeleteOutlined />} danger size="small" />
+
+            <Popconfirm
+              title="Do you sure want to delete ?"
+              onConfirm={() => handleDelete(record.id)}
+              okText="Có"
+              placement="left"
+              cancelText="Không"
+            >
+              <Button
+                icon={<DeleteOutlined />}
+                danger
+                size="small"
+              />
+            </Popconfirm>
           </Space>
         </div>
       </div>
