@@ -49,3 +49,17 @@ body {
   -ms-overflow-style: none;
 }
 
+.custom-upload-event-info .ant-upload {
+  width: 300px !important;
+  height: 300px !important;
+}
+
+.custom-upload-banner-info .ant-upload {
+  width: 100% !important;
+  height: 300px !important;
+}
+
+.custom-upload-organizer-info .ant-upload {
+  width:  100% !important;
+  height: 200px !important;
+}
