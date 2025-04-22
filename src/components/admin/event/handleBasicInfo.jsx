@@ -141,10 +141,9 @@ const HandleBasicInfo = ({
   };
   const renderUploadButton = (text, ratio, isSquare = true) => (
     <div
-      className={`w-full ${isSquare ? "aspect-square" : "aspect-video"
-        } flex flex-col 
-    items-center justify-center bg-gray-50 hover:bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg
-    
+      className={`w-full
+        h-full flex flex-col 
+    items-center justify-center rounded-lg
     `}
     >
       <UploadOutlined className="text-2xl mb-2 text-gray-500" />
@@ -170,7 +169,7 @@ const HandleBasicInfo = ({
           <img
             src={previewUrl}
             alt="preview"
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-[95%] object-cover rounded-lg"
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300" />
         </div>
@@ -222,7 +221,7 @@ const HandleBasicInfo = ({
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Upload Event Media</h3>
         <div className="flex flex-col md:flex-row gap-4">
-          <Form.Item name="squareLogo" className="flex-1">
+          <Form.Item name="squareLogo" >
             <Upload
               listType="picture-card"
               fileList={squareLogoFile}
@@ -231,7 +230,7 @@ const HandleBasicInfo = ({
               accept="image/*"
               maxCount={1}
               showUploadList={false}
-              className="custom-upload-event-info"
+              className="custom-upload-event-info "
               customRequest={handleUploadInfoFile}
               defaultFileList={
                 typeof squareLogoFile === "string"
@@ -255,6 +254,7 @@ const HandleBasicInfo = ({
 
           <Form.Item name="banner" className="flex-1">
             <Upload
+              className="custom-upload-banner-info "
               listType="picture-card"
               fileList={bannerFile}
               beforeUpload={beforeUpload}
@@ -290,6 +290,7 @@ const HandleBasicInfo = ({
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <Form.Item name="organizerLogo" className="w-full md:w-1/4">
             <Upload
+              className="custom-upload-organizer-info"
               listType="picture-card"
               fileList={organizerLogoFile}
               beforeUpload={beforeUpload}
@@ -317,8 +318,8 @@ const HandleBasicInfo = ({
               {organizerLogoFile.length > 0 ? (
                 renderPreview(organizerLogoFile)
               ) : (
-                <div className="w-full aspect-square flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg">
-                  <UploadOutlined className="text-xl mr-2" />
+                <div className="w-full h-[95%] flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 rounded-lg">
+                  <UploadOutlined className="text-xl" />
                   <span>Organizer Logo</span>
                 </div>
               )}
