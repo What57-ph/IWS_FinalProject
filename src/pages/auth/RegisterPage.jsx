@@ -4,9 +4,13 @@ import AuthButton from "../../components/auth/AuthButton";
 import PasswordForm from "../../components/auth/PasswordForm";
 import VerifyForm from "../../components/auth/VerifyForm";
 import { callRegister } from "../../config/api";
+import { useAuth } from "../../context/AuthContext";
 
 const RegisterPage = () => {
   const [checked, setChecked] = useState(true);
+
+  const { updateVerifyUser } = useAuth();
+
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -51,8 +55,9 @@ const RegisterPage = () => {
       console.log({ username, password });
 
       const res = await callRegister(username, password);
+      updateVerifyUser(username);
       console.log(res);
-      window.location.href = callback ? callback : '/auth/login';
+      window.location.href = callback ? callback : '/auth/verification';
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Register failed!';
       console.log({ errorMessage });
@@ -62,17 +67,17 @@ const RegisterPage = () => {
 
   return (
     <Form className="w-full text-start" onFinish={onFinish}>
-      <h4 className="font-semibold text-start">Email Verification</h4>
+      <h4 className="font-semibold text-start">Set email</h4>
       <VerifyForm
         validateEmail={validateEmail}
         handleInputChange={handleInputChange}
         formValues={formValues}
         setFormValues={setFormValues}
       />
-      <p className="text-gray-500 align-text-bottom text-start pb-5 text-base">
+      {/* <p className="text-gray-500 align-text-bottom text-start pb-5 text-base">
         Enter email address and click “Send code”, then check the inbox and
         follow instructions.
-      </p>
+      </p> */}
       <h4 className="font-semibold text-start">Set password</h4>
       <PasswordForm
         validateEmail={validateEmail}

@@ -21,6 +21,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
+import VerificationPage from "./pages/auth/VerificationPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -73,6 +74,10 @@ function App() {
         {
           path: "register",
           element: <RegisterPage />,
+        },
+        {
+          path: "verification",
+          element: <VerificationPage />,
         },
         {
           path: "forgot-password",

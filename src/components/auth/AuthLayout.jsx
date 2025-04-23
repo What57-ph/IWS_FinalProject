@@ -22,7 +22,11 @@ const AuthLayout = () => {
       setHeader("Log in");
     } else if (location.pathname === "/auth/register") {
       setHeader("Create an account");
-    } else {
+    }
+    else if (location.pathname.includes('verification')) {
+      setHeader("Verification account");
+    }
+    else {
       setHeader("Reset password");
     }
   }, [location]);
@@ -38,9 +42,8 @@ const AuthLayout = () => {
         />
       </div>
       <div
-        className={`xl:mx-96 xl:px-20 ${
-          location.pathname === "/auth/register" ? "pb-10" : ""
-        }`}
+        className={`xl:mx-96 xl:px-20 ${location.pathname === "/auth/register" ? "pb-10" : ""
+          }`}
       >
         <main className="text-center bg-white lg:shadow-lg flex flex-col items-center justify-center border-1 rounded-xl lg:p-10 p-2">
           <div className="font-[700]">

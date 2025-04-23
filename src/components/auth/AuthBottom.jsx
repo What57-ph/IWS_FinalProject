@@ -1,8 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import google from "../../assets/google.png";
 
 const AuthBottom = ({ pathname }) => {
+
+  const location = useLocation();
+
   let display = [
     "/auth/forgot-password",
     "/auth/forgot-password/step1",
@@ -24,22 +27,22 @@ const AuthBottom = ({ pathname }) => {
         <Link to="/auth/login"> Log in </Link>
       </span>
     );
-  return (
+  return !location.pathname.includes('verification') ? (
     <div className={`${display} `}>
       <div className={`w-full mt-6`}>
         <p className="relative text-gray-500 text-base text-center sideOr">
           Or {afterOr} with
         </p>
       </div>
-      <button>
+      <a href="http://localhost:8080/oauth2/authorization/google">
         <img src={google} className="w-[30px] h-[30px] mt-5" />
-      </button>
+      </a>
       <div className="flex items-center mt-5 gap-2  ">
         <p>{pText}</p>
         {link}
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default AuthBottom;

@@ -68,6 +68,10 @@ export const callRefresh = () => {
   return instance.get('/api/v1/auth/refresh')
 }
 
+export const callVerify = (email, verificationCode) => {
+  return instance.post("/api/v1/auth/verify", { email, verificationCode });
+}
+
 /**
  * 
 Module Oder

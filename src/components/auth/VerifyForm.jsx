@@ -26,7 +26,7 @@ const VerifyForm = ({
           <MdOutlineEmail className="text-3xl absolute top-[10px] start-4 z-20 text-gray-500" />
         </div>
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         name="verifyCode"
         rules={[{ required: true, message: "This field cannot be empty" }]}
       >
@@ -47,7 +47,7 @@ const VerifyForm = ({
           </button>
           <MdOutlineVerifiedUser className="text-2xl absolute top-[12px] start-5 z-20 text-gray-500" />
         </div>
-      </Form.Item>
+      </Form.Item> */}
     </>
   );
 };
