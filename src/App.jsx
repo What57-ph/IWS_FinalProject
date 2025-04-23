@@ -21,6 +21,8 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
+import PaymentSuccess from "./pages/client/Buy/PaymentSuccess";
+import PaymentFail from "./pages/client/Buy/PaymentFail";
 
 function App() {
   const router = createBrowserRouter([
@@ -127,6 +129,18 @@ function App() {
           path: "*",
           element: <NotFoundError />,
         },
+        {
+          path: "payment",
+          children: [{
+            path: "success",
+            element: <PaymentSuccess />
+          },
+          {
+            path: "failed",
+            element: <PaymentFail />
+          }]
+
+        }
       ],
     },
   ]);

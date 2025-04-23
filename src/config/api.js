@@ -144,3 +144,33 @@ export const updateEvent = async (eventData, id) => {
   const res = await instance.put(URL, eventData);
   return (await res).data;
 };
+
+// Module payment
+export const createVNPayPayment = async (amount) => {
+  const URL = `api/v1/create_payment?amount=${amount}`;
+  const res = await instance.get(URL);
+  return (await res).data;
+}
+
+
+export const handleAfterPayment = async (orderId) => {
+  const URL = "api/v1/update-payment-status";
+  return await instance.put(URL, JSON.stringify(orderId), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const fetchPayPalURL = async (amount) => {
+  const URL = `api/v1/paypal/pay`;
+  const formData = new URLSearchParams();
+  formData.append("amount", amount);
+
+  return await instance.post(URL, formData.toString(), {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+};
+

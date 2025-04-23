@@ -8,16 +8,11 @@ import { Button, Modal } from "antd";
 import ContinueBtn from "../../../components/client/Order/ContinueBtn";
 import BottomBtn from "../../../components/client/Order/BottomBtn";
 
-const ProcessTwo = () => {
+const ProcessTwo = ({ form }) => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
-  const step = searchParams.get("step");
+  // const step = searchParams.get("step");
   const { event, setEventId, setCurrentStep, currentStep } = useOrderContext();
-
-
-
-
-
   useEffect(() => {
     setEventId(id);
   }, [id]);
@@ -34,7 +29,7 @@ const ProcessTwo = () => {
           <OrderInfo />
         </div>
         <div>
-          <PaymentInfo />
+          <PaymentInfo form={form} />
         </div>
       </div>
       <BottomBtn />

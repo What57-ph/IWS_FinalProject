@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { BsBank } from "react-icons/bs";
 import { FaCreditCard } from "react-icons/fa";
+import { useOrderContext } from '../../../../context/OrderContext';
 
-const PaymentMethod = () => {
-    const [selectedMethod, setSelectedMethod] = useState("bank-transfer");
-    console.log(selectedMethod)
+const PaymentMethod = ({ form }) => {
+    // const [selectedMethod, setSelectedMethod] = useState("bank-transfer");
+    const { selectedMethod, setSelectedMethod } = useOrderContext();
     return (
         <div className='eventStep2Form lg:w-[40vw] w-full space-y-3 pb-6'>
             <p className='text-[1.4rem] font-semibold px-8 pt-4'>Select payment method</p>
@@ -17,7 +18,7 @@ const PaymentMethod = () => {
                     <BsBank className='text-3xl text-blue-600 bg-white' />
                     <div className='text-lg'>
                         <p className='font-semibold'>Bank Transfer</p>
-                        <p className='text-gray-500 text-base'>Scan code instantly, confirm order immediately</p>
+                        <p className='text-gray-500 sm:text-base text-sm'>Scan code instantly, confirm order immediately</p>
                     </div>
                 </div>
                 <input
@@ -38,7 +39,7 @@ const PaymentMethod = () => {
                     <FaCreditCard className='text-3xl text-blue-600 bg-white' />
                     <div className='text-lg'>
                         <p className='font-semibold'>Debit/Credit card</p>
-                        <p className='text-gray-500 text-base'>Fill in additional information, smart security</p>
+                        <p className='text-gray-500 sm:text-base text-sm'>Fill in additional information, smart security</p>
                     </div>
                 </div>
                 <input

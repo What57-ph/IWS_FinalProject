@@ -1,82 +1,81 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ProcessOne from "./ProcessOne";
 import ProcessTwo from "./ProcessTwo";
 import ProcessThree from "./ProcessThree";
 import { useOrderContext } from "../../../context/OrderContext";
 import OrderHead from "../../../components/client/Order/OrderHead";
-import EventOrderOne from "../../../components/client/Order/step1/EventOrderOne";
-import { Form } from "antd";
+import { Form, Input } from "antd";
+import PaymentPage from "./PaymentPage";
+import { toast } from "react-toastify";
+import { callCreateOrder } from "../../../config/api";
 
 const BuyPage = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const [form] = Form.useForm();
 
-  const step = searchParams.get("step");
+  const navigate = useNavigate();
+  const { setEventId, setOrder, currentStep } = useOrderContext();
+
+  const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
-  const { event, setEventId, setCurrentStep, currentStep } =
-    useOrderContext();
-  const steps = [
-    {
-      title: "Select Tickets",
-      content: "select-tickets",
-    },
-    {
-      title: "Enter Information",
-      content: "enter-info",
-    },
-    {
-      title: "Payment",
-      content: "payment",
-    },
-  ];
   useEffect(() => {
     setEventId(id);
   }, [id]);
+
 
   useEffect(() => {
     if (id === null) {
       navigate("/404-error", { replace: true });
       return;
     }
-    // if (!step || !["1", "2", "3"].includes(step)) {
-    //   navigate(`/buy?id=${id}&step=1`, { replace: true });
-    // }
   }, [id, navigate]);
 
-  const getComponent = () => {
-    switch (step) {
-      case "1":
-        return <ProcessOne id={id} />;
-      case "2":
-        return <ProcessTwo id={id} />;
-      case "3":
-        return <ProcessThree id={id} />;
-      default:
-        return null;
-    }
-  };
   const renderStepComponent = () => {
     if (currentStep === 0) {
-      return <ProcessOne id={id} />;
+      return <ProcessOne id={id} form={form} />;
     }
     if (currentStep === 1) {
-      return <ProcessTwo id={id} />;
+      return <ProcessTwo id={id} form={form} />;
     }
     if (currentStep === 2) {
-      return <ProcessThree id={id} />;
+      return <ProcessThree id={id} form={form} />;
     }
-  }
+    if (currentStep >= 3) {
+      return <PaymentPage id={id} form={form} />;
+    }
+  };
+
+  const onFinish = async (values) => {
+    const basicInfoValues = form.getFieldsValue([
+      "totalPrice",
+      "organizeDate",
+      "receiverName",
+      "receiverEmail",
+      "receiverPhone",
+      "items",
+    ]);
+    const createTemporaryOrder = async (tempOrder) => {
+      try {
+        const res = await callCreateOrder(tempOrder);
+        setOrder(res.data);
+      } catch (error) {
+        toast.error(error);
+      }
+    }
+
+    createTemporaryOrder(basicInfoValues);
+    console.log("Basic info values:", basicInfoValues);
+  };
 
   return (
     <>
-      <OrderHead />
-      <Form className="flex items-center" layout="inline">
+      <OrderHead currentStep={currentStep} />
+      <Form form={form} onFinish={onFinish} className="flex items-center" layout="inline">
 
         {renderStepComponent()}
       </Form>
     </>
-  )
+  );
 };
 
 export default BuyPage;

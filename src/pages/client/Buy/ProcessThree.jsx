@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import OrderHead from "../../../components/client/Order/OrderHead";
 import { useOrderContext } from "../../../context/OrderContext";
@@ -6,12 +6,12 @@ import PaymentMethod from "../../../components/client/Order/step3/PaymentMethod"
 import OrderInfo from "../../../components/client/Order/step2/OrderInfo";
 import BottomBtn from "../../../components/client/Order/BottomBtn";
 
-const ProcessThree = () => {
+const ProcessThree = ({ form }) => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
-  const step = searchParams.get("step");
   const { event, setEvent, order, setOrder, eventId, setEventId } =
     useOrderContext();
+
   useEffect(() => {
     setEventId(id);
   }, [id]);
@@ -27,10 +27,10 @@ const ProcessThree = () => {
             <OrderInfo />
           </div>
           <div>
-            <PaymentMethod />
+            <PaymentMethod form={form} />
           </div>
         </div>
-        <BottomBtn />
+        <BottomBtn form={form} />
       </div>
     </>
   );
