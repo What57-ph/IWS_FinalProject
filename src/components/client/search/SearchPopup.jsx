@@ -5,11 +5,11 @@ import { Link } from "react-router-dom"
 
 const SearchPopup = ({ setOpen }) => {
   return (
-    <div className="absolute transform -translate-x-1/2 translate-y-14  
+    <div className="absolute transform -translate-x-1/2 translate-y-14 hidden 
                 min-w-[300px] w-auto max-h-[70vh] h-auto rounded-xl 
                 bg-slate-900/40 backdrop-blur-2xl
                 border border-white/20 shadow-2xl
-                flex flex-col text-white text-2xl py-4
+                lg:flex flex-col text-white text-2xl py-4
                 overflow-y-auto">
       <div className="text-[18px]">
         <Link to={"/search?filter=name ~ 'Autumn'"}
