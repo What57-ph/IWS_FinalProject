@@ -1,10 +1,12 @@
 import { useRef, useState } from "react";
 import sampleData from "../../../data/sampleData";
 import CategoryList from "./CategoryList";
+import { useAuth } from "../../../context/AuthContext";
 
 const categories = sampleData.categories;
-const events = sampleData.events;
+// const events = sampleData.events;
 const FilterCategories = () => {
+  const { events } = useAuth()
   const sliderRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);

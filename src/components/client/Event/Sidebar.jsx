@@ -1,17 +1,41 @@
+import { calc } from "antd/es/theme/internal";
 import { useAuth } from "../../../context/AuthContext";
+import DetailMap from "./DetailMap";
+import formatDate from "../../../utils/formatDate";
+import formatTicketPrice from "../../../utils/formatTicketPrice";
 
-export default function Sidebar({className}) {
-    const { isAuthenticated } = useAuth();
+export default function Sidebar({className, isAuthenticated, data}) {
+  const currentUrl = window.location.href;
+  const formatTime = () => {
+    const start = formatDate(data.startDate)
+    const end = formatDate(data.endDate) 
+    if(start == end){
+      return start;
+    } else return start + ' - ' + end;
+  }
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(currentUrl)
+      .then(() => alert("Đã copy link sự kiện!"))
+      .catch((err) => console.error("Copy thất bại:", err));
+  };
+  
+  const handleShareFacebook = () => {
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+    navigator.clipboard.writeText(currentUrl)
+    window.open(shareUrl, "_blank");
+  };
+  
     return(
         <div className={`flex flex-col lg:w-96 h-fit gap-8 p-8 bg-base-100 rounded-lg border border-b-2  ${className}`}>
           <div className="flex flex-col gap-4">
             <div
               className="px-3 py-1 rounded-full border-none font-medium"
             >
-              <div>Đang mở bán</div>
+              <div>{data.status}</div>
             </div>
             <h2 className="text-2xl font-semibold">
-              ATTACK ON TITAN DEVOTION - The Symphony of Freedom
+              {data.name}
             </h2>
 
             {/* Ngày diễn ra */}
@@ -34,7 +58,7 @@ export default function Sidebar({className}) {
               </div>
               <div>
                 <div className="text-base font-semibold">
-                  25 tháng 4, 2025 - 26 tháng 4, 2025
+                  {formatTime()}
                 </div>
                 <div className="text-sm text-gray-500"></div>
               </div>
@@ -71,13 +95,12 @@ export default function Sidebar({className}) {
                 rel="noopener noreferrer"
               >
                 <div className="font-semibold">
-                  Nhà Hát Quân Đội - 140 Cộng Hòa, Phường 4, Quận Tân Bình, TP
-                  Hồ Chí Minh
+                {data.houseNumber}, {data.ward}, {data.district}, {data.province}
                 </div>
-                <div className="text-gray-500 text-sm">
+                {/* <div className="text-gray-500 text-sm">
                   Military Theater - 140 Cong Hoa Street, Ward 4, Tan Binh
                   District, Ho Chi Minh City, Vietnam
-                </div>
+                </div> */}
               </a>
             </div>
 
@@ -100,9 +123,9 @@ export default function Sidebar({className}) {
                 </svg>
               </div>
               <div>
-                <div className="text-base font-semibold">Giá vé</div>
+                <div className="text-base font-semibold">Price</div>
                 <div className="text-sm text-gray-500">
-                  Từ 1.390.000 VND đến 2.190.000 VND
+                  {formatTicketPrice(data.tickets)}
                 </div>
               </div>
             </div>
@@ -123,12 +146,13 @@ export default function Sidebar({className}) {
 
           {/* Chia sẻ */}
           <div className="flex flex-row space-x-2 items-center">
-            <span className="max-lg:hidden text-base text-gray-500">
-              Chia sẻ
+            <span className="mr-6 text-base text-gray-500">
+              Share:
             </span>
 
             <button
               className="react-share__ShareButton btn btn-sm w-10 h-10 grayscale hover:grayscale-0"
+              onClick={handleShareFacebook}
               title="title title title"
               style={{
                 border: "none",
@@ -166,6 +190,7 @@ export default function Sidebar({className}) {
 
             <button
               type="button"
+              onClick={handleCopyLink}
               className="btn px-2 w-10 h-10 grayscale hover:grayscale-0 btn-sm"
             >
               {/* Link icon */}
@@ -173,7 +198,7 @@ export default function Sidebar({className}) {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                className="w-6 h-6"
+                className="w-6 h-6 hover:text-gray-400"
               >
                 <path
                   stroke="currentColor"
