@@ -121,6 +121,7 @@ const EventOrderOne = () => {
             return newStates;
         });
     };
+    console.log(dateList);
     // console.log(selectedTickets);
     return (
         <div className="flex lg:flex-row flex-col gap-6 w-full mt-5 lg:justify-normal justify-center xl:px-20 lg:px-0 px-4">
