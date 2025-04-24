@@ -49,7 +49,7 @@ const EventPage = () => {
     };
     getEventListData();
   }, [isUpdatedEvent]);
-  console.log(events);
+  // console.log(events);
 
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
@@ -152,21 +152,38 @@ const EventPage = () => {
   };
   // handle delete
   const handleDelete = async (id) => {
-    const res = await deleteEvent(id);
-    setEvents((prev) => prev.filter((item) => item.id != id));
+    try {
+      const res = await deleteEvent(id);
+      toast.success("Delete event successfully.")
+      setEvents((prev) => prev.filter((item) => item.id != id));
+    } catch (error) {
+      toast.error("Cannot delete this event. This event has already sold ticket!");
+    }
+
   };
   const handleSubmit = async (values, eventId) => {
     try {
+      //format contain hour
+      const formattedStartDate = values.startDate
+        ? dayjs(values.startDate).format("YYYY-MM-DDTHH:mm:ss")
+        : null;
+      const formattedEndDate = values.endDate
+        ? dayjs(values.endDate).format("YYYY-MM-DDTHH:mm:ss")
+        : null;
       // Transform data for backend
       const backendData = {
         ...values,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
         organizerName: values.organizerName,
         organizerInfo: values.organizerInfo,
       };
+
       let response;
       if (requestType === "post") {
         response = await createNewEvent(backendData);
         setEvents((prev) => [...prev, response]);
+        console.log(response);
         toast.success("Create event successfully");
       } else if (requestType === "put") {
         response = await updateEvent(backendData, eventId);
@@ -202,7 +219,7 @@ const EventPage = () => {
     <div className="p-4 mb-4 border rounded-lg shadow-sm bg-blue-600 text-white">
       <div className="grid grid-cols-1 gap-3">
         {" "}
-        {/* Đổi thành 1 cột */ console.log("record from event:", record)}
+        {/* Đổi thành 1 cột console.log("record from event:", record) */}
         <div>
           <div className="text-sm font-medium break-words whitespace-normal">
             Name event:{" "}

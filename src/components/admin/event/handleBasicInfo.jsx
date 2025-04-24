@@ -20,6 +20,7 @@ const HandleBasicInfo = ({
     if (dates) {
       const formattedStartDate = dates[0].format("YYYY-MM-DDTHH:mm:ss");
       const formattedEndDate = dates[1].format("YYYY-MM-DDTHH:mm:ss");
+      console.log(formattedEndDate, formattedStartDate);
       form.setFieldsValue({
         startDate: formattedStartDate,
         endDate: formattedEndDate,

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 const EventDetailModal = ({ form, open, handleCancel }) => {
 
-  console.log(form.getFieldValue());
+  // console.log(form.getFieldValue());
   const eventId = form.getFieldValue('id');
   return (
     <Modal

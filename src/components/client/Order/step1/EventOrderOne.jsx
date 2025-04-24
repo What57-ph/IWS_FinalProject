@@ -45,7 +45,6 @@ const EventOrderOne = ({ form }) => {
     const activeDates = [];
     let current = new Date(event?.startDate);
     let end = new Date(event?.endDate);
-
     let index = 0;
     while (current <= end) {
         dateList.push(
@@ -57,6 +56,7 @@ const EventOrderOne = ({ form }) => {
                 hour: "2-digit",
                 minute: "2-digit",
             })
+
         );
 
         if (index === 0) {
@@ -121,7 +121,7 @@ const EventOrderOne = ({ form }) => {
         });
         form.setFieldsValue({ organizeDate: dateList[index] });
     };
-    console.log(dateList);
+    console.log(dateValue);
     // console.log(selectedTickets);
     // console.log(selectedTickets);
     // console.log(totalAmount / 25960);
