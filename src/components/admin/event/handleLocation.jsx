@@ -2,7 +2,7 @@ import { useState } from "react";
 import data from "dvhcvn";
 import { Col, Form, Input, Row, Select } from "antd";
 
-const HandleLocation = ({ form }) => {
+const HandleLocation = ({ form , title}) => {
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
 
@@ -51,7 +51,7 @@ const HandleLocation = ({ form }) => {
 
   return (
     <div className="flex flex-col gap-3">
-      <h1>Event address</h1>
+      {title}
       <Row gutter={12}>
         {/* <Col span={24}>
           <Form.Item name="location">

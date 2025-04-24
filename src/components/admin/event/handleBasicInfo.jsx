@@ -14,6 +14,7 @@ const HandleBasicInfo = ({
   organizerLogoFile,
   setOrganizerLogoFile,
 }) => {
+  const title = (<h1>Event address</h1>)
   const { RangePicker } = DatePicker;
   const [dateList, setDateList] = useState([]);
   const onChange = (dates) => {
@@ -216,7 +217,7 @@ const HandleBasicInfo = ({
         </Form.Item>
       </div>
 
-      <HandleLocation form={form} />
+      <HandleLocation form={form} title={title}/>
 
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Upload Event Media</h3>
