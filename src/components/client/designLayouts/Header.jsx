@@ -4,9 +4,11 @@ import Logo from "./Logo";
 import LanguageOption from "./LanguageOption";
 
 import data from "dvhcvn";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import AccountFunc from "./AccountFunc";
+import { Popover } from "antd";
+import SearchPopup from "../search/SearchPopup";
 
 const Header = () => {
   const [isDropdown, setIsDropdown] = useState(false);
@@ -15,6 +17,19 @@ const Header = () => {
   const [showToggleMenu, setShowToggleMenu] = useState(false);
   const [placeholder, setPlacehoder] = useState("");
   const [showToggleContent, setShowToggleContent] = useState(false);
+  const location = useLocation()
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  // for search 
+
+  const content = (
+    <div>
+      <p>Content</p>
+      <p>Content</p>
+    </div>
+  );
 
   let screenWidth = window.screen.width;
 
@@ -40,76 +55,81 @@ const Header = () => {
     setPlacehoder(screenWidth > 400 ? "..." : "");
   }, [screenWidth]);
 
+  const handleOpenChange = () => {
+    setOpen(!open);
+  };
+
+  const handleSearch = () => {
+    navigate(`/search?filter=name ~ '${searchValue}'`)
+  }
+
+  console.log(location.pathname);
+
   return (
     <header className="lg:flex max-w-screen-xl mx-auto relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 lg:px-16 px-4 py-4 grid grid-cols-3 ">
       <Logo />
-      <button
-        data-collapse-toggle="navbar-default"
-        type="button"
-        className="relative col-start-3 justify-self-end p-2 w-10 h-10 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-        aria-controls="navbar-default"
-        aria-expanded="true"
-        onClick={() => setShowToggleContent(!showToggleContent)}
-      >
-        <span className="sr-only">Open main menu</span>
-        <svg
-          className="w-5 h-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 17 14"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M1 1h15M1 7h15M1 13h15"
-          />
-        </svg>
-      </button>
-      <div className="flex flex-row items-center bg-gray-100 rounded-full w-full relative col-span-3">
-        <div className="grow h-10">
-          <input type="hidden" value name="city" />
-          <div role="listbox" className="relative inline-block">
-            <label className="flex">
-              <button
-                type="button"
-                className="label relative flex flex-row items-center gap-2 w-max text-base h-10 bg-base-200 border-0 rounded-l-full px-3"
-                onClick={() => setIsDropdown(!isDropdown)}
-              >
-                <span> All Cities </span>
-                <span>
-                  <FaChevronDown />
-                </span>
-              </button>
-            </label>
+      <div className="relative col-start-3 justify-self-end flex flex-row justify-center items-center gap-3" > {/* Thêm items-center */}
 
-            {isDropdown && (
-              <div className="z-50 absolute">
-                <ul className="menu p-2 shadow bg-white rounded-box max-h-96 min-w-[15rem] w-full overflow-auto rounded-none">
-                  <li className="px-1 cursor-auto focus:outline-none">
-                    <input className="border-2 rounded-md w-full h-8" />
-                  </li>
-                  {provinces.map((province) => (
-                    <li>{province.value}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+        <Link to={'/search'} className={`lg:hidden flex items-center border border-slate-500 p-1 rounded-full ${location.pathname === '/search' ? 'hidden' : ''}`}>
+          <FaSearch className="text-gray-700" />
+        </Link>
+
+        <button
+          data-collapse-toggle="navbar-default"
+          type="button"
+          className=" p-2 w-10 h-10 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-default"
+          aria-expanded="true"
+          onClick={() => setShowToggleContent(!showToggleContent)}
+        >
+          <span className="sr-only">Open main menu</span>
+          <svg
+            className="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </button>
+      </div>
+
+
+      {/* // search */}
+
+
+      <Popover
+        content={<SearchPopup setOpen={setOpen} />}
+        onOpenChange={handleOpenChange}
+        open={open}
+        trigger="click"
+        className="w-full hidden lg:flex"
+      >
+        <div className="flex flex-row items-center justify-between bg-gray-100 rounded-full w-full relative">
+          <input onChange={(e) => setSearchValue(e.target.value)}
+            placeholder={`Search for events, artists, ${placeholder}`}
+            className="bg-gray-100 focus:outline-none w-full px-4 py-2 rounded-full"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+                setOpen(false);
+              }
+            }}
+          />
+          <div className="absolute right-4 text-xl cursor-pointer" onClick={handleSearch}>
+            <FaSearch />
           </div>
         </div>
+      </Popover>
 
-        <div className="grow w-full">
-          <input
-            placeholder={` Search for events, artists,${placeholder}`}
-            className="w-11/12 p-1 bg-gray-100 focus:outline-none"
-          />
-        </div>
-        <div className="grow-0 absolute lg:end-5 end-2 text-xl">
-          <FaSearch />
-        </div>
-      </div>
+
       {showToggleContent && (
         <div
           className={`absolute end-0 top-20 lg:relative lg:top-0 lg:bg-none lg:w-auto w-[350px] bg-white lg:shadow-none shadow-md lg:p-0 px-5 py-3 border-zinc-500 ${

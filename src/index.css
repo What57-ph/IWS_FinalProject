@@ -49,6 +49,11 @@ body {
   -ms-overflow-style: none;
 }
 
+.ant-popover-inner {
+  padding: 0 !important;
+}
+
+=======
 .custom-upload-event-info .ant-upload {
   width: 300px !important;
   height: 300px !important;
@@ -63,3 +68,4 @@ body {
   width:  100% !important;
   height: 200px !important;
 }
+
