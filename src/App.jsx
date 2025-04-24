@@ -23,6 +23,7 @@ import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
 import PaymentSuccess from "./pages/client/Buy/PaymentSuccess";
 import PaymentFail from "./pages/client/Buy/PaymentFail";
+import OrganizerPage from "./pages/Admin/organizer";
 
 function App() {
   const router = createBrowserRouter([
@@ -43,6 +44,14 @@ function App() {
           element: (
             <ProtectedRoute>
               <UserPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "organizer",
+          element: (
+            <ProtectedRoute>
+              <OrganizerPage />
             </ProtectedRoute>
           ),
         },

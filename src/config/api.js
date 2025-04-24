@@ -174,3 +174,31 @@ export const fetchPayPalURL = async (amount) => {
   });
 };
 
+//Module organizer
+export const fetchOrganizerList = async () => {
+  const res = await instance.get("/api/v1/organizers");
+  return (await res).data;
+};
+export const fetchOrganizerById = async (id) => {
+  const URL = `/api/v1/organizer/${id}`;
+  const res = await instance.get(URL);
+  return (await res).data;
+};
+export const deleteOrganizer = async (id) => {
+  const URL = `/api/v1/organizer/${id}`;
+  const res = await instance.delete(URL);
+  return (await res).data;
+};
+export const createNewOrganizer = async (organizerData) => {
+  const URL = `api/v1/organizer`;
+  const res = await instance.post(URL, organizerData);
+  if (res.status === 500) {
+    toast.error("errorrrr");
+  }
+  return (await res).data;
+};
+export const updateOrganizer = async (organizerData) => {
+  const URL = `api/v1/organizer`;
+  const res = await instance.put(URL, organizerData);
+  return (await res).data;
+};
