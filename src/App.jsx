@@ -22,6 +22,7 @@ import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
 import VerificationPage from "./pages/auth/VerificationPage";
+import OAuth2Callback from "./components/auth/OAuth2Callback";
 
 function App() {
   const router = createBrowserRouter([
@@ -131,6 +132,10 @@ function App() {
         {
           path: "*",
           element: <NotFoundError />,
+        },
+        {
+          path: "/oauth2/callback",
+          element: <OAuth2Callback />,
         },
       ],
     },

@@ -19,8 +19,8 @@ const Header = () => {
   let screenWidth = window.screen.width;
 
   // If user has login
-  const { isAuthenticated } = useAuth();
-  // console.log(isAuthenticated);
+  const { user, isAuthenticated } = useAuth();
+  console.log("Try to print in header", user);
 
   const provinces = data.level1s.map((province) => ({
     value: province.name,
@@ -112,9 +112,8 @@ const Header = () => {
       </div>
       {showToggleContent && (
         <div
-          className={`absolute end-0 top-20 lg:relative lg:top-0 lg:bg-none lg:w-auto w-[350px] bg-white lg:shadow-none shadow-md lg:p-0 px-5 py-3 border-zinc-500 ${
-            showToggleMenu ? "block" : "hidden"
-          } lg:flex lg:w-auto flex-row items-center`}
+          className={`absolute end-0 top-20 lg:relative lg:top-0 lg:bg-none lg:w-auto w-[350px] bg-white lg:shadow-none shadow-md lg:p-0 px-5 py-3 border-zinc-500 ${showToggleMenu ? "block" : "hidden"
+            } lg:flex lg:w-auto flex-row items-center`}
           id="navbar-default"
         >
           {isAuthenticated === true ? (

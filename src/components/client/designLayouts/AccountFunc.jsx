@@ -13,6 +13,9 @@ const AccountFunc = () => {
   const dropdownRef = useRef(null);
 
   const handleLogout = async () => {
+    console.log(localStorage.getItem('user'));
+    console.log(localStorage.getItem('access_token'));
+
     const res = await callLogout();
     // alert("lgout");
     if (res && res && +res.statusCode === 200) {

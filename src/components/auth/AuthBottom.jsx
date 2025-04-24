@@ -1,10 +1,50 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import google from "../../assets/google.png";
+import { useAuth } from "../../context/AuthContext";
 
 const AuthBottom = ({ pathname }) => {
 
   const location = useLocation();
+  const { login } = useAuth()
+
+  const navigate = useNavigate();
+
+  const handleGoogleLogin = () => {
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    const popup = window.open(
+      'http://localhost:8080/oauth2/authorization/google',
+      'Google Login',
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+
+    const cleanup = (messageHandler) => {
+      window.removeEventListener('message', messageHandler);
+    };
+
+    const messageHandler = async (event) => {
+      if (event.origin !== 'http://localhost:5173') return;
+
+      try {
+        const data = event.data;
+        if (data.accessToken && data.user) {
+          login(data.user, data.accessToken);
+          navigate('/');
+          popup?.close();
+          cleanup(messageHandler);
+        }
+      } catch (error) {
+        console.error('Error handling OAuth response:', error);
+        popup?.close();
+        cleanup(messageHandler);
+      }
+    };
+    window.addEventListener('message', messageHandler);
+  }
 
   let display = [
     "/auth/forgot-password",
@@ -34,9 +74,9 @@ const AuthBottom = ({ pathname }) => {
           Or {afterOr} with
         </p>
       </div>
-      <a href="http://localhost:8080/oauth2/authorization/google">
+      <button onClick={handleGoogleLogin}>
         <img src={google} className="w-[30px] h-[30px] mt-5" />
-      </a>
+      </button>
       <div className="flex items-center mt-5 gap-2  ">
         <p>{pText}</p>
         {link}
