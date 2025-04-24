@@ -25,16 +25,16 @@ const Step = () => {
     );
   }, [location.pathname]);
 
-  const onChange = (value) => {
-    navigate(`/auth/forgot-password/${routes[value]}`);
-  };
+  // const onChange = (value) => {
+  //   navigate(`/auth/forgot-password/${routes[value]}`);
+  // };
 
   return (
     <Steps
       type="navigation"
       current={current}
-      onChange={onChange}
-      className="site-navigation-steps"
+      // onChange={onChange}
+      className="site-navigation-steps font-bold"
       items={[
         { status: status.status1, title: "Verify Account" },
         { status: status.status2, title: "Reset Password" },

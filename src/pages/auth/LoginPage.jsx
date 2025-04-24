@@ -5,6 +5,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 import { callLogin } from "../../config/api";
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -16,7 +17,7 @@ const LoginPage = () => {
 
   let params = new URLSearchParams(location.search);
   const callback = params?.get("callback");
-  // const { navigate } = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsButtonHovered(!!(formValues.email && formValues.password));
@@ -43,12 +44,10 @@ const LoginPage = () => {
         }
 
         login(res.data.user, res.data.accessToken);
-
-        // console.log('User after login:', res.data.user);
-
-
-        message.success('Đăng nhập tài khoản thành công!');
-        window.location.href = callback ? callback : '/';
+        toast.success('Đăng nhập tài khoản thành công!', {
+          autoClose: 500,
+          onClose: () => navigate('/')
+        });
       }
 
     } catch (error) {

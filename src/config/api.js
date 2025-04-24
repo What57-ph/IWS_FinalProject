@@ -72,6 +72,18 @@ export const callVerify = (email, verificationCode) => {
   return instance.post("/api/v1/auth/verify", { email, verificationCode });
 }
 
+
+export const callResend = (email) => {
+  return instance.post(`/api/v1/auth/resend?email=${email}`);
+}
+
+export const callResetCodePassword = (email) => {
+  return instance.post(`/api/v1/auth/reset_code?email=${email}`);
+}
+
+export const callResetPassword = (username, password) => {
+  return instance.post("/api/v1/auth/reset", { username, password });
+};
 /**
  * 
 Module Oder

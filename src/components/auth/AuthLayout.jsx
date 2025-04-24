@@ -8,6 +8,7 @@ import { FaLock } from "react-icons/fa";
 
 import { Outlet, useLocation } from "react-router-dom";
 import AuthBottom from "./AuthBottom";
+import { ToastContainer } from "react-toastify";
 
 const AuthLayout = () => {
   const [showLangList, setShowLangList] = useState(false);
@@ -33,6 +34,17 @@ const AuthLayout = () => {
 
   return (
     <div className="overflow-x-hidden">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="w-screen py-6 lg:px-20 px-5 flex justify-between">
         <Logo />
         <LanguageOption

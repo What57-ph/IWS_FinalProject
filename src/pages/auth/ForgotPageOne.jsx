@@ -1,10 +1,11 @@
 import { Form, Input, Steps } from "antd";
 import React, { useEffect, useState } from "react";
-import Step from "../../components/auth/Step";
 
-import AuthButton from "../../components/auth/AuthButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VerifyForm from "../../components/auth/VerifyForm";
+import Step from "../../components/auth/Step";
+import { callVerify } from "../../config/api";
+import { toast } from "react-toastify";
 
 const ForgotPageOne = () => {
   const [formValues, setFormValues] = useState({
@@ -13,26 +14,38 @@ const ForgotPageOne = () => {
     verifyCode: "",
     confirmPassword: "",
   });
+
+  const [email, setEmail] = useState(null);
+  const [code, setCode] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(email);
+    console.log(code);
+
+  }, [email, code])
+
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  useEffect(() => {
-    if (formValues.email && formValues.verifyCode) {
-      setIsButtonHovered(true);
-    } else {
-      setIsButtonHovered(false);
+  const onFinish = async () => {
+    try {
+      // console.log('comes to try');
+      const res = await callVerify(email, code);
+      console.log(res);
+      console.log('Verification code:', code);
+      toast.success('Verify successfully...', {
+        autoClose: 1500,
+        onClose: () => navigate(`/auth/forgot-password/step2?email=${email}`)
+      });
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Verify failed, please check your verify code!';
+      console.log({ errorMessage });
+      toast.error(errorMessage);
     }
-  }, [formValues]);
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormValues({ ...formValues, [name]: value });
-  };
-  const onFinish = (values) => {
-    console.log(values);
   };
   return (
     <>
@@ -40,11 +53,17 @@ const ForgotPageOne = () => {
       <Form className="w-full text-start" onFinish={onFinish}>
         <VerifyForm
           validateEmail={validateEmail}
-          handleInputChange={handleInputChange}
-          formValues={formValues}
-          setFormValues={setFormValues}
+          setCode={setCode}
+          setEmail={setEmail}
+          email={email}
         />
-        <AuthButton isButtonHovered={isButtonHovered} />
+        <button
+          type="submit"
+          className={` hover:bg-pink-500 hover:text-opacity-100 text-white text-opacity-90 font-semibold border-0 w-full transition duration-200 h-[48px] text-xl rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 ${isButtonHovered ? "bg-pink-500" : "bg-pink-200"
+            }`}
+        >
+          Continue
+        </button>
       </Form>
       <Link to="/auth/login" className="mt-5 text-blue-600 hover:text-blue-400">
         Back to login

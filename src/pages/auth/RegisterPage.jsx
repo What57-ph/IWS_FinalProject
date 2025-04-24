@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, Spin } from "antd";
 import AuthButton from "../../components/auth/AuthButton";
 import PasswordForm from "../../components/auth/PasswordForm";
 import VerifyForm from "../../components/auth/VerifyForm";
@@ -10,6 +10,7 @@ const RegisterPage = () => {
   const [checked, setChecked] = useState(true);
 
   const { updateVerifyUser } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formValues, setFormValues] = useState({
     email: "",
@@ -53,6 +54,7 @@ const RegisterPage = () => {
     try {
       const { username, password } = values;
       console.log({ username, password });
+      setIsLoading(true);
 
       const res = await callRegister(username, password);
       updateVerifyUser(username);
@@ -62,37 +64,39 @@ const RegisterPage = () => {
       const errorMessage = error.response?.data?.error || 'Register failed!';
       console.log({ errorMessage });
       alert(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Form className="w-full text-start" onFinish={onFinish}>
-      <h4 className="font-semibold text-start">Set email</h4>
-      <VerifyForm
-        validateEmail={validateEmail}
-        handleInputChange={handleInputChange}
-        formValues={formValues}
-        setFormValues={setFormValues}
-      />
-      {/* <p className="text-gray-500 align-text-bottom text-start pb-5 text-base">
-        Enter email address and click “Send code”, then check the inbox and
-        follow instructions.
-      </p> */}
-      <h4 className="font-semibold text-start">Set password</h4>
-      <PasswordForm
-        validateEmail={validateEmail}
-        handleInputChange={handleInputChange}
-        formValues={formValues}
-        setFormValues={setFormValues}
-      />
-      <div className="flex flex-row justify-between px-1">
-        <p style={{ marginBottom: "20px" }}>
-          <Checkbox checked={checked} onChange={onChange}>
-            I agree to CTicket's Terms and conditions
-          </Checkbox>
-        </p>
-      </div>
-      <AuthButton isButtonHovered={isButtonHovered} />
+      <Spin spinning={isLoading} className="w-full">
+
+        <h4 className="font-semibold text-start">Set email</h4>
+        <VerifyForm
+          validateEmail={validateEmail}
+          handleInputChange={handleInputChange}
+          formValues={formValues}
+          setFormValues={setFormValues}
+        />
+        <h4 className="font-semibold text-start">Set password</h4>
+        <PasswordForm
+          validateEmail={validateEmail}
+          handleInputChange={handleInputChange}
+          formValues={formValues}
+          setFormValues={setFormValues}
+        />
+        <div className="flex flex-row justify-between px-1">
+          <p style={{ marginBottom: "20px" }}>
+            <Checkbox checked={checked} onChange={onChange}>
+              I agree to CTicket's Terms and conditions
+            </Checkbox>
+          </p>
+        </div>
+        <AuthButton isButtonHovered={isButtonHovered} />
+      </Spin>
+
     </Form>
   );
 };
