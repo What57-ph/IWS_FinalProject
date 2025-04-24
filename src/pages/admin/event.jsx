@@ -39,13 +39,13 @@ const EventPage = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
-  const [events, setEvents] = useState();
+  const [events, setEvents] = useState([]);
   const [isUpdatedEvent, setIsUpdatedEvent] = useState(false);
   const [requestType, setRequestType] = useState("post");
   useEffect(() => {
     const getEventListData = async () => {
       const data = await fetchEventList();
-      setEvents(data.data);
+      setEvents(data.data.result);
     };
     getEventListData();
   }, [isUpdatedEvent]);
@@ -76,9 +76,10 @@ const EventPage = () => {
     },
     {
       title: "Organizer",
-      dataIndex: "organizerName",
-      key: "organizerName",
+      dataIndex: "organizer",
+      key: "organizer",
       responsive: ["md"],
+      render: (organizer) => organizer?.name || "N/A",
     },
     {
       title: 'Day start',
@@ -87,7 +88,7 @@ const EventPage = () => {
         const currentDate = dayjs();
         const eventDate = dayjs(text);
         const daysLeft = eventDate.diff(currentDate, 'day');
-        console.log({ daysLeft });
+        // console.log({ daysLeft });
 
         const textColor = daysLeft > 5
           ? '#FF7F50'
@@ -214,7 +215,7 @@ const EventPage = () => {
         </div>
         <div>
           <div className="text-sm font-medium ">Organizer: </div>
-          <div className="text-base">{record.organizerName}</div>
+          <div className="text-base">{record?.organizer?.name}</div>
         </div>
         <div>
           <div className="text-sm font-medium ">Day start: </div>
