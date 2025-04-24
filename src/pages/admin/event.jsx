@@ -18,6 +18,7 @@ import {
   Select,
   Space,
   Table,
+  Tag,
   Upload,
 } from "antd";
 import dayjs from "dayjs";
@@ -38,7 +39,7 @@ const EventPage = () => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
-  const [events, setEvents] = useState();
+  const [events, setEvents] = useState([]);
   const [isUpdatedEvent, setIsUpdatedEvent] = useState(false);
   const [requestType, setRequestType] = useState("post");
   useEffect(() => {
@@ -75,15 +76,34 @@ const EventPage = () => {
     },
     {
       title: "Organizer",
-      dataIndex: "organizerName",
-      key: "organizerName",
+      dataIndex: "organizer",
+      key: "organizer",
       responsive: ["md"],
+      render: (organizer) => organizer?.name || "N/A",
     },
     {
-      title: "Day start",
-      dataIndex: "startDate",
-      render: (text) => dayjs(text).format("DD/MM/YYYY"),
-      responsive: ["lg"],
+      title: 'Day start',
+      dataIndex: 'startDate',
+      render: (text) => {
+        const currentDate = dayjs();
+        const eventDate = dayjs(text);
+        const daysLeft = eventDate.diff(currentDate, 'day');
+        // console.log({ daysLeft });
+
+        const textColor = daysLeft > 5
+          ? '#FF7F50'
+          : daysLeft >= 0
+            ? 'green'
+            : 'red';
+
+        return (
+          <Tag color={textColor} >
+            {eventDate.format('DD/MM/YYYY')}
+          </Tag>
+        );
+      },
+      responsive: ['lg'],
+      sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
     },
     {
       title: "Thao tác",
@@ -97,12 +117,21 @@ const EventPage = () => {
             }}
             size="small"
           />
-          <Button
-            icon={<DeleteOutlined />}
-            danger
-            size="small"
-            onClick={() => handleDelete(record.id)}
-          />
+          <Popconfirm
+            title="Do you sure want to delete ?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Có"
+            cancelText="Không"
+            placement="left"
+          >
+            <Button
+              icon={<DeleteOutlined />}
+              danger
+              size="small"
+
+            />
+          </Popconfirm>
+
           <Button
             icon={<InfoCircleOutlined />}
             onClick={() => handleGetInfo(record)}
@@ -126,8 +155,7 @@ const EventPage = () => {
     const res = await deleteEvent(id);
     setEvents((prev) => prev.filter((item) => item.id != id));
   };
-  const handleSubmit = async (values) => {
-    console.log("Data event form", values);
+  const handleSubmit = async (values, eventId) => {
     try {
       // Transform data for backend
       const backendData = {
@@ -135,19 +163,16 @@ const EventPage = () => {
         organizerName: values.organizerName,
         organizerInfo: values.organizerInfo,
       };
-
       let response;
       if (requestType === "post") {
         response = await createNewEvent(backendData);
         setEvents((prev) => [...prev, response]);
         toast.success("Create event successfully");
       } else if (requestType === "put") {
-        response = await updateEvent(backendData, values.id);
-        setEvents((prev) =>
-          prev.map((u) => (u.id === values.id ? response : u))
-        );
+        response = await updateEvent(backendData, eventId);
+        setEvents((prev) => prev.map((u) => (u.id === eventId ? response : u)));
         toast.success("Update event successfully");
-        setIsUpdatedUser(!isUpdatedEvent);
+        setIsUpdatedEvent(!isUpdatedEvent);
       }
 
       message.success("Operation successful!");
@@ -190,7 +215,7 @@ const EventPage = () => {
         </div>
         <div>
           <div className="text-sm font-medium ">Organizer: </div>
-          <div className="text-base">{record.organizerName}</div>
+          <div className="text-base">{record?.organizer?.name}</div>
         </div>
         <div>
           <div className="text-sm font-medium ">Day start: </div>
@@ -201,7 +226,16 @@ const EventPage = () => {
           {/* Bỏ col-span-2 */}
           <Space>
             <Button icon={<EditOutlined />} size="small" />
-            <Button icon={<DeleteOutlined />} danger size="small" />
+            <Popconfirm
+              title="Do you sure want to delete ?"
+              onConfirm={() => handleDelete(record.orderId)}
+              okText="Có"
+              cancelText="Không"
+              placement="left"
+            >
+              <Button icon={<DeleteOutlined />} danger size="small" />
+            </Popconfirm>
+
           </Space>
         </div>
       </div>
@@ -240,6 +274,7 @@ const EventPage = () => {
           bordered
           scroll={{ x: true }}
           size="middle"
+          pagination={{ pageSize: 7 }}
         />
       )}
       <EventModal

@@ -1,8 +1,8 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import DashboardPage from "./pages/admin/dashboard";
+import DashboardPage from "./pages/Admin/dashboard";
 import UserPage from "./pages/admin/user";
-import EventPage from "./pages/admin/event";
+import EventPage from "./pages/Admin/event";
 import OrderPage from "./pages/admin/order";
 import AdminLayout from "./components/admin/layout.admin";
 
@@ -30,39 +30,35 @@ function App() {
       children: [
         {
           index: true,
-          element:
-            (
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            )
+          element: (
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "user",
-          element:
-            (
-              <ProtectedRoute>
-                <UserPage />
-              </ProtectedRoute>
-            )
+          element: (
+            <ProtectedRoute>
+              <UserPage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "event",
-          element:
-            (
-              <ProtectedRoute>
-                <EventPage />
-              </ProtectedRoute>
-            ),
+          element: (
+            <ProtectedRoute>
+              <EventPage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "order",
-          element:
-            (
-              <ProtectedRoute>
-                <OrderPage />
-              </ProtectedRoute>
-            ),
+          element: (
+            <ProtectedRoute>
+              <OrderPage />
+            </ProtectedRoute>
+          ),
         },
       ],
     },

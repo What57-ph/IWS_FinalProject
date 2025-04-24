@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import sampleData from "../../../data/sampleData";
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from "react-icons/bs";
+import { useAuth } from "../../../context/AuthContext";
 
 // sampledata
 const slides = sampleData.events.map((event) => event.information).slice(0, 6);
@@ -9,9 +10,9 @@ export default function Slider() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [visibleSlides, setVisibleSlides] = useState(window.innerWidth < 768 ? 1 : 2);
-
+  const { events } = useAuth();
   const totalSlides = slides.length;
-
+  console.log(events);
   function nextSlide() {
     setSlideIndex((prev) => (prev + 1) % (totalSlides - 1));
   }
@@ -30,11 +31,11 @@ export default function Slider() {
     const updateVisibleSlides = () => {
       setVisibleSlides(window.innerWidth < 768 ? 1 : 2);
     };
-  
+
     window.addEventListener("resize", updateVisibleSlides);
     return () => window.removeEventListener("resize", updateVisibleSlides);
   }, []);
-  
+
   return (
     <div
       className="relative w-full max-w-full mx-auto my-12"
@@ -75,9 +76,8 @@ export default function Slider() {
           <button
             key={index}
             onClick={() => setSlideIndex(index)}
-            className={`size-2 lg:size-3 rounded-full ${
-              slideIndex === index ? "bg-blue-700" : "bg-gray-600"
-            }`}
+            className={`size-2 lg:size-3 rounded-full ${slideIndex === index ? "bg-blue-700" : "bg-gray-600"
+              }`}
           ></button>
         ))}
       </div>
