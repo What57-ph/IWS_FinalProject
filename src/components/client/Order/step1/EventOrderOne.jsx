@@ -121,6 +121,7 @@ const EventOrderOne = ({ form }) => {
         });
         form.setFieldsValue({ organizeDate: dateList[index] });
     };
+    console.log(dateList);
     // console.log(selectedTickets);
     // console.log(selectedTickets);
     // console.log(totalAmount / 25960);
