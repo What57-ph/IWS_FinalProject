@@ -13,7 +13,6 @@ export default function Slider() {
   const slides = events.slice(0, 6);
   const totalSlides = slides.length;
   const navigate = useNavigate();
-  console.log(slides);
   function nextSlide() {
     setSlideIndex((prev) => (prev + 1) % (totalSlides - 1));
   }

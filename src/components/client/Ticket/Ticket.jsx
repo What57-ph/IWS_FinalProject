@@ -10,7 +10,11 @@ export default function Ticket({
   onClick
 }) {
   return (
-    <div className="flex my-4 bg-gray-700 text-white rounded-md overflow-hidden shadow-lg cursor-pointer" onClick={onClick}>
+    <div 
+      className="flex my-4 bg-gray-700 text-white rounded-md overflow-hidden shadow-lg cursor-pointer" 
+      onClick={onClick}
+      title='Xem chi tiết'
+    >
       {/* Left date panel */}
       <div className="flex flex-col items-center justify-center bg-gray-800 px-4 py-6 relative">
         {/* Dot top */}

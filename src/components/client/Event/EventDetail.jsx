@@ -42,7 +42,7 @@ export default function EventDetail() {
         <Sidebar className="max-lg:hidden sticky top-4" data={event} isAuthenticated={isAuthenticated}/>
       </div>
       <SuggestEvent />
-      <div class="sticky bottom-0 bg-base-100 text-center p-4 z-20 lg:hidden bg-white">
+      <div className="sticky bottom-0 bg-base-100 text-center p-4 z-20 lg:hidden bg-white">
             {isAuthenticated
               ? <a href="" className="bg-pink-300 h-[60px] rounded-lg text-[1.125rem] justify-center flex items-center w-full">
                   Mua vé ngay

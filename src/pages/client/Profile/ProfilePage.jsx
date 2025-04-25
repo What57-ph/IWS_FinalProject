@@ -11,14 +11,14 @@ import { useAuth } from "../../../context/AuthContext";
 import HandleLocation from "../../../components/admin/event/handleLocation";
 import dayjs from "dayjs";
 import { updateUser } from "../../../config/api";
-
-const { Option } = Select;
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
   const { currentUser } = useAuth();
-  const title = (<h1 className="text-[16px] mb-2">Address: </h1>)
+  const title = (<h1 className="text-[16px] font-semibold">Address: </h1>)
   const [form] = Form.useForm();
   const [changePassword, setChangePassword] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (currentUser) {
@@ -35,9 +35,20 @@ const ProfilePage = () => {
     }
   }, [currentUser, form]);
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-    const response = updateUser(values)
+
+  const onFinish = async (values) => {
+    setLoading(true)
+    
+    try {
+      
+      const res = await updateUser(values)
+      
+      toast.success('Update information successfully!')
+    } catch {
+      toast.error('Fail! Something wrong on server')
+    } finally {
+      setLoading(false)
+    }
   };
 
   // const prefixSelector = (
@@ -58,7 +69,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold pb-2">Cài đặt tài khoản</h1>
+      <h1 className="text-2xl font-bold pb-2">Account settings</h1>
       <hr />
       <Form
         form={form}
@@ -67,28 +78,28 @@ const ProfilePage = () => {
         style={{ maxWidth: 500, margin: "0 auto" }}
         scrollToFirstError
       >
+        <h1 className="mb-2 text-[16px] font-semibold">Your name:  </h1>
         <Form.Item
           name="name"
-          rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
-        >
+          rules={[{ required: true, message: "Please type your name!" }]}>
           <Input 
             prefix={<UserOutlined />} 
-            placeholder="Họ và tên" 
+            placeholder="Full name" 
             style={inputStyle}
           />
         </Form.Item>
 
+        <h1 className="mb-2 text-[16px] font-semibold">Phone number:  </h1>
         <Form.Item
           name="phone"
-          rules={[
-            { required: true, message: "Vui lòng nhập số điện thoại!" },
-            { min: 10, message: "Số điện thoại phải có ít nhất 10 ký tự!" },
-            { max: 16, message: "Số điện thoại không được quá 16 ký tự!" },
-          ]}
-        >
+          rules={[ 
+            { required: true, message: "Please enter your phone number!" },
+            { min: 10, message: "Phone number must be at least 10 characters!" },
+            { max: 16, message: "Phone number cannot be more than 16 characters!" },
+          ]}>
           <Input
             prefix={<PhoneOutlined />}
-            placeholder="Số điện thoại"
+            placeholder="Phone number"
             style={{ ...inputStyle, width: "100%" }}
           />
         </Form.Item>
@@ -96,10 +107,9 @@ const ProfilePage = () => {
         <Form.Item
           name="email"
           rules={[
-            { type: "email", message: "Email không hợp lệ!" },
-            { required: true, message: "Vui lòng nhập email!" },
-          ]}
-        >
+            { type: "email", message: "Invalid email!" },
+            { required: true, message: "Please enter your email!" },
+          ]}>
           <Input 
             prefix={<MailOutlined />} 
             placeholder="Email" 
@@ -108,12 +118,12 @@ const ProfilePage = () => {
           />
         </Form.Item>
 
+        <h1 className="mb-2 text-[16px] font-semibold">Birthday:  </h1>
         <Form.Item
           name="dob"
-          rules={[{ required: true, message: "Vui lòng chọn ngày sinh!" }]}
-        >
+          rules={[{ required: true, message: "Please select your date of birth!" }]}>
           <DatePicker
-            placeholder="Ngày tháng năm sinh"
+            placeholder="Date of birth"
             style={{ ...inputStyle, width: "100%", height: "46px" }}
             format="DD/MM/YYYY"
           />
@@ -122,7 +132,7 @@ const ProfilePage = () => {
         <HandleLocation form={form} title={title}/>
 
         <div className="mb-6">
-          <span className="text-[16px]">Thay đổi mật khẩu:  </span>
+          <span className="text-[16px] font-semibold">Change password:  </span>
           <Switch 
             checked={changePassword} 
             onChange={(checked) => {
@@ -140,14 +150,14 @@ const ProfilePage = () => {
         <Form.Item
           name="password"
           rules={[
-            { required: changePassword, message: "Vui lòng nhập mật khẩu!" },
-            changePassword ? { min: 6, message: "Mật khẩu phải có ít nhất 6 ký tự!" } : {},
+            { required: changePassword, message: "Please enter a password!" },
+            changePassword ? { min: 6, message: "Password must be at least 6 characters!" } : {},
           ]}
           hasFeedback
         >
           <Input.Password 
             prefix={<LockOutlined />} 
-            placeholder="Mật khẩu" 
+            placeholder="Password" 
             disabled={!changePassword}
             style={inputStyle}
           />
@@ -158,20 +168,20 @@ const ProfilePage = () => {
           dependencies={["password"]}
           hasFeedback
           rules={[
-            { required: changePassword, message: "Vui lòng xác nhận mật khẩu!" },
+            { required: changePassword, message: "Please confirm your password!" },
             changePassword ? ({
               validator(_, value) {
                 if (!value || form.getFieldValue("password") === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error("Mật khẩu không khớp!"));
+                return Promise.reject(new Error("Passwords do not match!"));
               },
             }) : {},
           ]}
         >
           <Input.Password
             prefix={<LockOutlined />}
-            placeholder="Xác nhận mật khẩu"
+            placeholder="Confirm password"
             disabled={!changePassword}
             style={inputStyle}
           />
@@ -182,9 +192,10 @@ const ProfilePage = () => {
             type="primary" 
             htmlType="submit" 
             block
+            loading={loading}
             style={{ height: "46px", fontSize: "16px" }}
           >
-            Hoàn thành
+            Complete
           </Button>
         </Form.Item>
       </Form>
