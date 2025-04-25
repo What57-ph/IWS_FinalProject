@@ -10,7 +10,9 @@ export default function EventList({ list }) {
       {list.map((item, index) => {
         return (
           <div key={index} className="p-2 rounded-md hover:shadow-md">
-            <a href={`/event/${item.id}`}>
+            <Link to={`/event/${item.id}`}
+              onClick={() => window.scrollTo(0,0)}
+            >
               <div className="border-none">
                 <div className="relative">
                   <div className="absolute bottom-0 z-10 w-full flex items-center justify-center py-4 px-6 backdrop-blur-xl bg-opacity-40 rounded-b-lg border-t border-white/50">
@@ -40,7 +42,7 @@ export default function EventList({ list }) {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
         );
       })}

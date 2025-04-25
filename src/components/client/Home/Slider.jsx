@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import sampleData from "../../../data/sampleData";
 import { BsArrowRightCircleFill, BsArrowLeftCircleFill } from "react-icons/bs";
 import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-// sampledata
-const slides = sampleData.events.map((event) => event.information).slice(0, 6);
 
 export default function Slider() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [visibleSlides, setVisibleSlides] = useState(window.innerWidth < 768 ? 1 : 2);
   const { events } = useAuth();
+  const slides = events.slice(0, 6);
   const totalSlides = slides.length;
-  console.log(events);
+  const navigate = useNavigate();
+  console.log(slides);
   function nextSlide() {
     setSlideIndex((prev) => (prev + 1) % (totalSlides - 1));
   }
@@ -57,8 +58,12 @@ export default function Slider() {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="w-full md:w-1/2 border-x-4 border-white aspect-[5/3] box-border rounded-[12px] flex-shrink-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${slide})` }}
+              onClick={() => {
+                navigate(`/event/${slide.id}`)
+                window.scrollTo(0, 0)
+              }}
+              className="w-full md:w-1/2 border-x-4 border-white aspect-[5/3] box-border rounded-[12px] flex-shrink-0 bg-cover bg-center cursor-pointer"
+              style={{ backgroundImage: `url(${slide.banner})` }}
             ></div>
           ))}
         </div>
