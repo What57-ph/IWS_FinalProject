@@ -16,7 +16,7 @@ const LoginPage = () => {
   const { login } = useAuth()
 
   let params = new URLSearchParams(location.search);
-  const callback = params?.get("callback");
+  const redirect = params?.get("redirect") || '';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const LoginPage = () => {
         login(res.data.user, res.data.accessToken);
         toast.success('Đăng nhập tài khoản thành công!', {
           autoClose: 500,
-          onClose: () => navigate('/')
+          onClose: () => navigate(`${redirect || '/'}`)
         });
       }
 

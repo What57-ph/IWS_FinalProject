@@ -60,10 +60,10 @@ const SearchResultPage = () => {
   }
 
 
-  return <div className="max-w-screen-xl mx-[16px] lg:mx-[64px] xl:mx-auto my-10 min-h-[calc(100vh-200px)]">
+  return <div className="max-w-screen-xl mx-[16px] lg:mx-[64px] xl:mx-auto my-5 min-h-[calc(100vh-200px)]">
     <div className="flex flex-row justify-between mb-2 gap-2">
       <h4 className="font-semibold hidden md:block">Results found: </h4>
-      <div className="flex flex-row items-center justify-between bg-gray-100 rounded-full w-full relative md:hidden ">
+      <div className="hidden flex-row items-center justify-between bg-gray-100 rounded-full w-full relative md:hidden ">
         <input onChange={(e) => setSearchValue(e.target.value)}
           placeholder={`Input keywords`}
           className="bg-gray-100 focus:outline-none w-full px-4 py-2 rounded-full"
