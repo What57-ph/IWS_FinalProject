@@ -15,7 +15,7 @@ const OrganizerDetail = ({ form, open, handleCancel }) => {
         <Modal
             title="Order detail"
             open={open}
-            onOk={() => form.submit()}
+            onOk={handleCancel}
             onCancel={handleCancel}
             width={800}
             styles={{

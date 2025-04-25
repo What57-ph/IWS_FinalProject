@@ -231,7 +231,7 @@ const EventPage = () => {
         toast.error(error.message);
         return;
       }
-      toast.error(error.message);
+      toast.error(error.error);
     }
   };
 
@@ -295,7 +295,7 @@ const EventPage = () => {
       </div>
     </div>
   );
-
+  // console.log("init values from event:", form.getFieldValue())
   return (
     <div className="p-4 max-w-full overflow-auto">
       <div className="flex justify-between mb-4 flex-wrap gap-2">
@@ -337,6 +337,8 @@ const EventPage = () => {
         setOpenModal={setOpenModal}
         handleSubmit={handleSubmit}
         initialValues={form.getFieldValue()}
+        event={events}
+        requestType={requestType}
       />
 
       <EventDetailModal

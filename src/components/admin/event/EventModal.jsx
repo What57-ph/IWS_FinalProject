@@ -32,6 +32,7 @@ const EventModal = ({
   setOpenModal,
   handleSubmit,
   initialValues,
+  requestType
 }) => {
   const [form] = Form.useForm();
   const [squareLogoFile, setSquareLogoFile] = useState([]);
@@ -49,9 +50,10 @@ const EventModal = ({
 
       if (initialValues) {
         form.setFieldsValue(initialValues);
+        console.log("init value:", initialValues);
       }
     }
-  }, [openModal, initialValues]);
+  }, [openModal, initialValues, requestType]);
   const nextStep = async () => {
     try {
       // Validate fields trước khi chuyển step
@@ -78,7 +80,11 @@ const EventModal = ({
           "province",
           "district",
           "ward",
+          "status",
           "houseNumber",
+          "imgEventInfo",
+          "banner",
+          "logo"
         ];
       case "ticket-type":
         return ["tickets"];
@@ -101,6 +107,10 @@ const EventModal = ({
       "organizerName",
       "organizerInfo",
       "tickets",
+      "status",
+      "imgEventInfo",
+      "banner",
+      "logo"
     ]);
     console.log("Basic info values:", basicInfoValues);
 
@@ -132,11 +142,13 @@ const EventModal = ({
             setBannerFile={setBannerFile}
             organizerLogoFile={organizerLogoFile}
             setOrganizerLogoFile={setOrganizerLogoFile}
+            initialValues={initialValues}
+            requestType={requestType}
           />
         );
 
       case "ticket-type":
-        return <HandleTicketType form={form} />;
+        return <HandleTicketType form={form} initialValues={initialValues} requestType={requestType} />;
       default:
         return null;
     }

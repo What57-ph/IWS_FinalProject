@@ -23,19 +23,23 @@ const OrganizerPage = () => {
     const [organizers, setOrganizers] = useState([]);
     const [isUpdatedOrganizer, setIsUpdatedOrganizer] = useState(false);
     // console.log(users);
-
+    const antStep = document.querySelectorAll(".ant-popconfirm-inner-content");
+    console.log(antStep)
+    antStep.forEach((item, index) => {
+        item.className += " p-2";
+    });
     const { useBreakpoint } = Grid;
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     useEffect(() => {
-        console.log("runnnnnnnnnnnn")
+
         const getOrganizerListData = async () => {
             try {
                 const data = await fetchOrganizerList();
-                console.log("Fetched organizers:", data); // Debugging log
                 setOrganizers(data);
             } catch (error) {
                 console.error("Error fetching organizers:", error);
+                toast.error(error);
             }
         };
         getOrganizerListData();
@@ -53,7 +57,7 @@ const OrganizerPage = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
-            width: 200,
+            width: 300,
             responsive: ["md"],
         },
         {
@@ -61,7 +65,7 @@ const OrganizerPage = () => {
             dataIndex: "email",
             key: "email",
             responsive: ["md"],
-            width: 200,
+            width: 300,
             render: (email) => <span className="text-blue-500">{email}</span>
         },
         {
@@ -70,7 +74,7 @@ const OrganizerPage = () => {
             key: "description",
             responsive: ["md"],
             render: (text) => (
-                <div className="truncate max-w-[50px] md:max-w-[150px] lg:max-w-[400px]">
+                <div className="truncate overflow-hidden whitespace-nowrap max-w-[50px] md:max-w-[120px] lg:max-w-[300px]">
                     {text}
                 </div>
             ),
@@ -88,8 +92,8 @@ const OrganizerPage = () => {
                     <Popconfirm
                         title="Do you sure want to delete ?"
                         onConfirm={() => handleDelete(record.id)}
-                        okText="Có"
-                        cancelText="Không"
+                        okText="Yes"
+                        cancelText="No"
                         placement="left"
                     >
                         <Button
@@ -168,7 +172,7 @@ const OrganizerPage = () => {
 
     // get detail order
     const handleGetInfo = (order) => {
-        console.log(order);
+        // console.log(order);
 
         form.setFieldsValue(order);
         setOpenDetail(true);

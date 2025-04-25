@@ -35,7 +35,7 @@ const OrganizerModal = ({ form, open, handleSubmit, handleCancel }) => {
                     name="email"
                     label="Email"
                     rules={[
-                        { required: true },
+                        { required: false },
                         // { type: "email", message: "Email is invalid" },
                     ]}
                 >
@@ -46,7 +46,7 @@ const OrganizerModal = ({ form, open, handleSubmit, handleCancel }) => {
                     name="name"
                     label="Name"
                     rules={[
-                        { required: true },
+                        { required: false },
                         // { type: "name", message: "User name is invalid" },
                     ]}
                 >
@@ -58,7 +58,7 @@ const OrganizerModal = ({ form, open, handleSubmit, handleCancel }) => {
                     name="phone"
                     label="Phone"
                     rules={[
-                        { required: true },
+                        { required: false },
                         // { type: "phone", message: "Phone number is invalid" },
                     ]}
                 >

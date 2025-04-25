@@ -5,6 +5,7 @@ import { uploadSingleFile } from "../../../config/api";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 const HandleBasicInfo = ({
   form,
   squareLogoFile,
@@ -13,7 +14,11 @@ const HandleBasicInfo = ({
   setBannerFile,
   organizerLogoFile,
   setOrganizerLogoFile,
+  initialValues,
+  requestType
 }) => {
+  const { events } = useAuth();
+  // console.log(event);
   const { RangePicker } = DatePicker;
   const [dateList, setDateList] = useState([]);
   const onChange = (dates) => {
@@ -153,7 +158,7 @@ const HandleBasicInfo = ({
     </div>
   );
 
-  const renderPreview = (fileList) => {
+  const renderPreview = (fileList, file) => {
     if (fileList.length > 0) {
       const file = fileList[0];
       const previewUrl =
@@ -175,6 +180,17 @@ const HandleBasicInfo = ({
           <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300" />
         </div>
       );
+    } else if (file) {
+      return (
+        <div className="relative w-full h-full">
+          <img
+            src={file}
+            alt="preview"
+            className="w-full h-[95%] object-cover rounded-lg"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300" />
+        </div>
+      )
     }
     return null;
   };
@@ -185,17 +201,30 @@ const HandleBasicInfo = ({
       <Form.Item name="id" hidden>
         <Input />
       </Form.Item>
-
-      <Form.Item label="Event name" name="name">
-        <Input placeholder="Example: Event ABC" />
-      </Form.Item>
+      <div className="flex flex-col md:flex-row gap-4">
+        <Form.Item label="Event name" name="name" className="w-full md:w-1/2">
+          <Input placeholder="Example: Event ABC" />
+        </Form.Item>
+        <Form.Item label="Status" name="status" className="w-full md:w-1/2">
+          <Select>
+            <Select.Option value="CLOSED">Closed</Select.Option>
+            <Select.Option value="OPEN">Open</Select.Option>
+            <Select.Option value="SOLD_OUT">Sold out</Select.Option>
+          </Select>
+        </Form.Item>
+      </div>
 
       <div className="flex flex-col md:flex-row gap-4">
         <Form.Item className="w-full md:w-1/2" label="Category" name="category">
           <Select>
-            <Select.Option value="music">Nhạc kịch</Select.Option>
-            <Select.Option value="sport">Thể thao</Select.Option>
-            <Select.Option value="conference">Họp báo</Select.Option>
+            <Select.Option value="Live Music">Live music</Select.Option>
+            <Select.Option value="Sport">Sport</Select.Option>
+            <Select.Option value="Conference">Conference</Select.Option>
+            <Select.Option value="Stage & Art">Stage & Art</Select.Option>
+            <Select.Option value="Travel & Tour">Travel & Tour</Select.Option>
+            <Select.Option value="Nightlife">Nightlife</Select.Option>
+            <Select.Option value="Merchandise">Merchandise</Select.Option>
+
           </Select>
         </Form.Item>
 
@@ -222,7 +251,7 @@ const HandleBasicInfo = ({
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Upload Event Media</h3>
         <div className="flex flex-col md:flex-row gap-4">
-          <Form.Item name="squareLogo" >
+          <Form.Item name="imgEventInfo">
             <Upload
               listType="picture-card"
               fileList={squareLogoFile}
@@ -247,8 +276,8 @@ const HandleBasicInfo = ({
                   : []
               }
             >
-              {squareLogoFile.length > 0
-                ? renderPreview(squareLogoFile)
+              {squareLogoFile.length > 0 || (requestType === "put" && initialValues.imgEventInfo)
+                ? renderPreview(squareLogoFile, initialValues.imgEventInfo)
                 : renderUploadButton("Event info", "1:1")}
             </Upload>
           </Form.Item>
@@ -278,8 +307,8 @@ const HandleBasicInfo = ({
                   : []
               }
             >
-              {bannerFile.length > 0
-                ? renderPreview(bannerFile)
+              {bannerFile.length > 0 || (requestType === "put" && initialValues.banner)
+                ? renderPreview(bannerFile, initialValues.banner)
                 : renderUploadButton("Event Banner", "16:9", false)}
             </Upload>
           </Form.Item>
@@ -289,7 +318,7 @@ const HandleBasicInfo = ({
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Organizer Information</h3>
         <div className="flex flex-col md:flex-row gap-4 items-center">
-          <Form.Item name="organizerLogo" className="w-full md:w-1/4">
+          <Form.Item name="logo" className="w-full md:w-1/4">
             <Upload
               className="custom-upload-organizer-info"
               listType="picture-card"
@@ -316,8 +345,8 @@ const HandleBasicInfo = ({
                   : []
               }
             >
-              {organizerLogoFile.length > 0 ? (
-                renderPreview(organizerLogoFile)
+              {organizerLogoFile.length > 0 || (requestType === "put" && initialValues.logo) ? (
+                renderPreview(organizerLogoFile, initialValues.logo)
               ) : (
                 <div className="w-full h-[95%] flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 rounded-lg">
                   <UploadOutlined className="text-xl" />
@@ -334,11 +363,14 @@ const HandleBasicInfo = ({
               rules={[
                 { required: true, message: "Please input organizer name" },
               ]}
+              initialValue={requestType === "put" ? initialValues.organizer.name : undefined}
+
             >
-              <Input placeholder="Example: ABC Company" />
+              <Input placeholder="Example: ABC Company" disabled={requestType === "put" ? true : false} />
             </Form.Item>
 
-            <Form.Item label="Organizer Information" name="organizerInfo">
+            <Form.Item label="Organizer Information" name="organizerInfo"
+              initialValue={requestType === "put" ? initialValues.organizer.description : undefined}>
               <Input.TextArea rows={4} />
             </Form.Item>
           </div>
