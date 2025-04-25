@@ -124,15 +124,15 @@ const EventOrderOne = () => {
     console.log(dateList);
     // console.log(selectedTickets);
     return (
-        <div className="flex lg:flex-row flex-col gap-6 w-full mt-5 lg:justify-normal justify-center xl:px-20 lg:px-0 px-4">
+        <div className="flex lg:flex-row flex-col gap-6 w-full mt-5  justify-center xl:px-20 lg:px-0 px-4">
             <img
                 src={event?.imgEventInfo}
-                className="xl:w-full lg:w-1/2 xl:h-4/5 h-full "
+                className="lg:w-1/2 xl:h-4/5 h-full "
             />
 
             <div className="flex flex-col justify-center items-center">
                 {/* Date Picker */}
-                <Form.Item className="eventForm h-fit">
+                <Form.Item className="ml-4 eventForm h-fit">
                     <div className="flex sm:flex-row flex-col justify-between items-center text-center gap-2">
                         <label className="font-semibold text-xl">Date & Time</label>
                         <div className="flex items-center bg-gray-100 p-2 rounded-md">
@@ -190,7 +190,7 @@ const EventOrderOne = () => {
 
                 {/* Ticket Category */}
 
-                <Form.Item className="eventForm">
+                <Form.Item className="ml-4 eventForm">
                     <div className="flex items-center justify-between">
                         <label className="font-semibold text-xl">Ticket category</label>
                         <label className="font-semibold text-xl">Amount</label>
@@ -244,7 +244,7 @@ const EventOrderOne = () => {
                 </Form.Item>
 
                 {/* Discount Info */}
-                <Form.Item className="eventForm bg-gray-100 p-4 rounded-md border border-dashed border-yellow-500 eventForm ">
+                <Form.Item className="ml-4 eventForm bg-gray-100 p-4 rounded-md border border-dashed border-yellow-500 eventForm ">
                     <h4 className="font-bold mb-2">🎟️ Combo Discount Offers:</h4>
                     <ul className="text-sm space-y-1">
                         <li>
@@ -259,7 +259,7 @@ const EventOrderOne = () => {
                         </li>
                     </ul>
                 </Form.Item>
-                <div className="sticky bottom-0 xl:w-[660px] lg:w-[450px] w-[100vw] bg-white p-4 rounded-lg shadow-xl mt-5 border border-gray-300">
+                <div className="sticky bottom-0 left-4 xl:w-[660px] lg:w-[450px] w-[100vw] bg-white p-4 rounded-lg shadow-xl mt-5 border border-gray-300">
                     <div className="flex items-center gap-4">
                         <Button type="button" onClick={() => setIsShown(!isShown)}>
                             {!isShown ? (<FaChevronDown className="text-2xl" />) : (<FaChevronDown className="text-2xl rotate-180" />)}

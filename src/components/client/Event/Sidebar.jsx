@@ -3,6 +3,7 @@ import { useAuth } from "../../../context/AuthContext";
 import DetailMap from "./DetailMap";
 import formatDate from "../../../utils/formatDate";
 import formatTicketPrice from "../../../utils/formatTicketPrice";
+import BuyButton from "./BuyButton";
 
 export default function Sidebar({className, isAuthenticated, data}) {
   const currentUrl = window.location.href;
@@ -133,15 +134,7 @@ export default function Sidebar({className, isAuthenticated, data}) {
 
           {/* Nút mua vé */}
           <div className="flex flex-col max-lg:hidden">
-            {isAuthenticated
-              ? <a href="" className="bg-pink-300 h-[60px] rounded-lg text-[1.125rem] justify-center flex items-center w-full">
-                  Mua vé ngay
-                </a>
-              :<a href="/auth/login" className="bg-pink-300 h-[60px] rounded-lg text-[1.125rem] justify-center flex items-center w-full">
-              Đăng nhập để mua vé
-            </a>
-            }
-            
+            <BuyButton isAuthenticated={isAuthenticated} eventId={data.id}/>
           </div>
 
           {/* Chia sẻ */}

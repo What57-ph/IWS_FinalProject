@@ -7,6 +7,7 @@ import SuggestEvent from "./SuggestEvents";
 import { useAuth } from "../../../context/AuthContext";
 import { useParams } from "react-router-dom";
 import About from "./About";
+import BuyButton from "./BuyButton";
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -43,14 +44,7 @@ export default function EventDetail() {
       </div>
       <SuggestEvent />
       <div className="sticky bottom-0 bg-base-100 text-center p-4 z-20 lg:hidden bg-white">
-            {isAuthenticated
-              ? <a href="" className="bg-pink-300 h-[60px] rounded-lg text-[1.125rem] justify-center flex items-center w-full">
-                  Mua vé ngay
-                </a>
-              :<a href="/auth/login" className="bg-pink-300 h-[60px] rounded-lg text-[1.125rem] justify-center flex items-center w-full">
-              Đăng nhập để mua vé
-            </a>
-            }
+            <BuyButton isAuthenticated={isAuthenticated} eventId={event.id}/>
       </div>
     </div>
   );
