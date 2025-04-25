@@ -194,6 +194,7 @@ const EventPage = () => {
   };
   const handleSubmit = async (values, eventId) => {
     try {
+      console.log(values);
       //format contain hour
       const formattedStartDate = values.startDate
         ? dayjs(values.startDate).format("YYYY-MM-DDTHH:mm:ss")
@@ -231,7 +232,7 @@ const EventPage = () => {
         toast.error(error.message);
         return;
       }
-      toast.error(error.error);
+      toast.error(error.message);
     }
   };
 
@@ -345,6 +346,7 @@ const EventPage = () => {
         open={openDetail}
         handleCancel={handleClose}
         form={form}
+        initialValues={form.getFieldValue()}
       />
     </div>
   );

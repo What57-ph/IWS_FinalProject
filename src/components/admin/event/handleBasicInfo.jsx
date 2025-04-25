@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import dayjs from "dayjs";
 const HandleBasicInfo = ({
   form,
   squareLogoFile,
@@ -232,6 +233,11 @@ const HandleBasicInfo = ({
           className="w-full md:w-1/2"
           label="Event date"
           name="eventDate"
+          initialValue={
+            initialValues.startDate && initialValues.endDate
+              ? [dayjs(initialValues.startDate), dayjs(initialValues.endDate)]
+              : undefined
+          }
         >
           <RangePicker
             showTime

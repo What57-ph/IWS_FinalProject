@@ -50,7 +50,7 @@ const HandleLocation = ({ form }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 col-span-2">
       <h1>Event address</h1>
       <Row gutter={12}>
         {/* <Col span={24}>

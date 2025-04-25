@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { BsBank } from "react-icons/bs";
 import { FaCreditCard } from "react-icons/fa";
 import { useOrderContext } from '../../../../context/OrderContext';
-
+import vnPay from '../../../../assets/vnpay.webp';
+import paypal from '../../../../assets/paypal.png';
 const PaymentMethod = ({ form }) => {
     // const [selectedMethod, setSelectedMethod] = useState("bank-transfer");
     const { selectedMethod, setSelectedMethod } = useOrderContext();
@@ -15,9 +16,9 @@ const PaymentMethod = ({ form }) => {
                     }`}
             >
                 <div className='flex items-center gap-6'>
-                    <BsBank className='text-3xl text-blue-600 bg-white' />
+                    <img src={vnPay} className='w-12' />
                     <div className='text-lg'>
-                        <p className='font-semibold'>Bank Transfer</p>
+                        <p className='font-semibold'>Pay with VNPay</p>
                         <p className='text-gray-500 sm:text-base text-sm'>Scan code instantly, confirm order immediately</p>
                     </div>
                 </div>
@@ -36,9 +37,9 @@ const PaymentMethod = ({ form }) => {
                     }`}
             >
                 <div className='flex items-center gap-6'>
-                    <FaCreditCard className='text-3xl text-blue-600 bg-white' />
+                    <img src={paypal} className='w-12' />
                     <div className='text-lg'>
-                        <p className='font-semibold'>Debit/Credit card</p>
+                        <p className='font-semibold'>Pay with Paypal</p>
                         <p className='text-gray-500 sm:text-base text-sm'>Fill in additional information, smart security</p>
                     </div>
                 </div>

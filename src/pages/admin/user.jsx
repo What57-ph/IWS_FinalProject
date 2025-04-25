@@ -4,7 +4,7 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Button, Form, message, notification, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, Form, Image, message, notification, Popconfirm, Space, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import sampleData from "../../data/sampleData";
 import { Grid } from "antd";
@@ -26,12 +26,7 @@ const UserPage = () => {
   const [requestType, setRequestType] = useState("post");
   const [users, setUsers] = useState(sampleData.user);
   const [isUpdatedUser, setIsUpdatedUser] = useState(false);
-  const [errorMessage, setErrorMessage] = useState({
-    email: [],
-    name: [],
-    password: [],
-    phone: [],
-  });
+  const [squareLogoFile, setSquareLogoFile] = useState([]);
   // console.log(users);
 
   const { useBreakpoint } = Grid;
@@ -54,17 +49,32 @@ const UserPage = () => {
       responsive: ["md"],
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Avatar",
+      dataIndex: "avatar",
+      key: "avatar",
+      responsive: ["md"],
+      width: 100,
+      render: (avatar) => <Image src={avatar} width={100} />
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
       key: "name",
       responsive: ["md"],
-      width: 500,
-      render: (name) => <span className="text-blue-500">{name}</span>
+      width: 300
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      responsive: ["md"],
+      width: 300,
+      render: (email) => <span className="text-blue-500">{email}</span>
     },
     {
       title: "Phone",
       dataIndex: "phone",
-      key: "address",
+      key: "phone",
       responsive: ["md"],
     },
     {
@@ -147,8 +157,10 @@ const UserPage = () => {
         ...values,
         role: Number(values.role),
         dob: dayjs(values.dob).format("YYYY-MM-DD"),
-      };
+        avatar: squareLogoFile[0]?.url,
 
+      };
+      console.log("Post data:", backendData)
       let response;
       if (requestType === "post") {
         response = await createNewUser(backendData);
@@ -172,7 +184,7 @@ const UserPage = () => {
         toast.error(error.message);
         return;
       }
-      error?.message?.map((err) => toast.error(err));
+      // error?.message?.map((err) => toast.error(err));
     }
   };
 
@@ -275,9 +287,13 @@ const UserPage = () => {
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         form={form}
+        requestType={requestType}
+        initialValues={form.getFieldValue()}
+        squareLogoFile={squareLogoFile}
+        setSquareLogoFile={setSquareLogoFile}
       />
 
-      <UserDetail open={openDetail} handleCancel={handleClose} form={form} />
+      <UserDetail open={openDetail} handleCancel={handleClose} form={form} initialValues={form.getFieldValue()} />
     </div>
   );
 };

@@ -62,7 +62,7 @@ const OrderInfo = () => {
                 <Divider />
                 <div>
                     <div className='flex w-full justify-between items-center'>
-                        <p className='sm:text-xl text-lg font-medium'>Ticket Delivery Information</p>
+                        <p className='sm:text-[19px] text-lg font-medium'>Ticket Delivery Information</p>
                         <Button type='button' onClick={() => setIsShownInfo(!isShownInfo)}>
                             {isShownInfo ? (<FaChevronUp className='text-2xl' />) : (<FaChevronDown className='text-2xl' />)}
                         </Button>
@@ -96,7 +96,7 @@ const OrderInfo = () => {
                 </div>
                 <div>
                     <div className='flex w-full justify-between items-center'>
-                        <p className='sm:text-xl text-lg font-medium'>Ticket Type Information</p>
+                        <p className='sm:text-[19px] text-lg font-medium'>Ticket Type Information</p>
                         <Button type='button' onClick={() => setIsShownType(!isShownType)}>
                             {isShownType ? (<FaChevronUp className='text-2xl' />) : (<FaChevronDown className='text-2xl' />)}
                         </Button>
@@ -129,9 +129,9 @@ const OrderInfo = () => {
             </div>
             <div className='eventStep2Form'>
                 <div className='flex justify-between items-center w-ful p-6 pb-4'>
-                    <p className='font-semibold sm:text-xl text-lg'>Payment Information</p>
+                    <p className='font-semibold sm:text-[19px] text-lg'>Payment Information</p>
                     <div className='flex items-center'>
-                        <p className='text-red-600 font-semibold sm:text-2xl text-lg'>
+                        <p className='text-red-600 font-semibold sm:text-[22px] text-lg'>
                             {selectedTickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0).toLocaleString("en-US", {
                                 style: "currency",
                                 currency: "VND",

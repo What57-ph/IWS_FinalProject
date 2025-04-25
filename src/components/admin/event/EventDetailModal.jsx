@@ -1,7 +1,7 @@
 import { Modal, Form, Input, DatePicker, Cascader, Select, InputNumber, Card, Button } from "antd";
 import dayjs from "dayjs";
 
-const EventDetailModal = ({ form, open, handleCancel }) => {
+const EventDetailModal = ({ form, open, handleCancel, initialValues }) => {
 
   // console.log(form.getFieldValue());
   const eventId = form.getFieldValue('id');
@@ -29,7 +29,7 @@ const EventDetailModal = ({ form, open, handleCancel }) => {
         <Form.Item
           label="Event name"
           name="name"
-          className="font-semibold col-span-2"
+          className="font-semibold col-span-3"
           labelCol={{ span: 24 }}
         >
           <Input className="font-normal h-10" disabled />
@@ -54,20 +54,8 @@ const EventDetailModal = ({ form, open, handleCancel }) => {
         </Form.Item>
 
         <Form.Item
-          label="Location"
-          name="location"
-          className="font-semibold"
-          labelCol={{ span: 24 }}
-        >
-          <Select className="font-normal h-10" disabled>
-            <Select.Option value="ADMIN">ADMIN</Select.Option>
-            <Select.Option value="USER">USER</Select.Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item
           label="Date start"
-          name="date"
+          name="startDate"
           className="font-semibold"
           labelCol={{ span: 24 }}
           getValueProps={(value) => ({ value: value ? dayjs(value) : null })}
@@ -76,6 +64,14 @@ const EventDetailModal = ({ form, open, handleCancel }) => {
         </Form.Item>
 
         {/* Row 3 - Address Part 1 */}
+        <Form.Item
+          label="Organizer"
+
+          className="font-semibold"
+          labelCol={{ span: 24 }}
+        >
+          <Input className="font-normal h-10" value={initialValues?.organizer?.name} disabled />
+        </Form.Item>
         <Form.Item
           label="Province/City"
           name="province"
@@ -103,19 +99,9 @@ const EventDetailModal = ({ form, open, handleCancel }) => {
         >
           <Input className="font-normal h-10" disabled />
         </Form.Item>
-
         <Form.Item
           label="Street/House Number"
-          name="house_number"
-          className="font-semibold"
-          labelCol={{ span: 24 }}
-        >
-          <Input className="font-normal h-10" disabled />
-        </Form.Item>
-
-        <Form.Item
-          label="Organizer"
-          name="organizer"
+          name="houseNumber"
           className="font-semibold col-span-2"
           labelCol={{ span: 24 }}
         >
