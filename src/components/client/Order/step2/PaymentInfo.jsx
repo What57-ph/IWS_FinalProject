@@ -39,7 +39,7 @@ const PaymentInfo = () => {
                         </label>
                         <div className="flex gap-2 h-[44px] bg-gray-100 text-base relative rounded-lg border-0 hover:bg-gray-100 focus:ring-2 focus:outline-none">
 
-                            <select
+                            {/* <select
                                 defaultValue="+84"
                                 className="w-fit h-full bg-gray-100 focus:bg-gray-100 focus:ring-2 cursor-pointer rounded-md px-2"
                             >
@@ -49,7 +49,7 @@ const PaymentInfo = () => {
                             </select>
                             <div className='border-r-1 border-gray-300 rounded-l-lg my-2 text-gray-700 focus:outline-none focus:ring-2'>
 
-                            </div>
+                            </div> */}
                             <Input placeholder="Enter phone number" value={currentUser?.phone} className="w-full paymentInput" />
                         </div>
 

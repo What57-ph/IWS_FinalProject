@@ -21,6 +21,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
+import AccountLayout from "./components/client/layout.client.account";
 
 function App() {
   const router = createBrowserRouter([
@@ -100,7 +101,7 @@ function App() {
         },
 
         {
-          path: "event",
+          path: "event/:id",
           element: <EventDetailPage />,
         },
         {
@@ -108,12 +109,18 @@ function App() {
           element: <BuyPage />,
         },
         {
-          path: "history",
-          element: <HistoryPage />,
-        },
-        {
-          path: "profile",
-          element: <ProfilePage />,
+          path: "account", 
+          element: <AccountLayout />,
+          children: [
+            {
+              path: "history",
+              element: <HistoryPage />,
+            },
+            {
+              path: "profile",
+              element: <ProfilePage />,
+            },
+          ],
         },
         {
           path: "search",
