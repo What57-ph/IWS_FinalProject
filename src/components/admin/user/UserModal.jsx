@@ -206,8 +206,8 @@ const UserModal = ({ form, open, handleSubmit, handleCancel, initialValues, squa
                 : []
             }
           >
-            {squareLogoFile.length > 0 || (requestType === "put" && initialValues.imgEventInfo)
-              ? renderPreview(squareLogoFile, initialValues.imgEventInfo)
+            {squareLogoFile.length > 0 || (requestType === "put" && initialValues.avatar)
+              ? renderPreview(squareLogoFile, initialValues.avatar)
               : renderUploadButton("Avatar", "1:1")}
           </Upload>
         </Form.Item>

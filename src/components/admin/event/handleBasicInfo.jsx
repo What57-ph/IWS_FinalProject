@@ -4,7 +4,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { uploadSingleFile } from "../../../config/api";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import dayjs from "dayjs";
 const HandleBasicInfo = ({
@@ -16,12 +16,78 @@ const HandleBasicInfo = ({
   organizerLogoFile,
   setOrganizerLogoFile,
   initialValues,
-  requestType
+  requestType,
+  descFile,
+  setDescFile
 }) => {
   const { events } = useAuth();
   // console.log(event);
   const { RangePicker } = DatePicker;
   const [dateList, setDateList] = useState([]);
+
+  useEffect(() => {
+    if (requestType === "put" && initialValues) {
+      form.setFieldsValue({
+        eventDate: initialValues.startDate && initialValues.endDate
+          ? [dayjs(initialValues.startDate), dayjs(initialValues.endDate)]
+          : undefined,
+        organizerName: initialValues.organizer?.name || undefined,
+        organizerInfo: initialValues.organizer?.description || undefined,
+      });
+      if (initialValues.imgEventInfo) {
+        setSquareLogoFile([
+          {
+            uid: uuidv4(),
+            name: "Event Info",
+            status: "done",
+            url: initialValues.imgEventInfo,
+          },
+        ]);
+      }
+      if (initialValues.banner) {
+        setBannerFile([
+          {
+            uid: uuidv4(),
+            name: "Banner",
+            status: "done",
+            url: initialValues.banner,
+          },
+        ]);
+      }
+      if (initialValues.logo) {
+        setOrganizerLogoFile([
+          {
+            uid: uuidv4(),
+            name: "Logo",
+            status: "done",
+            url: initialValues.logo,
+          },
+        ]);
+      }
+      if (initialValues.descImg) {
+        setDescFile([
+          {
+            uid: uuidv4(),
+            name: "Description",
+            status: "done",
+            url: initialValues.descImg,
+          },
+        ]);
+      }
+    } else if (requestType === "post") {
+
+      form.resetFields();
+      form.setFieldsValue({
+        eventDate: undefined,
+        organizerName: undefined,
+        organizerInfo: undefined,
+      });
+      setSquareLogoFile([]);
+      setBannerFile([]);
+      setOrganizerLogoFile([]);
+      setDescFile([]);
+    }
+  }, [initialValues, requestType, form]);
   const onChange = (dates) => {
     if (dates) {
       const formattedStartDate = dates[0].format("YYYY-MM-DDTHH:mm:ss");
@@ -56,35 +122,32 @@ const HandleBasicInfo = ({
     }
     return isJpgOrPng && isLt2M;
   };
-  const handleUploadInfoFile = async ({ file, onSuccess, onError }) => {
+  const handleUploadInfoFile = async ({ file }) => {
     try {
       const res = await uploadSingleFile(file, "info");
       if (res && res.fileName) {
         // onSuccess({
         //   name: res.fileName,
         //   status: "done",
-        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/info/${
+        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/logo/${
         //     res.fileName
         //   }`,
         // });
-
         setSquareLogoFile([
           {
-            ...file,
             uid: file.uid,
-            name: res.fileName,
+            name: squareLogoFile,
             status: "done",
+            // url: URL.createObjectURL(file),
             url: `${import.meta.env.VITE_BACKEND_URL}/storage/info/${res.fileName
-              }`, // tao moi local url de truyen sang blob data => tao duong dan anh bang localhost fe
+              }`,
           },
         ]);
-        console.log("Img info file:", squareLogoFile);
       } else {
-        toast.error("Upload failed");
+        throw new Error("Upload failed");
       }
     } catch (error) {
       // onError(error);
-      console.log("error", error);
       toast.error("Oops! It happens some error when upload file.");
     }
   };
@@ -95,7 +158,7 @@ const HandleBasicInfo = ({
         // onSuccess({
         //   name: res.fileName,
         //   status: "done",
-        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/banner/${
+        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/logo/${
         //     res.fileName
         //   }`,
         // });
@@ -135,6 +198,35 @@ const HandleBasicInfo = ({
             status: "done",
             // url: URL.createObjectURL(file),
             url: `${import.meta.env.VITE_BACKEND_URL}/storage/logo/${res.fileName
+              }`,
+          },
+        ]);
+      } else {
+        throw new Error("Upload failed");
+      }
+    } catch (error) {
+      // onError(error);
+      toast.error("Oops! It happens some error when upload file.");
+    }
+  };
+  const handleUploadDescFile = async ({ file, onSuccess, onError }) => {
+    try {
+      const res = await uploadSingleFile(file, "description");
+      if (res && res.fileName) {
+        // onSuccess({
+        //   name: res.fileName,
+        //   status: "done",
+        //   url: `${import.meta.env.VITE_BACKEND_URL}/storage/logo/${
+        //     res.fileName
+        //   }`,
+        // });
+        setDescFile([
+          {
+            uid: file.uid,
+            name: file.name,
+            status: "done",
+            // url: URL.createObjectURL(file),
+            url: `${import.meta.env.VITE_BACKEND_URL}/storage/description/${res.fileName
               }`,
           },
         ]);
@@ -195,7 +287,7 @@ const HandleBasicInfo = ({
     }
     return null;
   };
-
+  console.log("initial values", initialValues)
   return (
     <>
       {/* <Form form={form} onFinish={onFinish} layout="vertical" className="font-bold"> */}
@@ -218,7 +310,7 @@ const HandleBasicInfo = ({
       <div className="flex flex-col md:flex-row gap-4">
         <Form.Item className="w-full md:w-1/2" label="Category" name="category">
           <Select>
-            <Select.Option value="Live Music">Live music</Select.Option>
+            <Select.Option value="Live music">Live music</Select.Option>
             <Select.Option value="Sport">Sport</Select.Option>
             <Select.Option value="Conference">Conference</Select.Option>
             <Select.Option value="Stage & Art">Stage & Art</Select.Option>
@@ -233,11 +325,7 @@ const HandleBasicInfo = ({
           className="w-full md:w-1/2"
           label="Event date"
           name="eventDate"
-          initialValue={
-            initialValues.startDate && initialValues.endDate
-              ? [dayjs(initialValues.startDate), dayjs(initialValues.endDate)]
-              : undefined
-          }
+
         >
           <RangePicker
             showTime
@@ -257,7 +345,7 @@ const HandleBasicInfo = ({
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Upload Event Media</h3>
         <div className="flex flex-col md:flex-row gap-4">
-          <Form.Item name="imgEventInfo">
+          <Form.Item name="imgEventInfo" initialValue={requestType === "put" ? initialValues.imgEventInfo : null}>
             <Upload
               listType="picture-card"
               fileList={squareLogoFile}
@@ -287,8 +375,38 @@ const HandleBasicInfo = ({
                 : renderUploadButton("Event info", "1:1")}
             </Upload>
           </Form.Item>
+          <Form.Item name="descImg" initialValue={requestType === "put" ? initialValues.descImg : null}>
+            <Upload
+              listType="picture-card"
+              fileList={descFile}
+              beforeUpload={beforeUpload}
+              onChange={({ fileList }) => setDescFile(fileList.slice(-1))} // only 1 file
+              accept="image/*"
+              maxCount={1}
+              showUploadList={false}
+              className="custom-upload-event-info "
+              customRequest={handleUploadDescFile}
+              defaultFileList={
+                typeof descFile === "string"
+                  ? [
+                    {
+                      uid: uuidv4(),
+                      name: descFile,
+                      status: "done",
+                      url: `${import.meta.env.VITE_BACKEND_URL
+                        }/storage/description/${descFile}`,
+                    },
+                  ]
+                  : []
+              }
+            >
+              {descFile.length > 0 || (requestType === "put" && initialValues.descImg)
+                ? renderPreview(descFile, initialValues.descImg)
+                : renderUploadButton("Event info", "1:1")}
+            </Upload>
+          </Form.Item>
 
-          <Form.Item name="banner" className="flex-1">
+          <Form.Item name="banner" className="flex-1" initialValue={requestType === "put" ? initialValues.banner : null}>
             <Upload
               className="custom-upload-banner-info "
               listType="picture-card"
@@ -307,7 +425,7 @@ const HandleBasicInfo = ({
                       name: bannerFile,
                       status: "done",
                       url: `${import.meta.env.VITE_BACKEND_URL
-                        }/storage/info/${bannerFile}`,
+                        }/storage/banner/${bannerFile}`,
                     },
                   ]
                   : []
@@ -324,7 +442,7 @@ const HandleBasicInfo = ({
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Organizer Information</h3>
         <div className="flex flex-col md:flex-row gap-4 items-center">
-          <Form.Item name="logo" className="w-full md:w-1/4">
+          <Form.Item name="logo" className="w-full md:w-1/4" initialValue={requestType === "put" ? initialValues.logo : null}>
             <Upload
               className="custom-upload-organizer-info"
               listType="picture-card"
@@ -345,7 +463,7 @@ const HandleBasicInfo = ({
                       name: organizerLogoFile,
                       status: "done",
                       url: `${import.meta.env.VITE_BACKEND_URL
-                        }/storage/info/${organizerLogoFile}`,
+                        }/storage/logo/${organizerLogoFile}`,
                     },
                   ]
                   : []
@@ -369,14 +487,15 @@ const HandleBasicInfo = ({
               rules={[
                 { required: true, message: "Please input organizer name" },
               ]}
-              initialValue={requestType === "put" ? initialValues.organizer.name : undefined}
+            // initialValue={requestType === "put" ? initOrganizerName : undefined}
 
             >
               <Input placeholder="Example: ABC Company" disabled={requestType === "put" ? true : false} />
             </Form.Item>
 
             <Form.Item label="Organizer Information" name="organizerInfo"
-              initialValue={requestType === "put" ? initialValues.organizer.description : undefined}>
+            // initialValue={requestType === "put" ? initOrganizerDesc : undefined}
+            >
               <Input.TextArea rows={4} />
             </Form.Item>
           </div>

@@ -23,8 +23,8 @@ const OrganizerPage = () => {
     const [organizers, setOrganizers] = useState([]);
     const [isUpdatedOrganizer, setIsUpdatedOrganizer] = useState(false);
     // console.log(users);
+
     const antStep = document.querySelectorAll(".ant-popconfirm-inner-content");
-    console.log(antStep)
     antStep.forEach((item, index) => {
         item.className += " p-2";
     });
@@ -43,8 +43,7 @@ const OrganizerPage = () => {
             }
         };
         getOrganizerListData();
-    }, []);
-    console.log("Organizers:", organizers);
+    }, [isUpdatedOrganizer]);
     // Columns cho bảng
     const columns = [
         {

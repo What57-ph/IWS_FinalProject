@@ -38,14 +38,15 @@ const EventModal = ({
   const [squareLogoFile, setSquareLogoFile] = useState([]);
   const [bannerFile, setBannerFile] = useState([]);
   const [organizerLogoFile, setOrganizerLogoFile] = useState([]);
+  const [descFile, setDescFile] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     if (openModal) {
       form.resetFields();
-      setSquareLogoFile([]);
-      setBannerFile([]);
-      setOrganizerLogoFile([]);
+      // setSquareLogoFile([]);
+      // setBannerFile([]);
+      // setOrganizerLogoFile([]);
       setCurrentStep(0);
 
       if (initialValues) {
@@ -84,7 +85,8 @@ const EventModal = ({
           "houseNumber",
           "imgEventInfo",
           "banner",
-          "logo"
+          "logo",
+          "descImg"
         ];
       case "ticket-type":
         return ["tickets"];
@@ -110,7 +112,8 @@ const EventModal = ({
       "status",
       "imgEventInfo",
       "banner",
-      "logo"
+      "logo",
+      "descImg"
     ]);
     console.log("Basic info values:", basicInfoValues);
 
@@ -121,12 +124,14 @@ const EventModal = ({
       imgEventInfo: squareLogoFile[0]?.url,
       banner: bannerFile[0]?.url,
       logo: organizerLogoFile[0]?.url,
+      descImg: descFile[0]?.url
       // tickets: values.tickets || [],
     };
 
     console.log("Form submitted with:", formData);
     handleSubmit(formData, formData.id);
     setOpenModal(false);
+    form.resetFields();
   };
 
   const renderStepContent = () => {
@@ -144,6 +149,8 @@ const EventModal = ({
             setOrganizerLogoFile={setOrganizerLogoFile}
             initialValues={initialValues}
             requestType={requestType}
+            descFile={descFile}
+            setDescFile={setDescFile}
           />
         );
 

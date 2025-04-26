@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Form, Image, message, notification, Popconfirm, Space, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import sampleData from "../../data/sampleData";
 import { Grid } from "antd";
 import UserModal from "../../components/admin/user/UserModal";
@@ -32,6 +33,24 @@ const UserPage = () => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
   const isMobile = !screens.md;
+
+  useEffect(() => {
+    if (requestType === "put" && form.getFieldValue()) {
+      if (form.getFieldValue().avatar) {
+        setSquareLogoFile([
+          {
+            uid: uuidv4(),
+            name: "Avatar",
+            status: "done",
+            url: form.getFieldValue().avatar,
+          },
+        ]);
+      }
+
+    } else if (requestType === "post") {
+      setSquareLogoFile([]);
+    }
+  }, [requestType, form, openModal]);
   useEffect(() => {
     const getUserListData = async () => {
       const data = await getUserList();
