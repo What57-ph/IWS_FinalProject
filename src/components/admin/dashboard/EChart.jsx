@@ -14,27 +14,35 @@ import ReactApexChart from "react-apexcharts";
 import { Row, Col, Typography } from "antd";
 import eChart from "./configs/eChart";
 
-function EChart() {
+function EChart({ events }) {
   const { Title, Paragraph } = Typography;
 
-  const items = [
-    {
-      Title: "3,6K",
-      user: "Users",
-    },
-    {
-      Title: "2m",
-      user: "Clicks",
-    },
-    {
-      Title: "$772",
-      user: "Sales",
-    },
-    {
-      Title: "82",
-      user: "Items",
-    },
-  ];
+  const mainCategories = ['Live music', 'Stage & Art', 'Sports'];
+  const countEvents = () => {
+    const counts = {
+      'Live music': 0,
+      'Stage & Art': 0,
+      'Sports': 0,
+      'Others': 0
+    };
+
+    events.forEach(event => {
+      if (mainCategories.includes(event.category)) {
+        counts[event.category]++;
+      } else {
+        counts['Others']++;
+      }
+    });
+
+    return [
+      { Title: counts['Live music'].toString(), name: 'Live music' },
+      { Title: counts['Stage & Art'].toString(), name: 'Stage & Art' },
+      { Title: counts['Sports'].toString(), name: 'Sports' },
+      { Title: counts['Others'].toString(), name: 'Others' }
+    ];
+  };
+
+  const items = countEvents();
 
   return (
     <>
@@ -48,20 +56,19 @@ function EChart() {
         />
       </div>
       <div className="chart-vistior">
-        <Title level={5}>Active Users</Title>
+        <Title level={5}>Events Happening Now</Title>
         <Paragraph className="lastweek">
-          than last week <span className="bnb2">+30%</span>
+          <span className="highlight-text">30% more popular</span> than last week
         </Paragraph>
         <Paragraph className="lastweek">
-          We have created multiple options for you to put together and customise
-          into pixel perfect pages.
+          Don't miss out! Grab your tickets before they're gone. Limited availability for these trending events.
         </Paragraph>
         <Row gutter>
           {items.map((v, index) => (
             <Col xs={6} xl={6} sm={6} md={6} key={index}>
               <div className="chart-visitor-count">
                 <Title level={4}>{v.Title}</Title>
-                <span>{v.user}</span>
+                <span>{v.name}</span>
               </div>
             </Col>
           ))}

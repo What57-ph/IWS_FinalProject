@@ -12,6 +12,9 @@ import {
 } from "@ant-design/icons";
 import EChart from "../../components/admin/dashboard/EChart";
 import LineChart from "../../components/admin/dashboard/LineChart";
+import { useEffect, useState } from "react";
+import { callOrders, fetchEventList, getUserList } from "../../config/api";
+import { formatVND } from "../../components/share/function/formatterCurrency";
 const { Title, Text } = Typography;
 
 
@@ -22,28 +25,90 @@ const DashboardPage = () => {
   //   );
   // };
 
+  // for fetch data
+  const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const getUserListData = async () => {
+      const data = await getUserList();
+      setUsers(data);
+      console.log("Test data for users:", data);
+
+
+    };
+    getUserListData();
+  }, []);
+
+  useEffect(() => {
+    const getEventListData = async () => {
+      const data = await fetchEventList();
+      setEvents(data.data.result);
+    };
+    getEventListData();
+  }, []);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [])
+
+  const fetchOrders = async () => {
+    try {
+      const res = await callOrders();
+      // console.log(res.data.result);
+
+      if (res && res.data) {
+        setOrders(res.data.result);
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || 'Fetch failed';
+      console.log({ errorMessage });
+      // alert(errorMessage);
+    }
+  }
+
+  console.log(users, events, orders);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const eventsToday = events.filter(event => {
+    const startDate = new Date(event.startDate);
+    const endDate = new Date(event.endDate);
+
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+
+    return startDate <= today && today <= endDate;
+  });
+
+  const countEventsToday = eventsToday.length;
+
   const count = [
     {
-      today: "Today’s Sales",
-      title: "$53,000",
+      today: "Today’s Events",
+      title: `${countEventsToday}`,
       icon: <DollarCircleOutlined style={{ fontSize: "24px", color: "white" }} />,
     },
     {
       today: "Today’s Users",
-      title: "3,200",
+      title: `${users.length}`,
       icon: <UserOutlined style={{ fontSize: "24px", color: "white" }} />,
     },
     {
-      today: "New Clients",
-      title: "+1,200",
+      today: "Total orders",
+      title: `${orders.length}`,
       icon: <HeartOutlined style={{ fontSize: "24px", color: "white" }} />,
     },
     {
       today: "New Orders",
-      title: "$13,200",
+      title: `+${formatVND(orders.reduce((sum, item) => sum + item.totalPrice, 0))}`,
       icon: <ShoppingCartOutlined style={{ fontSize: "24px", color: "white" }} />,
     },
   ];
+
+
 
 
   return (
@@ -59,7 +124,7 @@ const DashboardPage = () => {
             xl={6}
             className="mb-5"
           >
-            <Card bordered={false} className="criclebox ">
+            <Card variant={false} className="criclebox ">
               <div className="number">
                 <Row align="middle" gutter={[24, 0]}>
                   <Col xs={18}>
@@ -81,7 +146,7 @@ const DashboardPage = () => {
       <Row gutter={[24, 0]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={10} className="mb-24">
           <Card variant={false} className="criclebox h-full">
-            <EChart />
+            <EChart events={events} />
           </Card>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={14} className="mb-24">
