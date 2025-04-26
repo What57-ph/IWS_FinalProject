@@ -20,6 +20,7 @@ const SearchResultPage = () => {
   const [loadingEvents, setLoadingEvents] = useState(false);
   const [filterParam, setFilterParam] = useState(location.search);
   const [searchValue, setSearchValue] = useState('');
+  const [size, setSize] = useState(9);
 
   useEffect(() => {
     setFilterParam(location.search);
@@ -41,10 +42,13 @@ const SearchResultPage = () => {
       console.log("Fetching data for filter event: ", res.data);
 
       if (res && res.data) {
-        setEvents(res.data.result);
+        setEvents(res.data.result || []);
+      } else {
+        setEvents([]);
       }
       setLoadingEvents(false);
     } catch (error) {
+      setEvents([]);
       const errorMessage = error.response?.data?.error || 'Fetch failed';
       console.log({ errorMessage });
       // alert(errorMessage);
@@ -60,7 +64,7 @@ const SearchResultPage = () => {
   }
 
 
-  return <div className="max-w-screen-xl mx-[16px] lg:mx-[64px] xl:mx-auto my-5 min-h-[calc(100vh-200px)]">
+  return <div className="max-w-screen-xl mx-[16px] lg:mx-[64px] xl:mx-auto my-5 min-h-[calc(100vh-200px)] flex flex-col">
     <div className="flex flex-row justify-between mb-2 gap-2">
       <h4 className="font-semibold hidden md:block">Results found: </h4>
       <div className="hidden flex-row items-center justify-between bg-gray-100 rounded-full w-full relative md:hidden ">
@@ -93,14 +97,26 @@ const SearchResultPage = () => {
     <div className={`${events.length > 0 ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'} grid  gap-4`}>
       {
         events.length > 0 ?
-          events.map((item) => {
-            return EventCard({ item, search: true });
-          })
+
+          events.length > 9 ?
+            events.slice(0, size).map((item) => {
+              return EventCard({ item, search: true });
+            })
+            :
+            events.map((item) => {
+              return EventCard({ item, search: true });
+            })
           :
           <NotFound />
       }
     </div>
 
+
+    {
+      events.length > 9 &&
+      <button onClick={() => setSize(size + 6)} className="flex justify-center items-center mt-10 bg-gray-300 mx-auto px-5 py-4 rounded-full text-[20px] font-semibold hover:bg-gray-400 transition duration-200">
+        Watch more
+      </button>}
     {
       events.length === 0 &&
       <Recommend />

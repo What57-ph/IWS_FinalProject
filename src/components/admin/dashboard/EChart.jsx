@@ -10,12 +10,12 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import ReactApexChart from "react-apexcharts";
 import { Row, Col, Typography } from "antd";
-import eChart from "./configs/eChart";
+import EventChart from "./configs/EventChart";
 
 function EChart({ events }) {
   const { Title, Paragraph } = Typography;
+
 
   const mainCategories = ['Live music', 'Stage & Art', 'Sports'];
   const countEvents = () => {
@@ -42,18 +42,25 @@ function EChart({ events }) {
     ];
   };
 
-  const items = countEvents();
 
+  const items = countEvents();
+  const calculateEventsByMonth = (events) => {
+    const monthlyEvents = Array(12).fill(0);
+
+    for (let event of events) {
+      const date = new Date(event.startDate);
+      const month = date.getMonth();
+      monthlyEvents[month] += 1;
+    }
+
+    return monthlyEvents;
+  }
+
+  const monthCounts = calculateEventsByMonth(events);
   return (
     <>
       <div id="chart">
-        <ReactApexChart
-          className="bar-chart"
-          options={eChart.options}
-          series={eChart.series}
-          type="bar"
-          height={220}
-        />
+        <EventChart monthCounts={monthCounts} />
       </div>
       <div className="chart-vistior">
         <Title level={5}>Events Happening Now</Title>

@@ -34,9 +34,6 @@ const DashboardPage = () => {
     const getUserListData = async () => {
       const data = await getUserList();
       setUsers(data);
-      console.log("Test data for users:", data);
-
-
     };
     getUserListData();
   }, []);
@@ -67,8 +64,6 @@ const DashboardPage = () => {
       // alert(errorMessage);
     }
   }
-
-  console.log(users, events, orders);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -151,7 +146,7 @@ const DashboardPage = () => {
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={14} className="mb-24">
           <Card variant={false} className="criclebox h-full">
-            <LineChart />
+            <LineChart orders={orders} />
           </Card>
         </Col>
       </Row>
