@@ -28,7 +28,7 @@ export default function CategoryList({ data }) {
               className="btn max-md:w-full md:px-20 mt-12 py-3 px-5 hover:bg-gray-200 bg-gray-100 rounded-xl"
               onClick={expand}
             >
-              <p class="text-[18px] ">Xem thêm</p>
+              <p class="text-[18px] ">See more</p>
             </button>
           ) : (
             ""
@@ -39,7 +39,7 @@ export default function CategoryList({ data }) {
   } else {
     return (
       <p className="text-md italic">
-        Rất tiếc! Không tìm thấy kết quả nào ở danh mục này.
+        Sorry! No results found in this category.
       </p>
     );
   }

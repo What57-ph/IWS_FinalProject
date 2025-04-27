@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import getCategoryColor from "../../../utils/getCatColor";
+import formatDate from "../../../utils/formatDate";
 
 export default function EventList({ list }) {
   return (
@@ -15,9 +16,11 @@ export default function EventList({ list }) {
             >
               <div className="border-none">
                 <div className="relative">
-                  <div className="absolute bottom-0 z-10 w-full flex items-center justify-center py-4 px-6 backdrop-blur-xl bg-opacity-40 rounded-b-lg border-t border-white/50">
-                    <p className="text-white text-sm drop-shadow-sm">{item.status}</p>
-                  </div>
+                  {item.status != 'OPEN' &&
+                    <div className="absolute bottom-0 z-10 w-full flex items-center justify-center py-4 px-6 backdrop-blur-xl bg-opacity-40 rounded-b-lg border-t border-white/50">
+                      <p className="text-white text-sm drop-shadow-sm">{item.status}</p>
+                    </div>
+                  }   
                   <img
                     className="w-full object-cover aspect-[16/9] rounded-lg"
                     alt=""
@@ -34,9 +37,9 @@ export default function EventList({ list }) {
                   </div>
                   <div className="flex flex-col gap-2">
                     <p className="text-sm text-gray-500">
-                      {item.startDate}, {item.province}
+                      {formatDate(item.startDate)}, {item.province}
                     </p>
-                    <p className="card-title text-lg overflow-hidden line-clamp-2">
+                    <p className="card-title text-lg overflow-hidden line-clamp-2 font-bold">
                       {item.name}
                     </p>
                   </div>

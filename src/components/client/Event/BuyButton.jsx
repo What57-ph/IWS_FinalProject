@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 export default function BuyButton({isAuthenticated, eventId}) {
-    console.log('eventid', eventId);
-    
     return (
         <>
         {isAuthenticated

@@ -38,8 +38,8 @@ export default function About({data}) {
             </h1>
             
             <div className="p-8 border rounded-lg">
+              <img src={data.descImg} alt="event-image" />
               <Table columns={columns} dataSource={dataSource} pagination={false} />
-              <img src="https://assets.cticket.vn/tix/fly-my-way-captain-boy-bay-toi-day-2607/landing%20page.webp" alt="event-image" />
             </div>
         </div>
     )

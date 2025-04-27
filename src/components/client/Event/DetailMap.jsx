@@ -1,5 +1,5 @@
 import { useState } from "react";
-import formatDate from "../../../utils/formatDate";
+import formatDateTime from "../../../utils/formatDateTime";
 
 export default function DetailMap({data}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,8 +8,10 @@ export default function DetailMap({data}) {
   const closeModal = () => setIsOpen(false);
 
   const formatTime = () => {
-    const start = formatDate(data.startDate)
-    const end = formatDate(data.endDate) 
+    const start = formatDateTime(data.startDate)
+    const end = formatDateTime(data.endDate) 
+    console.log(start);
+    
     if(start == end){
       return start;
     } else return start + ' - ' + end;

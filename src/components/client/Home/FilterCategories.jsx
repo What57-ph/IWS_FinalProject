@@ -3,7 +3,17 @@ import sampleData from "../../../data/sampleData";
 import CategoryList from "./CategoryList";
 import { useAuth } from "../../../context/AuthContext";
 
-const categories = sampleData.categories;
+// const categories = sampleData.categories;
+const categories = [
+  "Stage & Art",
+  "Live music",
+  "Sport",
+  "Conference",
+  "Travel & Tour",
+  "Nightlife",
+  "Merchandise"
+];
+
 // const events = sampleData.events;
 const FilterCategories = () => {
   const { events } = useAuth()
@@ -35,7 +45,7 @@ const FilterCategories = () => {
   if (categories)
     return (
       <div>
-        <h1 className="text-2xl font-bold">Sự kiện</h1>
+        <h1 className="text-2xl font-bold">Events</h1>
         <div className="relative">
           {/* Mũi tên trái */}
           {showLeftArrow && (
@@ -74,19 +84,19 @@ const FilterCategories = () => {
               }`}
               onClick={() => setCurrentCtg("all")}
             >
-              Tất cả sự kiện
+              All categories
             </button>
             {categories.map((category, i) => (
               <button
                 key={i}
                 className={`flex-shrink-0 px-4 sm:px-10 py-4  flex items-center justify-center text-md  border-b-2 transition-colors duration-300  ${
-                  checkCurrentCtg(category.name)
+                  checkCurrentCtg(category)
                     ? "border-blue-700 text-blue-600"
                     : "border-b-white text-gray-600 hover:border-gray-300"
                 }`}
-                onClick={() => setCurrentCtg(category.name)}
+                onClick={() => setCurrentCtg(category)}
               >
-                {category.name}
+                {category}
               </button>
             ))}
           </div>
