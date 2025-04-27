@@ -8,4 +8,5 @@ export default defineConfig({
     "process.env.VITE_API_KEY": JSON.stringify(process.env),
     //add more later
   },
+
 });

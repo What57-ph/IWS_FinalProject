@@ -1,24 +1,14 @@
-import {
-    Button,
-    DatePicker,
-    Divider,
-    Form,
-    Image,
-    Input,
-    Select,
-    Space,
-} from "antd";
+import { Button, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { useOrderContext } from "../../../../context/OrderContext";
 import { FaCalendarAlt, FaChevronDown } from "react-icons/fa";
-import dayjs from "dayjs";
 import { MdCalendarToday } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import { FaRegTrashCan } from "react-icons/fa6";
 import ContinueBtn from "../ContinueBtn";
 
-const EventOrderOne = () => {
-    const { event, selectedTickets, setSelectedTickets, setCurrentStep } =
+const EventOrderOne = ({ form }) => {
+    const { event, selectedTickets, setSelectedTickets, totalAmount } =
         useOrderContext();
     const [quantity, setQuantity] = useState([]);
     const [isDropdown, setIsDropdown] = useState(false);
@@ -55,7 +45,6 @@ const EventOrderOne = () => {
     const activeDates = [];
     let current = new Date(event?.startDate);
     let end = new Date(event?.endDate);
-
     let index = 0;
     while (current <= end) {
         dateList.push(
@@ -67,6 +56,7 @@ const EventOrderOne = () => {
                 hour: "2-digit",
                 minute: "2-digit",
             })
+
         );
 
         if (index === 0) {
@@ -82,6 +72,7 @@ const EventOrderOne = () => {
         setActiveStates(activeDates);
         setDateValue(dateList[0]);
         setOrganizeDate(dateList[0]);
+        form.setFieldsValue({ organizeDate: dateList[0] });
     }, [event]);
     useEffect(() => {
         if (quantity.some((qty) => qty > 0)) {
@@ -97,8 +88,10 @@ const EventOrderOne = () => {
                     if (qty > 0) {
                         return {
                             index: index,
+                            ticketId: event?.tickets[index].id,
                             type: event?.tickets[index].type,
                             price: event?.tickets[index].price,
+                            subTotal: event?.tickets[index].price,
                             quantity: qty,
                         };
                     }
@@ -107,9 +100,15 @@ const EventOrderOne = () => {
                 .filter((ticket) => ticket !== null);
 
             setSelectedTickets(updatedTickets);
+            form.setFieldsValue({ items: updatedTickets });
         };
+        // form.setFieldsValue({ totalPrice: totalAmount });
         updateSelectedTickets();
     }, [quantity]);
+    useEffect(() => {
+        form.setFieldsValue({ totalPrice: totalAmount });
+    }, [totalAmount]);
+
     const handleClickDate = (index) => {
         setIsDropdown(!isDropdown);
         setDateValue(dateList[index]);
@@ -120,11 +119,16 @@ const EventOrderOne = () => {
             newStates[index] = true;
             return newStates;
         });
+        form.setFieldsValue({ organizeDate: dateList[index] });
     };
-    console.log(dateList);
+    console.log(dateValue);
     // console.log(selectedTickets);
+    // console.log(selectedTickets);
+    // console.log(totalAmount / 25960);
+
+
     return (
-        <div className="flex lg:flex-row flex-col gap-6 w-full mt-5 lg:justify-normal justify-center xl:px-20 lg:px-0 px-4">
+        <div className="flex lg:flex-row flex-col gap-6 w-full mt-5 lg:justify-normal justify-center xl:px-20 lg:px-0 px-4 overflow-hidden">
             <img
                 src={event?.imgEventInfo}
                 className="xl:w-full lg:w-1/2 xl:h-4/5 h-full "
@@ -132,16 +136,12 @@ const EventOrderOne = () => {
 
             <div className="flex flex-col justify-center items-center">
                 {/* Date Picker */}
-                <Form.Item className="eventForm h-fit">
+                <Form.Item className="eventForm h-fit" name="organizeDate">
                     <div className="flex sm:flex-row flex-col justify-between items-center text-center gap-2">
                         <label className="font-semibold text-xl">Date & Time</label>
                         <div className="flex items-center bg-gray-100 p-2 rounded-md">
                             {/* <label className="flex items-center"> */}
-                            <Input
-                                type="hidden"
-                                value={dateValue}
-                                name="organizeDate"
-                            ></Input>
+                            <Input type="hidden" value={dateValue}></Input>
                             <label className="flex">
                                 <button
                                     type="button"
@@ -189,7 +189,12 @@ const EventOrderOne = () => {
                 </Form.Item>
 
                 {/* Ticket Category */}
-
+                <Form.Item hidden name="items">
+                    <Input />
+                </Form.Item>
+                <Form.Item hidden name="totalPrice">
+                    <Input />
+                </Form.Item>
                 <Form.Item className="eventForm">
                     <div className="flex items-center justify-between">
                         <label className="font-semibold text-xl">Ticket category</label>
@@ -215,8 +220,7 @@ const EventOrderOne = () => {
                                             </Button>
                                             <Input
                                                 type="hidden"
-                                                value={quantity[index]}
-                                                name={ticket.type}
+                                            // value={quantity[index]}
                                             ></Input>
                                             <span className="w-6 text-center">{quantity[index]}</span>
                                             <Button onClick={() => increment(index)} size="small">
@@ -262,28 +266,40 @@ const EventOrderOne = () => {
                 <div className="sticky bottom-0 xl:w-[660px] lg:w-[450px] w-[100vw] bg-white p-4 rounded-lg shadow-xl mt-5 border border-gray-300">
                     <div className="flex items-center gap-4">
                         <Button type="button" onClick={() => setIsShown(!isShown)}>
-                            {!isShown ? (<FaChevronDown className="text-2xl" />) : (<FaChevronDown className="text-2xl rotate-180" />)}
+                            {!isShown ? (
+                                <FaChevronDown className="text-2xl" />
+                            ) : (
+                                <FaChevronDown className="text-2xl rotate-180" />
+                            )}
                         </Button>
-                        <span className="font-bold text-2xl text-black">
+                        <span className="font-bold sm:text-2xl text-xl text-black">
                             Selected ticket
                         </span>
                     </div>
                     {isTicketSelected && (
                         <div
-                            className={`px-2 mt-0 ${selectedTickets.length > 5 ? "overflow-y-scroll " : ""} transition-all duration-300 ease-in-out ${isShown ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+                            className={`px-2 mt-0 ${selectedTickets.length > 5 ? "overflow-y-scroll " : ""
+                                } transition-all duration-300 ease-in-out ${isShown
+                                    ? "max-h-[500px] opacity-100"
+                                    : "max-h-0 opacity-0 overflow-hidden"
                                 }`}
                         >
                             <Button
                                 type="button"
-                                onClick={() => { setSelectedTickets([]); setIsTicketSelected(false); setQuantity(quantityArr); }}
+                                onClick={() => {
+                                    setSelectedTickets([]);
+                                    setIsTicketSelected(false);
+                                    setQuantity(quantityArr);
+                                }}
                                 className="flex justify-end items-center w-full"
                             >
-                                <p className="text-red-700 font-bold font-sans text-lg">Delete All</p>
+                                <p className="text-red-700 font-bold font-sans text-lg">
+                                    Delete All
+                                </p>
                             </Button>
 
                             {selectedTickets.map((ticket, index) => {
                                 return (
-
                                     <div
                                         className="text-lg flex p-2 px-5 mt-2 rounded-lg shadow-sm border border-gray-300"
                                         key={index}
@@ -316,16 +332,21 @@ const EventOrderOne = () => {
                             <div className="flex justify-between items-center my-3">
                                 <div className="text-[#667085] text-lg">Subtotal</div>
                                 <span className="font-bold text-lg">
-                                    {selectedTickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0).toLocaleString("en-US", {
-                                        style: "currency",
-                                        currency: "VND",
-                                    })}
+                                    {selectedTickets
+                                        .reduce(
+                                            (total, ticket) => total + ticket.price * ticket.quantity,
+                                            0
+                                        )
+                                        .toLocaleString("en-US", {
+                                            style: "currency",
+                                            currency: "VND",
+                                        })}
                                 </span>
                             </div>
                         </div>
                     )}
 
-                    <ContinueBtn isButtonHovered={isButtonHovered} isStep1={true} />
+                    <ContinueBtn isButtonHovered={isButtonHovered} isStep1={true} disabled={!isButtonHovered} />
                 </div>
             </div>
         </div>

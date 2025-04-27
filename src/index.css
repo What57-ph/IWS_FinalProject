@@ -64,7 +64,12 @@ body {
 }
 
 .custom-upload-organizer-info .ant-upload {
-  width:  100% !important;
+  width: 100% !important;
   height: 200px !important;
 }
-
+.ant-popconfirm-inner-content {
+  padding: 10px !important;
+}
+.ant-picker {
+  width: 100% !important;
+}

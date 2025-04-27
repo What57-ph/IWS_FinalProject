@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     setLoadingEvents(true);
     try {
       const res = await callEvents();
-      console.log("Fetching data for event: ", res.data);
+      // console.log("Fetching data for event: ", res.data);
 
       if (res && res.data) {
         setEvents(res.data.result);

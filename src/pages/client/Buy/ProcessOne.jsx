@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useOrderContext } from "../../../context/OrderContext";
 import EventOrderOne from "../../../components/client/Order/step1/EventOrderOne";
 
-const ProcessOne = () => {
+const ProcessOne = ({ form }) => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   // const step = searchParams.get("step");
@@ -14,11 +14,10 @@ const ProcessOne = () => {
   useEffect(() => {
     setEventId(id);
   }, [id]);
-
   return (
     <>
 
-      <EventOrderOne />
+      <EventOrderOne form={form} />
     </>
   );
 };
