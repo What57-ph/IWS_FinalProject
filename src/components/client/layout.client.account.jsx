@@ -12,17 +12,18 @@ export default function AccountLayout() {
       <div id="breadcrumb" className="mb-5">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <NavLink to="/">Trang chủ</NavLink>
+            <NavLink to="/">Home page</NavLink>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>Danh mục</Breadcrumb.Item>
+          <Breadcrumb.Item>Account</Breadcrumb.Item>
         </Breadcrumb>
       </div>
       <div className="flex">
         <aside className="sidebar max-md:hidden h-full w-72 p-4 pl-0">
           <div className="flex mb-2">
-            <div className="bg-slate-600 size-9 m-2 ml-0"></div>
+            {/* avatar */}
+            <div className="bg-slate-600 size-9 m-2 ml-0 rounded-full"></div>
             <div className="flex flex-col">
-              <h3 className="text-sm font-light">Tài khoản của</h3>
+              <h3 className="text-sm font-light">Account of</h3>
               <h1>{user?.name || user?.email}</h1>
             </div>
           </div>
@@ -38,7 +39,7 @@ export default function AccountLayout() {
                   }
                 >
                   <UserOutlined className="m-2 ml-6 " />
-                  Cài đặt tài khoản
+                  Account settings
                 </NavLink>
               </li>
               <li className="w-full">
@@ -51,7 +52,7 @@ export default function AccountLayout() {
                   }
                 >
                   <HistoryOutlined className="m-2 ml-6" />
-                  Vé đã mua
+                  My tickets
                 </NavLink>
               </li>
             </ul>

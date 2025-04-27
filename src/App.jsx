@@ -2,7 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DashboardPage from "./pages/Admin/dashboard";
 import UserPage from "./pages/admin/user";
-import EventPage from "./pages/Admin/event";
+import EventPage from "./pages/admin/event";
 import OrderPage from "./pages/admin/order";
 import AdminLayout from "./components/admin/layout.admin";
 

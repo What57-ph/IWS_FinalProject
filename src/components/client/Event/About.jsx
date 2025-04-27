@@ -36,8 +36,10 @@ export default function About({data}) {
             <h1 id="about" className="font-bold text-2xl mb-4">
                 Về sự kiện
             </h1>
+            
             <div className="p-8 border rounded-lg">
-                <Table columns={columns} dataSource={dataSource} pagination={false} />
+              <Table columns={columns} dataSource={dataSource} pagination={false} />
+              <img src="https://assets.cticket.vn/tix/fly-my-way-captain-boy-bay-toi-day-2607/landing%20page.webp" alt="event-image" />
             </div>
         </div>
     )
