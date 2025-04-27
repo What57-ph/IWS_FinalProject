@@ -79,13 +79,6 @@ const UserPage = () => {
       render: (avatar) => <Image src={avatar} width={100} />
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      responsive: ["md"],
-      width: 300
-    },
-    {
       title: "Email",
       dataIndex: "email",
       key: "email",

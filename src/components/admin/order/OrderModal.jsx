@@ -75,11 +75,11 @@ const OrderModal = ({ form, open, handleSubmit, handleUpdate, handleCancel, item
             <Input />
           </Form.Item>
 
-          <Form.Item name="totalPrice" label="Total Price" rules={[{ required: true }]}>
+          <Form.Item name="totalPrice" label="Total Price" initialValue={0}>
             <Input
               style={{ width: '100%' }}
               readOnly
-              value={parseInt(totalPrice)}
+              value={parseInt(totalPrice) || 0}
               placeholder={formatVND(totalPrice)}
             />
           </Form.Item>
