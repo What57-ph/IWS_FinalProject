@@ -6,7 +6,7 @@ import { useOrderContext } from "../../../context/OrderContext";
 import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 
-const OrderHead = ({ id }) => {
+const OrderHead = ({ id, currentStep }) => {
   const style = {
     background: "linear-gradient(to top, white 50%, rgb(242, 244, 247) 50%)",
   };
@@ -59,7 +59,8 @@ const OrderHead = ({ id }) => {
   return (
     <>
       <div className="flex justify-between items-center px-[16px] lg:px-[105px] xl:px-auto py-4">
-        <OrderStep />
+
+        <OrderStep currentStep={currentStep} />
         <div className="w-fit flex items-center justify-center gap-2">
           <p className="text-lg text-gray-500 xl:block hidden">
             Time remaining to book tickets

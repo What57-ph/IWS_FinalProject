@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ContinueBtn from './ContinueBtn';
 import { useOrderContext } from '../../../context/OrderContext';
 
-const BottomBtn = () => {
+const BottomBtn = ({ form }) => {
     const { setCurrentStep, currentStep } = useOrderContext();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -26,8 +26,8 @@ const BottomBtn = () => {
     };
     return (
         <>
-            <div className="sticky bottom-0 text-lg max-lg:hidden p-4 flex flex-row justify-between items-center shadow-sm rounded-md border-2 w-[95vw] mt-4 bg-[#fdfdfd] ">
-                <p className="text-gray-500 md:block hidden">You need to fill in all information before proceeding to the next step</p>
+            <div className="sticky bottom-0 text-lg p-4 flex flex-row justify-between items-center shadow-sm rounded-md border-2 w-[95vw] mt-4 bg-[#fdfdfd] ">
+                <p className="text-gray-500 md:block lg:pe-0 pe-8 hidden">You need to fill in all information before proceeding to the next step</p>
                 <div className="flex items-center md:w-auto w-full md:justify-normal justify-center gap-4">
                     <Button
                         type="button"
@@ -36,7 +36,7 @@ const BottomBtn = () => {
                     >
                         Select the ticket again
                     </Button>
-                    <ContinueBtn isButtonHovered={true} isStep1={false} className="hover:bg-blue-950" />
+                    <ContinueBtn form={form} isButtonHovered={true} isStep1={false} className="hover:bg-blue-950" />
                 </div>
 
             </div>

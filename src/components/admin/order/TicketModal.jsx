@@ -83,7 +83,7 @@ const TicketModal = ({ form, items, setItems, totalPrice, setTotalPrice }) => {
   // Get name for event and ticket 
 
   const getEventName = (eventId) => {
-    const foundEvent = events.find(event => event.id === eventId);
+    const foundEvent = events?.find(event => event.id === eventId);
     return foundEvent ? foundEvent.name : "Unknown Event";
   };
 

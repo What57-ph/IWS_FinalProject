@@ -90,8 +90,9 @@ const OrderStep = () => {
           ></path>
         </svg>
       </button>
-      {renderStepOrder()}
-    </div >
+      {currentStep <= 2 ? renderStepOrder() : <p className="sm:text-xl text-lg  ms-3">Banking transfer payment</p>}
+      {/* {renderStepOrder()} */}
+    </div>
   );
 };
 
