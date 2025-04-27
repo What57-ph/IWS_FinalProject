@@ -17,7 +17,12 @@ const HistoryPage = () => {
       <Ticket onClick={openModal}/>
       <Ticket onClick={openModal}/>
 
-      <Modal title="Chi tiết vé" open={isModalOpen} onOk={closeModal} onCancel={closeModal}>
+      <Modal 
+        title="Chi tiết vé" 
+        open={isModalOpen}
+        onOk={closeModal} 
+        cancelButtonProps={{ style: { display: 'none' } }}
+      >
         <div>
           <img src={event.information} alt="" />
           <h1 className="font-bold text-lg mb-5">VIETNAM COLLEGIATE BASKETBALL CHAMPIONSHIP 2024</h1>
