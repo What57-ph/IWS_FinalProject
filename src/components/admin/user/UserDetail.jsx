@@ -11,7 +11,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 
-const UserDetail = ({ form, open, handleCancel }) => {
+const UserDetail = ({ form, open, handleCancel, initialValues }) => {
   // const orderId = form.getFieldValue('id');
   // const orderDetail = sampleData.orderDetails.filter(o => o.order_id === orderId);
   // console.log(orderDetail);

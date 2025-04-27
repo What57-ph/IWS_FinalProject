@@ -144,7 +144,7 @@ export const fetchEventList = () => {
   return instance.get("/api/v1/events");
 };
 export const fetchEventById = async (id) => {
-  const URL = `/api/v1/event/${id}`;
+  const URL = `/api/v1/events/${id}`;
   const res = await instance.get(URL);
   return (await res).data;
 };
@@ -164,5 +164,69 @@ export const createNewEvent = async (eventData) => {
 export const updateEvent = async (eventData, id) => {
   const URL = `api/v1/event/${id}`;
   const res = await instance.put(URL, eventData);
+  return (await res).data;
+};
+
+// Module payment
+export const createVNPayPayment = async (amount) => {
+  const URL = `api/v1/create_payment?amount=${amount}`;
+  const res = await instance.get(URL);
+  return (await res).data;
+}
+
+
+export const handleAfterPayment = async (orderId) => {
+  const URL = "api/v1/update-payment-status";
+  return await instance.put(URL, JSON.stringify(orderId), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const fetchPayPalURL = async (amount) => {
+  const URL = `api/v1/paypal/pay`;
+  const formData = new URLSearchParams();
+  formData.append("amount", amount);
+
+  return await instance.post(URL, formData.toString(), {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+};
+
+export const confirmSuccessPayment = async (paymentId, payerId) => {
+  const URL = `api/v1/paypal/success?paymentId=${paymentId}&PayerID=${payerId}`;
+  const res = await instance.get(URL);
+  return (await res).data;
+}
+
+//Module organizer
+export const fetchOrganizerList = async () => {
+  const res = await instance.get("/api/v1/organizers");
+  return (await res).data;
+};
+export const fetchOrganizerById = async (id) => {
+  const URL = `/api/v1/organizer/${id}`;
+  const res = await instance.get(URL);
+  return (await res).data;
+};
+export const deleteOrganizer = async (id) => {
+  const URL = `/api/v1/organizer/${id}`;
+  const res = await instance.delete(URL);
+  return (await res).data;
+};
+export const createNewOrganizer = async (organizerData) => {
+  const URL = `api/v1/organizer`;
+  const res = await instance.post(URL, organizerData);
+  if (res.status === 500) {
+    toast.error("errorrrr");
+  }
+  return (await res).data;
+};
+export const updateOrganizer = async (organizerData) => {
+  const URL = `api/v1/organizer`;
+  const res = await instance.put(URL, organizerData);
   return (await res).data;
 };

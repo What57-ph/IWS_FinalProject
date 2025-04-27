@@ -2,7 +2,7 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Modal, Space } from "antd";
 import { useEffect, useState } from "react";
 
-const HandleTicketType = ({ form }) => {
+const HandleTicketType = ({ form, initialValues, requestType }) => {
   const [localForm] = Form.useForm();
   const [tickets, setTickets] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -30,7 +30,7 @@ const HandleTicketType = ({ form }) => {
       </Form.Item>
 
       <div className="mb-6 grid gap-4">
-        {tickets.map((ticket, index) => (
+        {(requestType === "put" ? initialValues.tickets : tickets).map((ticket, index) => (
           <Card
             key={index}
             title={`Ticket Type #${index + 1}`}

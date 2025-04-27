@@ -24,6 +24,9 @@ import ProtectedRoute from "./components/share/protected-route";
 import AccountLayout from "./components/client/layout.client.account";
 import VerificationPage from "./pages/auth/VerificationPage";
 import OAuth2Callback from "./components/auth/OAuth2Callback";
+import PaymentSuccess from "./pages/client/Buy/PaymentSuccess";
+import PaymentFail from "./pages/client/Buy/PaymentFail";
+import OrganizerPage from "./pages/Admin/organizer";
 
 function App() {
   const router = createBrowserRouter([
@@ -44,6 +47,14 @@ function App() {
           element: (
             <ProtectedRoute>
               <UserPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "organizer",
+          element: (
+            <ProtectedRoute>
+              <OrganizerPage />
             </ProtectedRoute>
           ),
         },
@@ -144,6 +155,18 @@ function App() {
           path: "/oauth2/callback",
           element: <OAuth2Callback />,
         },
+        {
+          path: "payment",
+          children: [{
+            path: "success",
+            element: <PaymentSuccess />
+          },
+          {
+            path: "failed",
+            element: <PaymentFail />
+          }]
+
+        }
       ],
     },
   ]);

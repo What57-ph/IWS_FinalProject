@@ -6,6 +6,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
+  UsergroupAddOutlined
 } from "@ant-design/icons";
 import { Avatar, Breadcrumb, Button, Drawer, Dropdown, Layout, Menu, message, Space } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
@@ -83,6 +84,11 @@ const AdminLayout = () => {
       label: <Link to="/admin/order">Order</Link>,
       key: "/admin/order",
       icon: <DollarCircleOutlined />,
+    },
+    {
+      label: <Link to="/admin/organizer">Organizer</Link>,
+      key: "/admin/organizer",
+      icon: <UsergroupAddOutlined />,
     },
   ];
 

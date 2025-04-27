@@ -1,8 +1,11 @@
 import {
+  CheckCircleOutlined,
   DeleteOutlined,
   EditOutlined,
   InfoCircleOutlined,
+  LockOutlined,
   PlusOutlined,
+  StopOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
 import {
@@ -49,36 +52,36 @@ const EventPage = () => {
     };
     getEventListData();
   }, [isUpdatedEvent]);
-  console.log(events);
+  // console.log(events);
 
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
-  const isMobile = !screens.md;
+  const isMobile = !screens.lg;
 
   const columns = [
     {
       title: "STT",
       render: (text, record, index) => index + 1,
       width: 70,
-      responsive: ["md"],
+      responsive: ["lg"],
     },
     {
       title: "Name Event",
       dataIndex: "name",
       key: "name",
-      responsive: ["md"],
+      responsive: ["lg"],
     },
     {
       title: "Address",
       dataIndex: "province",
       key: "province",
-      responsive: ["md"],
+      responsive: ["lg"],
     },
     {
       title: "Organizer",
       dataIndex: "organizer",
       key: "organizer",
-      responsive: ["md"],
+      responsive: ["lg"],
       render: (organizer) => organizer?.name || "N/A",
     },
     {
@@ -104,6 +107,34 @@ const EventPage = () => {
       },
       responsive: ['lg'],
       sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      responsive: ["lg"],
+      render: (status) => {
+        const Icon = {
+          CLOSED: LockOutlined,
+          SOLD_OUT: StopOutlined,
+          OPEN: CheckCircleOutlined
+        }[status];
+
+        return (
+          <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status === 'CLOSED' ? 'bg-gray-100 text-gray-800' :
+            status === 'SOLD_OUT' ? 'bg-red-100 text-red-800' :
+              status === 'OPEN' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+            }`}>
+            {Icon && <Icon className="xl:mr-1 xl:my-0 my-2" />}
+            <div className="hidden xl:block">
+              {status === 'CLOSED' ? 'Closed' :
+                status === 'SOLD_OUT' ? 'Sold Out' :
+                  status === 'OPEN' ? 'Open' : status || 'N/A'}
+            </div>
+
+          </div>
+        );
+      }
     },
     {
       title: "Thao tác",
@@ -152,21 +183,39 @@ const EventPage = () => {
   };
   // handle delete
   const handleDelete = async (id) => {
-    const res = await deleteEvent(id);
-    setEvents((prev) => prev.filter((item) => item.id != id));
+    try {
+      const res = await deleteEvent(id);
+      toast.success("Delete event successfully.")
+      setEvents((prev) => prev.filter((item) => item.id != id));
+    } catch (error) {
+      toast.error("Cannot delete this event. This event has already sold ticket!");
+    }
+
   };
   const handleSubmit = async (values, eventId) => {
     try {
+      console.log(values);
+      //format contain hour
+      const formattedStartDate = values.startDate
+        ? dayjs(values.startDate).format("YYYY-MM-DDTHH:mm:ss")
+        : null;
+      const formattedEndDate = values.endDate
+        ? dayjs(values.endDate).format("YYYY-MM-DDTHH:mm:ss")
+        : null;
       // Transform data for backend
       const backendData = {
         ...values,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
         organizerName: values.organizerName,
         organizerInfo: values.organizerInfo,
       };
+
       let response;
       if (requestType === "post") {
         response = await createNewEvent(backendData);
         setEvents((prev) => [...prev, response]);
+        console.log(response);
         toast.success("Create event successfully");
       } else if (requestType === "put") {
         response = await updateEvent(backendData, eventId);
@@ -202,7 +251,7 @@ const EventPage = () => {
     <div className="p-4 mb-4 border rounded-lg shadow-sm bg-blue-600 text-white">
       <div className="grid grid-cols-1 gap-3">
         {" "}
-        {/* Đổi thành 1 cột */ console.log("record from event:", record)}
+        {/* Đổi thành 1 cột console.log("record from event:", record) */}
         <div>
           <div className="text-sm font-medium break-words whitespace-normal">
             Name event:{" "}
@@ -221,11 +270,17 @@ const EventPage = () => {
           <div className="text-sm font-medium ">Day start: </div>
           <div className="text-base">{record.startDate}</div>
         </div>
+        <div>
+          <div className="text-sm font-medium ">Status: </div>
+          <div className="text-base">    {record.status === 'CLOSED' ? 'Closed' :
+            record.status === 'SOLD_OUT' ? 'Sold Out' :
+              record.status === 'OPEN' ? 'Open' : record.status || 'N/A'}</div>
+        </div>
         <div className="flex justify-end mt-2">
           {" "}
           {/* Bỏ col-span-2 */}
           <Space>
-            <Button icon={<EditOutlined />} size="small" />
+            <Button icon={<EditOutlined />} size="small" onClick={() => setOpenModal(!openModal)} />
             <Popconfirm
               title="Do you sure want to delete ?"
               onConfirm={() => handleDelete(record.orderId)}
@@ -241,7 +296,7 @@ const EventPage = () => {
       </div>
     </div>
   );
-
+  // console.log("init values from event:", form.getFieldValue())
   return (
     <div className="p-4 max-w-full overflow-auto">
       <div className="flex justify-between mb-4 flex-wrap gap-2">
@@ -283,12 +338,15 @@ const EventPage = () => {
         setOpenModal={setOpenModal}
         handleSubmit={handleSubmit}
         initialValues={form.getFieldValue()}
+        event={events}
+        requestType={requestType}
       />
 
       <EventDetailModal
         open={openDetail}
         handleCancel={handleClose}
         form={form}
+        initialValues={form.getFieldValue()}
       />
     </div>
   );
