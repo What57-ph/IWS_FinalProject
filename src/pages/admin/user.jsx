@@ -55,6 +55,9 @@ const UserPage = () => {
     const getUserListData = async () => {
       const data = await getUserList();
       setUsers(data);
+      console.log("Test data for users:", data);
+
+
     };
     getUserListData();
   }, [isUpdatedUser]);
@@ -91,10 +94,19 @@ const UserPage = () => {
       render: (email) => <span className="text-blue-500">{email}</span>
     },
     {
+      title: "Customer name",
+      dataIndex: "name",
+      key: "name",
+      responsive: ["md"],
+      width: 350,
+      render: (name) => <span className="text-black">{name ? name : 'No data'}</span>
+    },
+    {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
       responsive: ["md"],
+      render: (phone) => <span className="text-black">{phone ? phone : 'No data'}</span>
     },
     {
       title: "Role",
@@ -224,7 +236,7 @@ const UserPage = () => {
 
   const mobileRowRender = (record) => (
     <div className="p-4 mb-4 border rounded-lg shadow-sm bg-blue-600 text-white">
-      <div className="grid grid-cols-1 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         {" "}
         {/* Đổi thành 1 cột */}
         <div>
@@ -234,6 +246,12 @@ const UserPage = () => {
           <div className="text-base break-all">{record.email}</div>
         </div>
         <div>
+          <div className="text-sm font-medium break-words whitespace-normal">
+            Customer name
+          </div>
+          <div className="text-base break-all">{record.name}</div>
+        </div>
+        <div>
           <div className="text-sm font-medium ">Phone</div>
           <div className="text-base">{record.phone}</div>
         </div>
@@ -241,7 +259,7 @@ const UserPage = () => {
           <div className="text-sm font-medium ">Role</div>
           <div className="text-base">{record.role}</div>
         </div>
-        <div className="flex justify-end mt-2">
+        <div className="flex justify-end mt-2 col-span-2">
           {" "}
           {/* Bỏ col-span-2 */}
           <Space>

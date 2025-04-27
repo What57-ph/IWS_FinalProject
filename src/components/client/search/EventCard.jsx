@@ -25,7 +25,7 @@ const EventCard = ({ item, search }) => {
             <Image
               className="w-full object-cover aspect-[16/9] rounded-lg"
               alt={item.name || "Event image"}
-              src={item.information}
+              src={item.imgEventInfo}
               preview={true}
               fallback="https://ticketbox.vn/_next/image?url=https%3A%2F%2Fimages.tkbcdn.com%2F2%2F608%2F332%2Fts%2Fds%2Ff0%2F56%2Fd6%2F66e53d7f3faaff7b62f88df2882fc934.jpg&w=640&q=75" // Ảnh dự phòng khi load lỗi (tuỳ chọn)
             />

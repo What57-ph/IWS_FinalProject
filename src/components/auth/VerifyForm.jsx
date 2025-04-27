@@ -32,7 +32,7 @@ const VerifyForm = ({
         autoClose: 2000,
       });
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Resend failed!';
+      const errorMessage = error || 'Resend failed!';
       console.log({ errorMessage });
       toast.error(errorMessage);
     } finally {
@@ -47,7 +47,15 @@ const VerifyForm = ({
         className="mt-5"
         name="username"
         validateTrigger={["onFinish"]}
-        rules={[{ required: true, message: "This field cannot be empty" }]}
+        rules={[
+          { required: true, message: 'Please input your email!' },
+          {
+            validator: (_, value) =>
+              validateEmail(value)
+                ? Promise.resolve()
+                : Promise.reject(new Error('Invalid email format!'))
+          }
+        ]}
       >
         <div>
           <Input

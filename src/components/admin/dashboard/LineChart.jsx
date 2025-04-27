@@ -10,39 +10,38 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import ReactApexChart from "react-apexcharts";
 import { Typography } from "antd";
-import { MinusOutlined } from "@ant-design/icons";
-import lineChart from "./configs/lineChart";
+import IncomeTotal from "./configs/IncomeTotal";
 
-function LineChart() {
+function LineChart({ orders }) {
   const { Title, Paragraph } = Typography;
+
+  const calculateEventsByMonth = (orders) => {
+    const monthlyEvents = Array(12).fill(0);
+
+    for (let order of orders) {
+      const date = new Date(order.createdAt);
+      const month = date.getMonth();
+      monthlyEvents[month] += parseFloat(order.totalPrice);
+    }
+
+    return monthlyEvents;
+  }
+
+  const monthCounts = calculateEventsByMonth(orders);
 
   return (
     <>
       <div className="linechart">
         <div>
-          <Title level={5}>Active Users</Title>
+          <Title level={5}>Total income</Title>
           <Paragraph className="lastweek">
             than last week <span className="bnb2">+30%</span>
           </Paragraph>
         </div>
-        <div className="sales">
-          <ul>
-            <li>{<MinusOutlined />} Traffic</li>
-            <li>{<MinusOutlined />} Sales</li>
-          </ul>
-        </div>
       </div>
 
-      <ReactApexChart
-        className="full-width"
-        options={lineChart.options}
-        series={lineChart.series}
-        type="area"
-        height={350}
-        width={"100%"}
-      />
+      <IncomeTotal monthCounts={monthCounts} />
     </>
   );
 }

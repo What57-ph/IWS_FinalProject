@@ -21,36 +21,31 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
+import VerificationPage from "./pages/auth/VerificationPage";
+import OAuth2Callback from "./components/auth/OAuth2Callback";
+import NotFoundPage from "./pages/errors/404page";
 
 import PaymentSuccess from "./pages/client/Buy/PaymentSuccess";
 import PaymentFail from "./pages/client/Buy/PaymentFail";
 import OrganizerPage from "./pages/Admin/organizer";
 
-import VerificationPage from "./pages/auth/VerificationPage";
-import OAuth2Callback from "./components/auth/OAuth2Callback";
-
-
 function App() {
   const router = createBrowserRouter([
     {
       path: "/admin",
-      element: <AdminLayout />,
+      element: (
+        <ProtectedRoute requireAdmin>
+          <AdminLayout />
+        </ProtectedRoute>
+      ),
       children: [
         {
           index: true,
-          element: (
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          ),
+          element: <DashboardPage />
         },
         {
           path: "user",
-          element: (
-            <ProtectedRoute>
-              <UserPage />
-            </ProtectedRoute>
-          ),
+          element: <UserPage />
         },
         {
           path: "organizer",
@@ -62,21 +57,13 @@ function App() {
         },
         {
           path: "event",
-          element: (
-            <ProtectedRoute>
-              <EventPage />
-            </ProtectedRoute>
-          ),
+          element: <EventPage />
         },
         {
           path: "order",
-          element: (
-            <ProtectedRoute>
-              <OrderPage />
-            </ProtectedRoute>
-          ),
-        },
-      ],
+          element: <OrderPage />
+        }
+      ]
     },
     {
       path: "/auth",
@@ -118,22 +105,21 @@ function App() {
           index: true,
           element: <HomePage />,
         },
-
         {
           path: "event",
           element: <EventDetailPage />,
         },
         {
           path: "buy",
-          element: <BuyPage />,
+          element: (<ProtectedRoute requireAuth> <BuyPage /> </ProtectedRoute>),
         },
         {
           path: "history",
-          element: <HistoryPage />,
+          element: (<ProtectedRoute requireAuth><HistoryPage /></ProtectedRoute>),
         },
         {
           path: "profile",
-          element: <ProfilePage />,
+          element: (<ProtectedRoute requireAuth><ProfilePage /> </ProtectedRoute>),
         },
         {
           path: "search",
@@ -144,10 +130,20 @@ function App() {
           element: <AboutUs />,
         },
         {
-          path: "*",
-          element: <NotFoundError />,
+          path: "payment",
+          children: [
+            {
+              path: "success",
+              element: <PaymentSuccess />
+            },
+            {
+              path: "failed",
+              element: <PaymentFail />
+            }
+          ]
         },
         {
+
 
           path: "payment",
           children: [{
@@ -161,10 +157,14 @@ function App() {
 
         },
         {
+
           path: "/oauth2/callback",
           element: <OAuth2Callback />,
         },
-
+        {
+          path: "*",
+          element: <NotFoundPage />,
+        },
       ],
     },
   ]);
