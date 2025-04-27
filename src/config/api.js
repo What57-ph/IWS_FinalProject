@@ -128,7 +128,7 @@ export const fetchEventList = () => {
   return instance.get("/api/v1/events");
 };
 export const fetchEventById = async (id) => {
-  const URL = `/api/v1/event/${id}`;
+  const URL = `/api/v1/events/${id}`;
   const res = await instance.get(URL);
   return (await res).data;
 };
@@ -179,6 +179,12 @@ export const fetchPayPalURL = async (amount) => {
     },
   });
 };
+
+export const confirmSuccessPayment = async (paymentId, payerId) => {
+  const URL = `api/v1/paypal/success?paymentId=${paymentId}&PayerID=${payerId}`;
+  const res = await instance.get(URL);
+  return (await res).data;
+}
 
 //Module organizer
 export const fetchOrganizerList = async () => {

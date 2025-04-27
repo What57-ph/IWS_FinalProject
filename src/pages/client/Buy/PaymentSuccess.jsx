@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { handleAfterPayment } from "../../../config/api";
+import { confirmSuccessPayment, handleAfterPayment } from "../../../config/api";
 import { useOrderContext } from "../../../context/OrderContext";
 
 const PaymentSuccess = () => {
@@ -11,6 +11,9 @@ const PaymentSuccess = () => {
     const orderInfo = queryParams.get("vnp_OrderInfo") || null;
     const responseCode = queryParams.get("vnp_ResponseCode") || null;
     const paymentId = queryParams.get("paymentId") || null;
+    const payerId = queryParams.get("PayerID") || null;
+    console.log(paymentId);
+    console.log(payerId);
     useEffect(() => {
         if (!order) {
             const savedOrder = localStorage.getItem("order");
@@ -20,11 +23,17 @@ const PaymentSuccess = () => {
             }
         }
     }, [order, setOrder]);
+    const fetchSuccessPayment = async (paymentId, payerId) => {
+        const res = await confirmSuccessPayment(paymentId, payerId);
+    }
     useEffect(() => {
         if (responseCode !== "00" && !paymentId) {
             navigate("/payment/failed");
         }
-    }, [])
+        if (paymentId && payerId) {
+            fetchSuccessPayment(paymentId, payerId);
+        }
+    }, [paymentId, payerId, responseCode]);
     useEffect(() => {
         const processAfterPay = async () => {
             if (order?.orderId) {

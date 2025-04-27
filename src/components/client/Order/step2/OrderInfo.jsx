@@ -5,7 +5,7 @@ import { FaCalendar, FaCalendarAlt, FaChevronCircleDown, FaChevronDown, FaChevro
 import { IoLocationOutline } from "react-icons/io5";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../../context/AuthContext';
-const OrderInfo = () => {
+const OrderInfo = ({ fullName, email, phone }) => {
     const { event, order, selectedTickets } = useOrderContext();
     const { currentUser } = useAuth();
     const { t } = useTranslation();
@@ -76,15 +76,15 @@ const OrderInfo = () => {
                             <ul className="space-y-2 text-gray-700 mt-2 sm:text-base text-sm">
                                 <li className="flex items-center">
                                     <span className="font-medium w-20">Name:</span>
-                                    <span className="text-gray-900">{currentUser?.name || 'Not provided'}</span>
+                                    <span className="text-gray-900">{fullName}</span>
                                 </li>
                                 <li className="flex items-center">
                                     <span className="font-medium w-20">Email:</span>
-                                    <span className="text-gray-900">{currentUser?.email || 'Not provided'}</span>
+                                    <span className="text-gray-900">{email}</span>
                                 </li>
                                 <li className="flex items-center">
                                     <span className="font-medium w-20">Phone:</span>
-                                    <span className="text-gray-900">{currentUser?.phone || 'Not provided'}</span>
+                                    <span className="text-gray-900">{phone}</span>
                                 </li>
                             </ul>
                         </div>
