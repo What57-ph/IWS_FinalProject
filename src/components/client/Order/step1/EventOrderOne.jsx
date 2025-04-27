@@ -202,7 +202,7 @@ const EventOrderOne = ({ form }) => {
                     </div>
 
                     <hr />
-                    <div className="h-[400px] overflow-y-scroll">
+                    <div className={`${event?.tickets.length > 5 ? "h-[400px] overflow-y-scroll" : ""} `}>
                         {event?.tickets.map((ticket, index) => {
                             if (ticket.quantity !== null) {
                                 return (

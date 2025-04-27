@@ -5,8 +5,8 @@ import { FaCalendar, FaCalendarAlt, FaChevronCircleDown, FaChevronDown, FaChevro
 import { IoLocationOutline } from "react-icons/io5";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../../context/AuthContext';
-const OrderInfo = ({ fullName, email, phone }) => {
-    const { event, order, selectedTickets } = useOrderContext();
+const OrderInfo = () => {
+    const { event, order, selectedTickets, fullName, email, phone } = useOrderContext();
     const { currentUser } = useAuth();
     const { t } = useTranslation();
     const [isShownInfo, setIsShownInfo] = useState(true);
