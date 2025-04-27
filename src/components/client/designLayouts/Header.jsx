@@ -35,7 +35,7 @@ const Header = () => {
 
   // If user has login
   const { user, isAuthenticated } = useAuth();
-  console.log("Try to print in header", user);
+  // console.log("Try to print in header", user);
 
   const provinces = data.level1s.map((province) => ({
     value: province.name,
@@ -63,14 +63,14 @@ const Header = () => {
     navigate(`/search?filter=name ~ '${searchValue}'`)
   }
 
-  console.log(location.pathname);
+  // console.log(location.pathname);
 
   return (
     <header className="lg:flex max-w-screen-xl mx-auto relative z-[100] lg:flex-row lg:items-center lg:justify-between max-lg:flex-col gap-x-10 gap-y-4 lg:px-16 px-4 py-4 grid grid-cols-3 ">
       <Logo />
       <div className="relative col-start-3 justify-self-end flex flex-row justify-center items-center gap-3" > {/* Thêm items-center */}
 
-        <Link to={'/search'} className={`lg:hidden flex items-center border border-slate-500 p-1 rounded-full ${location.pathname === '/search' ? 'hidden' : ''}`}>
+        <Link to={'/search'} className={`sm:hidden flex items-center border border-slate-500 p-1 rounded-full ${location.pathname === '/search' ? 'hidden' : ''}`}>
           <FaSearch className="text-gray-700" />
         </Link>
 
@@ -110,9 +110,9 @@ const Header = () => {
         onOpenChange={handleOpenChange}
         open={open}
         trigger="click"
-        className="w-full hidden lg:flex"
+        className="w-full flex"
       >
-        <div className="flex flex-row items-center justify-between bg-gray-100 rounded-full w-full relative">
+        <div className="col-span-3 lg:flex lg:flex-row items-center justify-between bg-gray-100 rounded-full w-full relative">
           <input onChange={(e) => setSearchValue(e.target.value)}
             placeholder={`Search for events, artists, ${placeholder}`}
             className="bg-gray-100 focus:outline-none w-full px-4 py-2 rounded-full"

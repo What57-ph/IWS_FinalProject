@@ -9,7 +9,7 @@ const SearchPopup = ({ setOpen }) => {
                 min-w-[300px] w-auto max-h-[70vh] h-auto rounded-xl 
                 bg-slate-900/40 backdrop-blur-2xl
                 border border-white/20 shadow-2xl
-                lg:flex flex-col text-white text-2xl py-4
+                md:flex flex-col text-white text-2xl py-4
                 overflow-y-auto">
       <div className="text-[18px]">
         <Link to={"/search?filter=name ~ 'Autumn'"}

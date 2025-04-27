@@ -16,7 +16,7 @@ const LoginPage = () => {
   const { login } = useAuth()
 
   let params = new URLSearchParams(location.search);
-  const callback = params?.get("callback");
+  const redirect = params?.get("redirect") || '';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,14 +46,14 @@ const LoginPage = () => {
         login(res.data.user, res.data.accessToken);
         toast.success('Đăng nhập tài khoản thành công!', {
           autoClose: 500,
-          onClose: () => navigate('/')
+          onClose: () => navigate(`${redirect || '/'}`)
         });
       }
 
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Login failed!';
+      const errorMessage = error.response?.data?.error || 'Please check your email or password!';
       console.log({ errorMessage });
-      alert(errorMessage);
+      toast.error(errorMessage);
       notification.error({
         message: "Lỗi!!!",
         description: errorMessage,
@@ -62,30 +62,6 @@ const LoginPage = () => {
     }
 
   };
-
-  // const handleGoogleLogin = () => {
-  //   const width = 500;
-  //   const height = 600;
-  //   const left = window.screenX + (window.outerWidth - width) / 2;
-  //   const top = window.screenY + (window.outerHeight - height) / 2;
-
-  //   const popup = window.open(
-  //     'http://localhost:8080/oauth2/authorization/google',
-  //     'Google Login',
-  //     `width=${width},height=${height},left=${left},top=${top}`
-  //   );
-
-  //   window.addEventListener('message', async (event) => {
-  //     if (event.origin !== 'http://localhost:8080') return;
-
-  //     const data = event.data;
-  //     if (data.accessToken && data.user) {
-  //       login(data);
-  //       navigate('/')
-  //       popup.close();
-  //     }
-  //   });
-  // }
 
   return (
     <Form className="w-full text-start" onFinish={onFinish}>
