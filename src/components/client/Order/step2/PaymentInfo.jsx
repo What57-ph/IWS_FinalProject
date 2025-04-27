@@ -74,7 +74,7 @@ const PaymentInfo = ({ form, setFullName, setEmail, setPhone }) => {
                                 Phone Number <span className="text-red-500">(*)</span>
                             </label>
                             <div className="flex gap-2 h-[44px] bg-gray-100 text-base relative rounded-lg border-0 hover:bg-gray-100 focus:ring-2 focus:outline-none">
-                                <select
+                                {/* <select
                                     defaultValue="+84"
                                     className="w-fit h-full bg-gray-100 focus:bg-gray-100 focus:ring-2 cursor-pointer rounded-md px-2"
                                 >
@@ -82,7 +82,7 @@ const PaymentInfo = ({ form, setFullName, setEmail, setPhone }) => {
                                     <option value="+1">+1</option>
                                     <option value="+44">+44</option>
                                 </select>
-                                <div className="border-r border-gray-300 my-2 text-gray-700" />
+                                <div className="border-r border-gray-300 my-2 text-gray-700" /> */}
                                 <Input placeholder="Enter phone number" className="w-full paymentInput" defaultValue={currentUser?.phone} />
                             </div>
                         </div>
