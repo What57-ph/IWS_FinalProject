@@ -6,6 +6,8 @@ import formatTicketPrice from "../../../utils/formatTicketPrice";
 import BuyButton from "./BuyButton";
 
 export default function Sidebar({ className, isAuthenticated, data }) {
+  const now = new Date()
+  const endDate = new Date(data.endDate);
   const currentUrl = window.location.href;
   const formatTime = () => {
     const start = formatDate(data.startDate);
@@ -33,15 +35,20 @@ export default function Sidebar({ className, isAuthenticated, data }) {
       className={`flex flex-col lg:w-96 h-fit gap-8 p-8 bg-base-100 rounded-lg border border-b-2  ${className}`}
     >
       <div className="flex flex-col gap-4">
-        {data.status == "OPEN" ? (
+        {data.status == "OPEN" && endDate > now ? (
           <div className="px-3 py-1 rounded-full border-none font-medium w-fit bg-green-300">
             <div className="text-green-700">{data.status}</div>
           </div>
         ) : (
           <div className="px-3 py-1 rounded-full border-none font-medium w-fit bg-red-300">
-            <div className="text-red-700">{data.status}</div>
+            <div className="text-red-700">CLOSED</div>
           </div>
         )}
+        {data.status != "OPEN" ? (
+          <div className="px-3 py-1 rounded-full border-none font-medium w-fit bg-red-300">
+            <div className="text-red-700">{data.status}</div>
+          </div>
+        ): ''}
         <h2 className="text-2xl font-semibold">{data.name}</h2>
 
         {/* Ngày diễn ra */}

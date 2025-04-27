@@ -230,3 +230,15 @@ export const updateOrganizer = async (organizerData) => {
   const res = await instance.put(URL, organizerData);
   return (await res).data;
 };
+
+
+//Module order history 
+
+export const callHistory= async (userId) => {
+  const URL = `api/v1/user_orders/${userId}`;
+  const res = await instance.get(URL);
+  
+  console.log("fetching orrder history", res);
+  
+  return (await res).data;
+}

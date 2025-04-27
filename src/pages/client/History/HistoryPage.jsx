@@ -1,65 +1,130 @@
-import { Col, Divider, Modal, Row, Tabs } from "antd";
-import React, { useState } from "react";
+import { Col, Divider, Modal, Row, Spin, Tabs } from "antd";
+import React, { useEffect, useState } from "react";
 import Ticket from "../../../components/client/Ticket/Ticket";
 import sampleData from "../../../data/sampleData";
+import { callHistory } from "../../../config/api";
+import { useAuth } from "../../../context/AuthContext";
+import { useRowStyle } from "antd/es/grid/style";
 
 const HistoryPage = () => {
-  const event = sampleData.events[0];
+  const { user } = useAuth();
+  const [orders, setOrders] = useState();
+  const [currentOrder, setCurrentOrder] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const openModal = () => {setIsModalOpen(true)}
-  const closeModal = () => {setIsModalOpen(false)}
+  useEffect(() => {
+    callHistory(user.id)
+      .then((res) => {
+        setOrders(res);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("error fetching order history", err);
+        setLoading(false);
+      });
+  }, []);
+  console.log("orders", orders);
+  console.log("current order", currentOrder);
+
+  const openModal = (orderDetail) => {
+    setCurrentOrder(orderDetail);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setCurrentOrder(null);
+    setIsModalOpen(false);
+  };
+
   return (
     <div>
-      <h1 className="text-2xl font-bold pb-2">Vé đã mua</h1>
+      <h1 className="text-2xl font-bold pb-2">Tickets purchased</h1>
       <hr />
-      <Ticket onClick={openModal}/>
-      <Ticket onClick={openModal}/>
-      <Ticket onClick={openModal}/>
+      {loading && (
+        <div className="flex justify-center items-center my-10">
+          <Spin size="large" />
+        </div>
+      )}
 
-      <Modal 
-        title="Chi tiết vé" 
+      {!orders && !loading && (
+        <div className="flex justify-center items-center my-10 ">
+          Thers's no ticket purchased yet!
+        </div>
+      )}
+
+      {orders
+        ?.filter((orderDetail) => orderDetail.status === "CONFIRMED")
+        .map((orderDetail, index) => (
+          <Ticket
+            onClick={() => openModal(orderDetail)}
+            data={orderDetail}
+            key={index}
+          />
+        ))}
+
+      {/* <Ticket onClick={openModal}/>
+      <Ticket onClick={openModal}/> */}
+
+      <Modal
+        title="Order Detail"
         open={isModalOpen}
-        onOk={closeModal} 
-        cancelButtonProps={{ style: { display: 'none' } }}
+        onOk={closeModal}
+        onCancel={closeModal}
+        cancelButtonProps={{ style: { display: "none" } }}
       >
         <div>
-          <img src={event.information} alt="" />
-          <h1 className="font-bold text-lg mb-5">VIETNAM COLLEGIATE BASKETBALL CHAMPIONSHIP 2024</h1>
-          <h3 className="text-sm">Loại vé</h3>
-          <h1 className="text-md font-semibold mb-2">Standard</h1>
-          <h3 className="text-sm">Thời gian</h3>
-          <h1 className="text-md font-semibold mb-2">18:00 - 22:00 07/5/2025</h1>
-          <hr />
-          <h1 className="font-bold text-lg mb-5">Thông tin đơn hàng</h1>
+          <img
+            src={currentOrder?.event.banner}
+            alt=""
+            className="mb-3 rounded"
+          />
+          <h1 className="font-bold text-lg mb-2">{currentOrder?.event.name}</h1>
+          <h3 className="text-sm mb-1">Event Time</h3>
+          <h1 className="text-md font-semibold mb-2">
+            {new Date(currentOrder?.event.startDate).toLocaleString()} -{" "}
+            {new Date(currentOrder?.event.endDate).toLocaleString()}
+          </h1>
+          <Divider />
+          <h1 className="font-bold text-lg mb-3">Order Information</h1>
           <div className="flex justify-between mb-5">
-            <h1>Ngày đặt hàng</h1>
-            <h1>18:54 22/04/2025</h1>
+            <h1>Order Date</h1>
+            <h1>{new Date(currentOrder?.createdAt).toLocaleString()}</h1>
           </div>
-          <Row className="my-3">
-            <Col span={8} className="font-semibold">Loại vé</Col>
-              
-            <Col span={8} className="text-center font-semibold">Số lượng</Col>
-              
-            <Col span={8} className="text-right font-semibold">Thành tiền</Col>
+
+          <Row className="my-3 font-semibold">
+            <Col span={8}>Ticket Type</Col>
+            <Col span={8} className="text-center">
+              Quantity
+            </Col>
+            <Col span={8} className="text-right">
+              Subtotal
+            </Col>
           </Row>
-          <Row className="my-3">
-            <Col span={8}>STANDARD </Col>
-            
-            <Col span={8} className="text-center">1</Col>
-            
-            <Col span={8} className="text-right">0 đ</Col>
-          </Row>
-          <Row className="my-3">
-            <Col span={16} className="font-semibold">Tổng tiền</Col>
-            
-            <Col span={8} className="text-right">0 đ</Col>
+
+          {currentOrder?.items?.map((item, index) => (
+            <Row key={index} className="my-2">
+              <Col span={8}>{item.ticket.name}</Col>
+              <Col span={8} className="text-center">
+                {item.quantity}
+              </Col>
+              <Col span={8} className="text-right">
+                {item.subTotal.toLocaleString()} đ
+              </Col>
+            </Row>
+          ))}
+
+          <Divider />
+
+          <Row className="my-3 font-semibold">
+            <Col span={16}>Total Price</Col>
+            <Col span={8} className="text-right">
+              {currentOrder?.totalPrice.toLocaleString()} đ
+            </Col>
           </Row>
         </div>
       </Modal>
     </div>
-  )
-    
+  );
 };
 
 export default HistoryPage;
