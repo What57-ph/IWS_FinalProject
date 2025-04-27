@@ -8,7 +8,7 @@ const AccountFunc = () => {
   const { logout, user } = useAuth();
   let params = new URLSearchParams(location.search);
   const callback = params?.get("callback");
-
+  const { currentUser } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -45,7 +45,7 @@ const AccountFunc = () => {
         <div className="flex-shrink-0">
           <img
             className="h-8 w-8 rounded-full object-cover"
-            src="https://lh3.googleusercontent.com/a/ACg8ocI_YpbHVIYyaKKlL3Hxri54jM7hboP-qpvrTBol2n19pHxH7798=s96-c"
+            src={currentUser.avatar}
             alt="User avatar"
             width={40}
             height={40}

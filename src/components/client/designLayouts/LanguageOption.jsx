@@ -14,9 +14,8 @@ const LanguageOption = ({
     <label className="relative">
       <button
         type="button"
-        className={`langOption relative lg:m-0 mt-2 ${
-          showToggleMenu ? "hidden" : "block"
-        }`}
+        className={`langOption relative lg:m-0 mt-2 ${showToggleMenu ? "hidden" : "block"
+          }`}
         onClick={() => setShowLangList(!showLangList)}
       >
         <div
