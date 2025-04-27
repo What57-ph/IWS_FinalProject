@@ -4,12 +4,12 @@ export default function DetailOrganizer({ data }) {
   return (
     <div className="mt-20">
       <h1 id="organizer" className="font-bold text-2xl mb-4">
-        Nhà tổ chức
+        Event Organizer
       </h1>
       <div className="p-8 border rounded-lg">
         <div className="min-w-64 space-y-4 flex max-sm:flex-col">
           <div
-            className=" w-32 h-32 mr-4 bg-center bg-cover flex-shrink-0"
+            className="w-32 h-32 mr-4 bg-center bg-cover flex-shrink-0"
             style={{ backgroundImage: `url(${data.logo || `https://placehold.co/128x128?text=No+Logo&font=roboto`})` }}
             aria-label="organizer"
           />
@@ -30,14 +30,13 @@ export default function DetailOrganizer({ data }) {
                   <span>{data.organizer.phone}</span>
                 </div>
               )}
-              
             </div>
           </div>
         </div>
         <hr className="my-4" />
-        <div class=" text-gray-500 space-y-4">
+        <div className="text-gray-500 space-y-4">
           <p>
-            {data.organizer.description ? data.organizer.description : "Nhà tổ chức của sự kiện lần này"}
+            {data.organizer.description ? data.organizer.description : "The organizer of this event"}
           </p>
         </div>
       </div>

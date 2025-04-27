@@ -19,7 +19,7 @@ export default function DetailMap({data}) {
   return (
     <div>
       <h1 id="map" className="font-bold text-2xl mb-4">
-        Lịch sự kiện và sơ đồ chỗ ngồi
+      Event schedule and Organizational chart
       </h1>
       <div className="bg-base-100 rounded-lg border border-b-2 space-y-4">
         <div className="flex max-sm:flex-col-reverse gap-3 py-4 px-8 space-y-1 border-b ">
@@ -40,7 +40,7 @@ export default function DetailMap({data}) {
               onClick={openModal}
               className="text-info text-sm font-semibold cursor-pointer mt-2"
             >
-              Xem sơ đồ
+              View organizational chart
             </button>
 
             {isOpen && (

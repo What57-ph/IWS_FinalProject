@@ -15,7 +15,7 @@ export default function Navbar() {
 
   const scroll = (direction) => {
     if (sliderRef.current) {
-      const scrollAmount = 300; // Điều chỉnh giá trị này nếu cần
+      const scrollAmount = 300; // Adjust this value if necessary
       sliderRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
@@ -25,7 +25,7 @@ export default function Navbar() {
   return (
     <div>
       <div className="relative">
-        {/* Mũi tên trái */}
+        {/* Left arrow */}
         {showLeftArrow && (
           <button
             onClick={() => scroll("left")}
@@ -52,29 +52,29 @@ export default function Navbar() {
         <div
           ref={sliderRef}
           onScroll={checkScroll}
-          className="flex overflow-x-auto scrollbar-hide space-x-4  "
+          className="flex overflow-x-auto scrollbar-hide space-x-4"
         >
           <a
-            className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md  border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
-            href="#map" 
+            className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
+            href="#map"
           >
-            Lịch sự kiện
+            Event Schedule
           </a>
           <a
-            className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md  border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
-            href="#about" 
+            className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
+            href="#about"
           >
-            Về sự kiện
+            About the Event
           </a>
           <a
-            className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md  border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
-            href="#organizer" 
+            className={`flex-shrink-0 py-4 px-4 ms:mr-10 flex items-center justify-center text-md border-b-2 transition-colors duration-300 border-b-white text-gray-600 hover:border-gray-300`}
+            href="#organizer"
           >
-            Nhà tổ chức
+            Organizer
           </a>
         </div>
 
-        {/* Mũi tên phải */}
+        {/* Right arrow */}
         {showRightArrow && (
           <button
             onClick={() => scroll("right")}

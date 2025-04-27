@@ -3,30 +3,29 @@ import { Table } from "antd";
 export default function About({data}) {
     const columns = [
         {
-          title: "Loại vé",
+          title: "Ticket Type",
           dataIndex: "type",
           key: "type",
         },
         {
-          title: "Giá",
+          title: "Price",
           dataIndex: "price",
           key: "price",
           render: (price) => {
-            return price === 0 ? "Miễn phí" : `${price.toLocaleString('vi-VN')} VND`;
+            return price === 0 ? "Free" : `${price.toLocaleString('vi-VN')} VND`;
           },
         },
         {
-          title: "Số lượng",
+          title: "Quantity",
           dataIndex: "quantity",
           key: "quantity",
         },
         {
-          title: "Mô tả",
+          title: "Description",
           dataIndex: "description",
           key: "description",
-          render: (text) => text || "Không có",
+          render: (text) => text || "Not yet",
         },
-        
     ];
       
     const dataSource = data.tickets;
@@ -34,7 +33,7 @@ export default function About({data}) {
     return(
         <div className="mt-20">
             <h1 id="about" className="font-bold text-2xl mb-4">
-                Về sự kiện
+                About the event
             </h1>
             
             <div className="p-8 border rounded-lg">
@@ -43,5 +42,4 @@ export default function About({data}) {
             </div>
         </div>
     )
-    
 }
