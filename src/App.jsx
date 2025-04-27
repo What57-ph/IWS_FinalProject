@@ -159,8 +159,8 @@ function App() {
             element: <PaymentFail />
           }]
 
-        }
-
+        },
+        {
           path: "/oauth2/callback",
           element: <OAuth2Callback />,
         },
