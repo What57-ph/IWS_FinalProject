@@ -48,6 +48,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
     setIsAuthenticated(true);
+
+    console.log("print user data: ", userData);
+
+
   };
 
   const logout = () => {
@@ -79,9 +83,18 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const [verifyUser, setVerifyUser] = useState(() => {
+    return localStorage.getItem('verifyUser') || null;
+  });
+
+  const updateVerifyUser = (username) => {
+    localStorage.setItem('verifyUser', username);
+    setVerifyUser(username);
+  };
+
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, currentUser, events }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, currentUser, events, updateVerifyUser, verifyUser }}>
       {children}
     </AuthContext.Provider>
   );
