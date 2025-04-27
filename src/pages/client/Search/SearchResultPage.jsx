@@ -1,4 +1,6 @@
 import { Popover } from "antd";
+import { Grid } from 'antd';
+const { useBreakpoint } = Grid;
 import React, { useEffect, useState } from "react";
 import { FaAngleDown, FaFilter, FaX } from "react-icons/fa6"
 import Filter from "../../../components/client/search/Filter";
@@ -14,6 +16,7 @@ const SearchResultPage = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation()
   const navigate = useNavigate();
+  const screens = useBreakpoint();
 
   // for event
   const [events, setEvents] = useState([]);
@@ -82,7 +85,7 @@ const SearchResultPage = () => {
           <FaSearch />
         </div>
       </div>
-      <Popover content={<Filter filterParam={filterParam} setFilterParam={setFilterParam} setOpen={setOpen} />} placement="bottom" onOpenChange={handleOpenChange}
+      <Popover content={<Filter filterParam={filterParam} setFilterParam={setFilterParam} setOpen={setOpen} />} placement={screens.lg ? 'bottomLeft' : 'bottom'} onOpenChange={handleOpenChange}
         trigger="click" className={`flex flex-row font-semibold justify-center items-center gap-2 px-4 py-2 bg-gray-500 rounded-full text-white cursor-pointer
           ${open && "bg-pink-500"} transition duration-300
         `}
