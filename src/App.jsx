@@ -29,10 +29,6 @@ import PaymentSuccess from "./pages/client/Buy/PaymentSuccess";
 import PaymentFail from "./pages/client/Buy/PaymentFail";
 import OrganizerPage from "./pages/Admin/organizer";
 
-import VerificationPage from "./pages/auth/VerificationPage";
-import OAuth2Callback from "./components/auth/OAuth2Callback";
-
-
 function App() {
   const router = createBrowserRouter([
     {
@@ -109,7 +105,6 @@ function App() {
           index: true,
           element: <HomePage />,
         },
-
         {
           path: "event",
           element: <EventDetailPage />,
@@ -135,31 +130,26 @@ function App() {
           element: <AboutUs />,
         },
         {
+          path: "payment",
+          children: [
+            {
+              path: "success",
+              element: <PaymentSuccess />
+            },
+            {
+              path: "failed",
+              element: <PaymentFail />
+            }
+          ]
+        },
+        {
+          path: "/oauth2/callback",
+          element: <OAuth2Callback />,
+        },
+        {
           path: "*",
           element: <NotFoundPage />,
         },
-        {
-          path: "/oauth2/callback",
-          element: <OAuth2Callback />,
-        },
-        {
-
-          path: "payment",
-          children: [{
-            path: "success",
-            element: <PaymentSuccess />
-          },
-          {
-            path: "failed",
-            element: <PaymentFail />
-          }]
-
-        }
-
-          path: "/oauth2/callback",
-          element: <OAuth2Callback />,
-        },
-
       ],
     },
   ]);
