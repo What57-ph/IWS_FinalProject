@@ -5,7 +5,7 @@ import { Grid } from 'antd';
 import OrderModal from "../../components/admin/order/OrderModal";
 import OrderDetailModal from "../../components/admin/order/OrderDetailModal";
 import { callCreateOrder, callDeleteOrder, callOrders, callUpdateOrder } from "../../config/api";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import EnumStatusOrder from "../../utils/EnumStatusOrder";
 
 
@@ -190,15 +190,18 @@ const OrderPage = () => {
         toast.success("Create event successfully !", {
           position: "top-right",
         });
-
         refreshTable();
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Create failed!';
-      toast.error({ errorMessage }, {
+      const errorMessage =
+        error.message ||
+        'Create failed!';
+
+      // console.log("Full error object:", error.message);
+
+      toast.error(errorMessage, {
         position: "top-right",
       });
-      // console.log({ errorMessage });
     } finally {
       setIsSubmitting(false);
     }
@@ -314,6 +317,17 @@ const OrderPage = () => {
 
   return (
     <div className="p-4 max-w-full overflow-auto">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="flex justify-between mb-4 flex-wrap gap-2">
         <h2 className="text-[25px] font-bold">List of orders</h2>
         <Button icon={<PlusOutlined />} type="primary"
