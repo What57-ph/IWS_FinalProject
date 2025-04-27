@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Form, Input, message, notification } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 import { callLogin } from "../../config/api";
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -16,6 +17,7 @@ const LoginPage = () => {
 
   let params = new URLSearchParams(location.search);
   const callback = params?.get("callback");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsButtonHovered(!!(formValues.email && formValues.password));
@@ -42,12 +44,10 @@ const LoginPage = () => {
         }
 
         login(res.data.user, res.data.accessToken);
-
-        // console.log('User after login:', res.data.user);
-
-
-        message.success('Đăng nhập tài khoản thành công!');
-        window.location.href = callback ? callback : '/';
+        toast.success('Đăng nhập tài khoản thành công!', {
+          autoClose: 500,
+          onClose: () => navigate('/')
+        });
       }
 
     } catch (error) {
@@ -62,6 +62,30 @@ const LoginPage = () => {
     }
 
   };
+
+  // const handleGoogleLogin = () => {
+  //   const width = 500;
+  //   const height = 600;
+  //   const left = window.screenX + (window.outerWidth - width) / 2;
+  //   const top = window.screenY + (window.outerHeight - height) / 2;
+
+  //   const popup = window.open(
+  //     'http://localhost:8080/oauth2/authorization/google',
+  //     'Google Login',
+  //     `width=${width},height=${height},left=${left},top=${top}`
+  //   );
+
+  //   window.addEventListener('message', async (event) => {
+  //     if (event.origin !== 'http://localhost:8080') return;
+
+  //     const data = event.data;
+  //     if (data.accessToken && data.user) {
+  //       login(data);
+  //       navigate('/')
+  //       popup.close();
+  //     }
+  //   });
+  // }
 
   return (
     <Form className="w-full text-start" onFinish={onFinish}>
