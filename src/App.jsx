@@ -2,7 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import DashboardPage from "./pages/Admin/dashboard";
 import UserPage from "./pages/admin/user";
-import EventPage from "./pages/Admin/event";
+import EventPage from "./pages/admin/event";
 import OrderPage from "./pages/admin/order";
 import AdminLayout from "./components/admin/layout.admin";
 
@@ -21,6 +21,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import ForgotPageOne from "./pages/auth/ForgotPageOne";
 import ForgotPageTwo from "./pages/auth/ForgotPageTwo";
 import ProtectedRoute from "./components/share/protected-route";
+
 import VerificationPage from "./pages/auth/VerificationPage";
 import OAuth2Callback from "./components/auth/OAuth2Callback";
 import NotFoundPage from "./pages/errors/404page";
@@ -28,6 +29,7 @@ import NotFoundPage from "./pages/errors/404page";
 import PaymentSuccess from "./pages/client/Buy/PaymentSuccess";
 import PaymentFail from "./pages/client/Buy/PaymentFail";
 import OrganizerPage from "./pages/Admin/organizer";
+import AccountLayout from "./components/client/layout.client.account";
 
 function App() {
   const router = createBrowserRouter([
@@ -106,7 +108,7 @@ function App() {
           element: <HomePage />,
         },
         {
-          path: "event",
+          path: "event/:id",
           element: <EventDetailPage />,
         },
         {
@@ -114,13 +116,20 @@ function App() {
           element: (<ProtectedRoute requireAuth> <BuyPage /> </ProtectedRoute>),
         },
         {
-          path: "history",
-          element: (<ProtectedRoute requireAuth><HistoryPage /></ProtectedRoute>),
+          path: "account",
+          element: <AccountLayout />,
+          children: [
+            {
+              path: "profile",
+              element: (<ProtectedRoute requireAuth><ProfilePage /> </ProtectedRoute>),
+            },
+            {
+              path: "history",
+              element: (<ProtectedRoute requireAuth><HistoryPage /> </ProtectedRoute>),
+            },
+          ]
         },
-        {
-          path: "profile",
-          element: (<ProtectedRoute requireAuth><ProfilePage /> </ProtectedRoute>),
-        },
+        
         {
           path: "search",
           element: <SearchResultPage />,

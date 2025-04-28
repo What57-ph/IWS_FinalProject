@@ -2,6 +2,7 @@ import { Button, Dropdown, message } from "antd";
 import { callLogout } from "../../../config/api";
 import { useAuth } from "../../../context/AuthContext";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const AccountFunc = () => {
 
@@ -77,12 +78,12 @@ const AccountFunc = () => {
 
       {showDropdown && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-          <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+          <Link to={"/account/history"} className="px-4 py-2 hover:bg-gray-100 cursor-pointer block">
             Ticket History
-          </div>
-          <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+          </Link>
+          <Link to={"/account/profile"}  className="px-4 py-2 hover:bg-gray-100 cursor-pointer block">
             My Profile
-          </div>
+          </Link>
           <div
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
             onClick={handleLogout}

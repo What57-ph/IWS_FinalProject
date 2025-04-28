@@ -18,7 +18,10 @@ const PasswordForm = ({ handleInputChange, formValues }) => {
         className="mt-5"
         name="password"
         validateTrigger={["onFinish"]}
-        rules={[{ required: true, message: "This field cannot be empty" }]}
+        rules={[
+          { required: true, message: "This field cannot be empty" },
+          { min: 6, message: "Password must be at least 6 characters." },
+        ]}
       >
         <div>
           <Input.Password

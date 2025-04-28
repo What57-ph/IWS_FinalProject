@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(data);
     };
     fetchUserDataByEmail(user?.email);
-
   }, [user]);
   useEffect(() => {
     const loadUser = () => {
