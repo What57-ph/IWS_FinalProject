@@ -8,9 +8,12 @@ const HandleTicketType = ({ form, initialValues, requestType }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    const existingTickets = form.getFieldValue('tickets') || [];
+    const existingTickets = requestType === "put"
+      ? (initialValues?.tickets || [])
+      : (form.getFieldValue('tickets') || []);
     setTickets(existingTickets);
-  }, []);
+  }, [form, initialValues, requestType]);
+
 
   useEffect(() => {
     form.setFieldsValue({ tickets });
@@ -19,6 +22,7 @@ const HandleTicketType = ({ form, initialValues, requestType }) => {
   const handleAddTicket = (values) => {
     const newTickets = [...tickets, values];
     setTickets(newTickets);
+    form.setFieldsValue({ tickets: newTickets });
     localForm.resetFields();
     setIsModalVisible(false);
   };
@@ -30,7 +34,7 @@ const HandleTicketType = ({ form, initialValues, requestType }) => {
       </Form.Item>
 
       <div className="mb-6 grid gap-4">
-        {(requestType === "put" ? initialValues.tickets : tickets).map((ticket, index) => (
+        {tickets.map((ticket, index) => (
           <Card
             key={index}
             title={`Ticket Type #${index + 1}`}

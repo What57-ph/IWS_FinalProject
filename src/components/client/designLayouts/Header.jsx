@@ -152,12 +152,12 @@ const Header = () => {
             </div>
           )}
 
-          <LanguageOption
+          {/* <LanguageOption
             language={language}
             showLangList={showLangList}
             showToggleMenu={showToggleMenu}
             setShowLangList={setShowLangList}
-          />
+          /> */}
         </div>
       )}
     </header>

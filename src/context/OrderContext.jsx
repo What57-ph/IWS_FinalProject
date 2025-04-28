@@ -15,6 +15,9 @@ export const OrderProvider = ({ children }) => {
   const [selectedTickets, setSelectedTickets] = useState([]);
   const [totalAmount, setTotalAmount] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("bank-transfer");
+  const [fullName, setFullName] = useState();
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
   useEffect(() => {
     setTotalAmount(selectedTickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0))
 
@@ -39,7 +42,7 @@ export const OrderProvider = ({ children }) => {
 
   return (
     <OrderContext.Provider
-      value={{ order, setOrder, event, setEvent, eventId, setEventId, currentStep, setCurrentStep, selectedTickets, setSelectedTickets, totalAmount, selectedMethod, setSelectedMethod }}
+      value={{ order, setOrder, event, setEvent, eventId, setEventId, currentStep, setCurrentStep, selectedTickets, setSelectedTickets, totalAmount, selectedMethod, setSelectedMethod, fullName, setFullName, email, setEmail, phone, setPhone }}
     >
       {children}
     </OrderContext.Provider>

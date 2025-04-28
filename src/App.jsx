@@ -152,6 +152,21 @@ function App() {
           ]
         },
         {
+
+
+          path: "payment",
+          children: [{
+            path: "success",
+            element: <PaymentSuccess />
+          },
+          {
+            path: "failed",
+            element: <PaymentFail />
+          }]
+
+        },
+        {
+
           path: "/oauth2/callback",
           element: <OAuth2Callback />,
         },

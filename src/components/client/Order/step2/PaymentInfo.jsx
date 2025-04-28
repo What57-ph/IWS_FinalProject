@@ -1,10 +1,11 @@
 import { Form, Input } from 'antd';
 import React, { useEffect } from 'react';
 import { useAuth } from '../../../../context/AuthContext';
+import { useOrderContext } from '../../../../context/OrderContext';
 
-const PaymentInfo = ({ form, setFullName, setEmail, setPhone }) => {
+const PaymentInfo = ({ form }) => {
     const { currentUser } = useAuth();
-
+    const { setFullName, setEmail, setPhone, fullName, email, phone } = useOrderContext()
     useEffect(() => {
         if (currentUser) {
             form.setFieldsValue({
@@ -12,6 +13,9 @@ const PaymentInfo = ({ form, setFullName, setEmail, setPhone }) => {
                 receiverEmail: currentUser.email,
                 receiverPhone: currentUser.phone,
             });
+            setFullName(currentUser?.name);
+            setEmail(currentUser?.email);
+            setPhone(currentUser?.phone);
         }
     }, [currentUser, form]);
 
@@ -47,7 +51,7 @@ const PaymentInfo = ({ form, setFullName, setEmail, setPhone }) => {
                             <label className="block text-base mb-1">
                                 Full Name <span className="text-red-500">(*)</span>
                             </label>
-                            <Input placeholder="Please enter full name" className="w-full paymentInput p-4" defaultValue={currentUser?.name} />
+                            <Input placeholder="Please enter full name" className="w-full paymentInput p-4" defaultValue={fullName !== undefined ? fullName : currentUser?.name} />
                         </div>
                     </Form.Item>
 
@@ -60,7 +64,7 @@ const PaymentInfo = ({ form, setFullName, setEmail, setPhone }) => {
                             <label className="block text-base mb-1">
                                 Email <span className="text-red-500">(*)</span>
                             </label>
-                            <Input placeholder="Please enter email" className="w-full paymentInput p-4" defaultValue={currentUser?.email} />
+                            <Input placeholder="Please enter email" className="w-full paymentInput p-4" defaultValue={email !== undefined ? email : currentUser?.email} />
                         </div>
                     </Form.Item>
 
@@ -83,7 +87,7 @@ const PaymentInfo = ({ form, setFullName, setEmail, setPhone }) => {
                                     <option value="+44">+44</option>
                                 </select>
                                 <div className="border-r border-gray-300 my-2 text-gray-700" /> */}
-                                <Input placeholder="Enter phone number" className="w-full paymentInput" defaultValue={currentUser?.phone} />
+                                <Input placeholder="Enter phone number" className="w-full paymentInput" defaultValue={phone !== null ? phone : currentUser?.phone} />
                             </div>
                         </div>
                     </Form.Item>

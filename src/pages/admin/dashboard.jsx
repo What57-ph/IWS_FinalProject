@@ -5,10 +5,10 @@ import {
   Typography,
 } from "antd";
 import {
-  DollarCircleOutlined,
   UserOutlined,
   HeartOutlined,
   ShoppingCartOutlined,
+  FlagOutlined,
 } from "@ant-design/icons";
 import EChart from "../../components/admin/dashboard/EChart";
 import LineChart from "../../components/admin/dashboard/LineChart";
@@ -84,7 +84,7 @@ const DashboardPage = () => {
     {
       today: "Today’s Events",
       title: `${countEventsToday}`,
-      icon: <DollarCircleOutlined style={{ fontSize: "24px", color: "white" }} />,
+      icon: <FlagOutlined style={{ fontSize: "24px", color: "white" }} />,
     },
     {
       today: "Today’s Users",

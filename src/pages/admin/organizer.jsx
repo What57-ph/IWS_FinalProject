@@ -65,7 +65,7 @@ const OrganizerPage = () => {
             key: "email",
             responsive: ["md"],
             width: 300,
-            render: (email) => <span className="text-blue-500">{email}</span>
+            render: (email) => <span className="">{email ? email : 'No data'}</span>
         },
         {
             title: "Description",
@@ -74,7 +74,7 @@ const OrganizerPage = () => {
             responsive: ["md"],
             render: (text) => (
                 <div className="truncate overflow-hidden whitespace-nowrap max-w-[50px] md:max-w-[120px] lg:max-w-[300px]">
-                    {text}
+                    {text ? text : 'No data'}
                 </div>
             ),
             ellipsis: true,

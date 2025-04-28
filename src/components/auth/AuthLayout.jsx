@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import Logo from "../../components/client/designLayouts/Logo";
 import LanguageOption from "../../components/client/designLayouts/LanguageOption";
 import { Button, Checkbox, Divider, Form, Input } from "antd";
-import Link from "antd/es/typography/Link";
-import { MdOutlineEmail } from "react-icons/md";
-import { FaLock } from "react-icons/fa";
 
 import { Outlet, useLocation } from "react-router-dom";
 import AuthBottom from "./AuthBottom";
@@ -12,10 +9,6 @@ import { ToastContainer } from "react-toastify";
 
 const AuthLayout = () => {
   const [showLangList, setShowLangList] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [checked, setChecked] = useState(true);
-  const [formValues, setFormValues] = useState({ email: "", password: "" });
-  const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [header, setHeader] = useState("");
   const location = useLocation();
   useEffect(() => {

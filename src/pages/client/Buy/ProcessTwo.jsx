@@ -13,11 +13,9 @@ const ProcessTwo = ({ form }) => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const { currentUser } = useAuth();
-  const [fullName, setFullName] = useState(currentUser.name);
-  const [email, setEmail] = useState(currentUser.email);
-  const [phone, setPhone] = useState(currentUser.phone);
-  // const step = searchParams.get("step");
-  const { event, setEventId, setCurrentStep, currentStep } = useOrderContext();
+
+  const { event, setEventId, fullName, setFullName, email, setEmail, phone, setPhone } = useOrderContext();
+
   useEffect(() => {
     setEventId(id);
   }, [id]);
@@ -31,10 +29,10 @@ const ProcessTwo = ({ form }) => {
     <div className="flex flex-col items-center">
       <div className="flex lg:flex-row flex-col gap-6 w-full mt-5  justify-center xl:px-20 px-4">
         <div>
-          <OrderInfo fullName={fullName} email={email} phone={phone} />
+          <OrderInfo />
         </div>
         <div>
-          <PaymentInfo form={form} setFullName={setFullName} setEmail={setEmail} setPhone={setPhone} />
+          <PaymentInfo form={form} />
         </div>
       </div>
       <BottomBtn />
